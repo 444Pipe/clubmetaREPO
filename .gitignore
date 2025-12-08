@@ -1,4 +1,5 @@
 # Ignore collected static files
+/staticfiles/
 # staticfiles/    <- removed to allow committing staticfiles for Railway
 
 # Local env and virtualenvs
