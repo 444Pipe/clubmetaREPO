@@ -138,11 +138,18 @@ LANGUAGES = [('es', _('Spanish'))]
 
 
 # ---------------------------
-# STATICFILES (NECESARIO PARA RAILWAY)
+# STATICFILES & MEDIA (NECESARIO PARA RAILWAY)
 # ---------------------------
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = BASE_DIR / 'staticfiles'   # <- Railway usa esto para servir estáticos
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
