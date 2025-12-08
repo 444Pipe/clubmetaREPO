@@ -1,0 +1,301 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Iniciar sesión - CLUB EL META{% endblock %}
+{% block content %}
+
+<div class="login-wrapper" style="background-image: linear-gradient(rgba(30,58,138,0.75), rgba(30,58,138,0.75)), url({% static 'img_Hotel/fondo.jpg' %}); background-size: cover; background-position: center; background-attachment: fixed; min-height: calc(100vh - 140px); display: flex; align-items: center; justify-content: center; padding: 40px 20px;">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="security-badge">
+        <i class="bi bi-shield-check"></i>
+      </div>
+      <h3 class="login-title">Iniciar sesión</h3>
+      <p class="login-subtitle">Accede a tu panel de administración</p>
+    </div>
+    
+    {% if form.errors %}
+    <div class="alert alert-danger login-alert">
+      <i class="bi bi-exclamation-triangle me-2"></i>
+      Usuario o contraseña inválidos
+    </div>
+    {% endif %}
+    
+    <form method="post" action="{% url 'reservas:login' %}" class="login-form">
+      {% csrf_token %}
+      <div class="form-group-modern">
+        <label class="form-label-modern">Usuario</label>
+        <div class="input-with-icon">
+          <i class="bi bi-person-fill input-icon"></i>
+          <input type="text" name="username" class="form-control-modern" required autofocus placeholder="Tu usuario">
+        </div>
+      </div>
+      
+      <div class="form-group-modern">
+        <label class="form-label-modern">Contraseña</label>
+        <div class="input-with-icon">
+          <i class="bi bi-lock-fill input-icon"></i>
+          <input type="password" name="password" class="form-control-modern" required placeholder="••••••••" id="passwordInput">
+          <button type="button" class="toggle-password" onclick="togglePassword()">
+            <i class="bi bi-eye" id="toggleIcon"></i>
+          </button>
+        </div>
+      </div>
+      
+      <button type="submit" class="btn-login">
+        <span>Entrar</span>
+        <i class="bi bi-arrow-right-short"></i>
+      </button>
+      
+      <div class="login-security-info">
+        <i class="bi bi-shield-lock-fill text-success me-2"></i>
+        <small>Conexión segura y encriptada</small>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+  .login-card {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    padding: 2rem 2rem;
+    width: 100%;
+    max-width: 420px;
+    animation: slideUp 0.5s ease-out;
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .login-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .security-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+    animation: pulse-badge 2s ease-in-out infinite;
+  }
+  
+  @keyframes pulse-badge {
+    0%, 100% {
+      box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+    }
+    50% {
+      box-shadow: 0 8px 30px rgba(34, 197, 94, 0.5);
+    }
+  }
+  
+  .security-badge i {
+    font-size: 2rem;
+    color: white;
+  }
+  
+  .login-title {
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 0.3rem;
+    font-size: 1.5rem;
+  }
+  
+  .login-subtitle {
+    color: #64748b;
+    margin-bottom: 0;
+    font-size: 0.9rem;
+  }
+  
+  .login-alert {
+    border-radius: 12px;
+    border: none;
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .form-group-modern {
+    margin-bottom: 1.2rem;
+  }
+  
+  .form-label-modern {
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    display: block;
+  }
+  
+  .input-with-icon {
+    position: relative;
+  }
+  
+  .input-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 1.1rem;
+    z-index: 1;
+  }
+  
+  .form-control-modern {
+    width: 100%;
+    padding: 12px 16px 12px 48px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: #f8fafc;
+  }
+  
+  .form-control-modern:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  }
+  
+  .form-control-modern:focus + .input-icon {
+    color: #3b82f6;
+  }
+  
+  .toggle-password {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 1.2rem;
+    transition: color 0.2s ease;
+  }
+  
+  .toggle-password:hover {
+    color: #3b82f6;
+  }
+  
+  .btn-login {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  }
+  
+  .btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+  }
+  
+  .btn-login:active {
+    transform: translateY(0);
+  }
+  
+  .btn-login i {
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .btn-login:hover i {
+    transform: translateX(4px);
+  }
+  
+  .login-security-info {
+    text-align: center;
+    margin-top: 1.2rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e2e8f0;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  @media (max-width: 576px) {
+    .login-card {
+      padding: 2rem 1.5rem;
+    }
+    
+    .security-badge {
+      width: 60px;
+      height: 60px;
+    }
+    
+    .security-badge i {
+      font-size: 2rem;
+    }
+    
+    .login-title {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  function togglePassword() {
+    const passwordInput = document.getElementById('passwordInput');
+    const toggleIcon = document.getElementById('toggleIcon');
+    
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      toggleIcon.classList.remove('bi-eye');
+      toggleIcon.classList.add('bi-eye-slash');
+    } else {
+      passwordInput.type = 'password';
+      toggleIcon.classList.remove('bi-eye-slash');
+      toggleIcon.classList.add('bi-eye');
+    }
+  }
+  
+  // Animación de entrada suave
+  document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('.form-control-modern');
+    
+    inputs.forEach(input => {
+      input.addEventListener('focus', function() {
+        this.parentElement.style.transform = 'scale(1.01)';
+      });
+      
+      input.addEventListener('blur', function() {
+        this.parentElement.style.transform = 'scale(1)';
+      });
+    });
+  });
+</script>
+
+{% endblock %}

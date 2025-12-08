@@ -1,0 +1,703 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% load humanize %}
+{% block title %}Espacios Disponibles - CLUB EL META{% endblock %}
+{% block content %}
+
+<section class="hero-secondary py-5" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); position: relative; overflow: hidden;">
+  <!-- Elementos decorativos -->
+  <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%; backdrop-filter: blur(20px);"></div>
+  <div style="position: absolute; bottom: -30px; left: -30px; width: 150px; height: 150px; background: rgba(255,255,255,0.08); border-radius: 50%; backdrop-filter: blur(20px);"></div>
+  
+  <div class="container" style="position: relative; z-index: 2;">
+    <div style="text-align: center; max-width: 700px; margin: 0 auto;">
+      <h2 style="color: white; font-size: 2.5rem; font-weight: 700; margin-bottom: 15px; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">
+        Nuestros Espacios Disponibles
+      </h2>
+      <p style="color: rgba(255,255,255,0.95); font-size: 1.2rem; font-weight: 500; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 12px 24px; border-radius: 50px; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+        Encuentra el espacio perfecto para tu evento
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Filtros -->
+<section class="container my-3">
+  <div class="filter-simple">
+    <div class="row g-2">
+      <div class="col-md-3">
+        <input type="number" class="form-control filter-input-simple" id="filterCapacity" placeholder="Capacidad mínima" min="1">
+      </div>
+      <div class="col-md-3">
+        <input type="number" class="form-control filter-input-simple" id="filterBudget" placeholder="Presupuesto máximo" min="0">
+      </div>
+      <div class="col-md-3">
+        <select class="form-select filter-input-simple" id="filterType">
+          <option value="">Tipo de evento</option>
+          <option value="social">Evento Social</option>
+          <option value="corporativo">Corporativo</option>
+          <option value="concierto">Concierto</option>
+          <option value="feria">Feria/Exposición</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <button class="btn-clear-simple w-100" onclick="resetFilters()">Limpiar Filtros</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lista de Espacios con Carrusel -->
+<section class="container espacios mb-5">
+  <div class="row" id="spacesList">
+    {% for r in rooms %}
+    <div class="col-md-6 col-lg-6 mb-5 space-card" data-capacity="{{ r.capacity }}" data-price="{{ r.price_particular_4h }}" data-type="{{ r.type }}">
+      <div class="card h-100 shadow-sm hover-card">
+        
+        <!-- Carrusel de Imágenes -->
+        {% if r.images %}
+        <div id="carousel{{ r.id }}" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+          <div class="carousel-inner">
+            {% for img in r.images %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+              <img src="{% static 'img_Hotel/' %}{{ img }}" class="d-block w-100" alt="{{ r.name }}" style="height: 250px; object-fit: cover;">
+            </div>
+            {% endfor %}
+          </div>
+          
+          <!-- Controles si hay más de una imagen -->
+          {% if r.images|length > 1 %}
+          <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ r.id }}" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ r.id }}" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Siguiente</span>
+          </button>
+          
+          <!-- Indicadores -->
+          <div class="carousel-indicators">
+            {% for img in r.images %}
+            <button type="button" data-bs-target="#carousel{{ r.id }}" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %} aria-label="Imagen {{ forloop.counter }}"></button>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        <div class="card-body d-flex flex-column p-3">
+          <h5 class="card-title text-primary mb-2" style="font-size: 1.1rem;">{{ r.name }}</h5>
+          <p class="card-text small text-muted mb-2" style="line-height: 1.3;">{{ r.desc }}</p>
+          
+          <div class="info-badges mb-2">
+            <span class="badge bg-light text-dark">
+              <i class="bi bi-people-fill"></i> {{ r.capacity }} personas
+            </span>
+            <span class="badge bg-light text-dark">
+              <i class="bi bi-calendar-event"></i> {{ r.type|title }}
+            </span>
+          </div>
+
+          <!-- Precios -->
+          <div class="price-section mb-3">
+            <div class="mb-2" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border-radius: 12px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <div>
+                  <div class="text-muted" style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;">Desde</div>
+                  <div class="text-primary fw-bold" style="font-size: 1.3rem; line-height: 1;">${{ r.price_particular_4h|floatformat:0|intcomma }}</div>
+                  <div class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-clock"></i> 4 hrs</div>
+                </div>
+                <div class="text-end">
+                  <div class="text-muted" style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;">Hasta</div>
+                  <div class="text-primary fw-bold" style="font-size: 1.3rem; line-height: 1;">${{ r.price_particular_8h|floatformat:0|intcomma }}</div>
+                  <div class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-clock-history"></i> 8 hrs</div>
+                </div>
+              </div>
+              <div class="border-top pt-2 mt-1">
+                <small class="text-muted d-block" style="font-size: 0.65rem; font-style: italic;">
+                  <i class="bi bi-info-circle"></i> El precio varía de acuerdo al tipo de montaje y la cantidad de personas.
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 mt-auto">
+            <button type="button" class="btn btn-sm btn-outline-primary flex-grow-1" data-bs-toggle="modal" data-bs-target="#detalleModal{{ r.id }}">
+              Detalles
+            </button>
+            <a href="{% url 'reservas:register' %}?espacio_id={{ r.id }}" class="btn btn-sm btn-primary flex-grow-1">
+              Reservar
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Detalles -->
+    <div class="modal fade" id="detalleModal{{ r.id }}" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 15px; overflow: hidden;">
+          <div class="modal-header bg-primary text-white border-0">
+            <h5 class="modal-title fw-bold">{{ r.name }}</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body p-0">
+            <div class="row">
+              <!-- Carrusel en Modal -->
+              <div class="col-md-6">
+                {% if r.images %}
+                <div id="carouselModal{{ r.id }}" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+                  <div class="carousel-inner">
+                    {% for img in r.images %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                      <img src="{% static 'img_Hotel/' %}{{ img }}" class="d-block w-100 rounded" alt="{{ r.name }}" style="height: 300px; object-fit: cover;">
+                    </div>
+                    {% endfor %}
+                  </div>
+                  
+                  {% if r.images|length > 1 %}
+                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselModal{{ r.id }}" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carouselModal{{ r.id }}" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  </button>
+                  {% endif %}
+                </div>
+                {% endif %}
+              </div>
+
+              <!-- Detalles en Modal -->
+              <div class="col-md-6 p-3">
+                <div class="mb-3">
+                  <h6 class="text-primary fw-bold mb-1" style="font-size: 0.95rem;">Descripción</h6>
+                  {% if r.name == "Mi Llanura" %}
+                  <p class="text-muted small mb-0" style="line-height: 1.4;">
+                    El Salón «Mi Llanura» constituye el espacio de mayor capacidad del Club, equipado con una tarima modular para presentaciones y ceremonias. Dispone de infraestructura técnica para montaje audiovisual e iluminación, accesos y circulación amplios, y un diseño versátil que admite múltiples configuraciones de montaje (banquete, teatro, cóctel, aula). Es idóneo para graduaciones, bodas, presentaciones y eventos corporativos o sociales que requieren soporte logístico y servicios complementarios.
+                  </p>
+                  {% elif r.name == "Salón Empresarial" or r.name == "Salon Empresarial" or r.name == "Empresarial" or r.name == "Salón empresarial" or r.name == "Salon empresarial" %}
+                  <p class="text-muted small mb-0" style="line-height: 1.4;">
+                    Exclusivo salón con instalación independiente, diseñado para la realización de asambleas, desayunos, almuerzos y cenas de trabajo, jornadas de capacitación y exposiciones. Está orientado a eventos cuyo objetivo es generar beneficios empresariales, fortalecer la imagen institucional, captar clientes y apoyar acciones de marketing de bienes y servicios. Cuenta con infraestructura para montaje audiovisual, servicio de restaurante y apoyo logístico para eventos corporativos.
+                  </p>
+                  {% elif r.name == "Kiosco" or r.name == "Kiosko" or r.name == "kiosco" or r.name == "kiosko" %}
+                  <p class="text-muted small mb-0" style="line-height: 1.4;">
+                    Salón social al aire libre para reuniones de tipo recreativo, social y cultural de grupos de niños, jóvenes o adultos. Diseñado para compartir con familiares y amigos en un agradable entorno campestre, el Kiosco ofrece un ambiente informal y acogedor ideal para actividades recreativas, celebraciones familiares y encuentros sociales al aire libre.
+                  </p>
+                  {% elif r.name == "Salón Bar" or r.name == "Salon Bar" or r.name == "Salón bar" or r.name == "Salon bar" %}
+                  <p class="text-muted small mb-0" style="line-height: 1.4;">
+                    Una acertada combinación entre diseño, música y bebidas para transformar la cotidianidad en experiencias memorables y acogedoras. El Salón Bar ofrece una selección curada de licores y cócteles, complementada con una carta a la carta de platos artesanales y entradas para compartir. Su atmósfera está diseñada para encuentros sociales y reuniones íntimas, disponiendo de servicio de barra profesional, zona de ambientación sonora y soluciones versátiles de montaje para presentaciones o shows en vivo.
+                  </p>
+                  {% else %}
+                  <p class="text-muted small mb-0" style="line-height: 1.4;">{{ r.desc }}</p>
+                  {% endif %}
+                </div>
+                
+                <div class="mb-3">
+                  <h6 class="text-primary fw-bold mb-2" style="font-size: 0.95rem;">Características</h6>
+                  <div class="row g-2">
+                    <div class="col-6">
+                      <div class="feature-item-compact">
+                        <i class="bi bi-music-note-beamed"></i> Sistema de Audio
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="feature-item-compact">
+                        <i class="bi bi-wifi"></i> Wifi
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="feature-item-compact">
+                        <i class="bi bi-car-front"></i> Parking
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="feature-item-compact">
+                        <i class="bi bi-cup-straw"></i> Servicio de restaurante
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="capacity-box-compact mb-3 p-2 bg-light rounded">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-primary fw-bold small"><i class="bi bi-people-fill"></i> Capacidad</span>
+                    <strong>Hasta {{ r.capacity }} personas</strong>
+                  </div>
+                  <small class="text-muted d-block mt-1" style="font-size: 0.7rem; font-style: italic;">
+                    <i class="bi bi-info-circle"></i> Varía según tipo de montaje
+                  </small>
+                </div>
+
+                <div class="price-box-compact mb-3 p-3 rounded" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border: 1px solid #dee2e6; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                  <h6 class="text-primary fw-bold mb-3" style="font-size: 1rem;"><i class="bi bi-cash-coin"></i> Tarifas</h6>
+                  <div class="row g-3 mb-3">
+                    <div class="col-6">
+                      <div class="text-center p-2" style="background: white; border-radius: 8px; border: 2px solid #e9ecef;">
+                        <div class="text-muted small" style="font-size: 0.7rem; text-transform: uppercase;">4 Horas</div>
+                        <div class="text-primary fw-bold" style="font-size: 1.3rem;">${{ r.price_particular_4h|floatformat:0|intcomma }}</div>
+                        <div class="text-muted" style="font-size: 0.7rem;"><i class="bi bi-clock"></i></div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="text-center p-2" style="background: white; border-radius: 8px; border: 2px solid #e9ecef;">
+                        <div class="text-muted small" style="font-size: 0.7rem; text-transform: uppercase;">8 Horas</div>
+                        <div class="text-primary fw-bold" style="font-size: 1.3rem;">${{ r.price_particular_8h|floatformat:0|intcomma }}</div>
+                        <div class="text-muted" style="font-size: 0.7rem;"><i class="bi bi-clock-history"></i></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="border-top pt-2">
+                    <small class="text-muted d-block text-center" style="font-size: 0.7rem; font-style: italic;">
+                      <i class="bi bi-info-circle"></i> El precio varía de acuerdo al tipo de montaje y la cantidad de personas.
+                    </small>
+                  </div>
+                </div>
+
+                <a href="{% url 'reservas:register' %}?espacio_id={{ r.id }}" class="btn btn-primary w-100 py-2" style="border-radius: 8px;">
+                  Reservar Ahora
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Mensaje si no hay espacios -->
+  <div id="noSpaces" class="text-center py-5" style="display: none;">
+    <h5>No hay espacios disponibles</h5>
+    <p class="text-muted">Intenta de nuevo más tarde</p>
+  </div>
+</section>
+
+<!-- Sección de CTA -->
+<section class="bg-light py-5">
+  <div class="container text-center">
+    <h3 class="mb-3">¿No encontraste lo que buscas?</h3>
+    <p class="lead mb-4">Nuestro equipo está listo para ayudarte a encontrar la solución perfecta</p>
+    <a href="https://wa.me/573507016630?text=Hola,%20necesito%20más%20información%20sobre%20los%20espacios.%20Me%20encuentro%20en%20Calle%2048A%20Carrera%2030,%20Barrio%20Caudal%20Oriental,%20Villavicencio%20-%20Meta." 
+       target="_blank" 
+       class="whatsapp-btn">
+      <span class="whatsapp-icon-wrapper">
+        <img src="{% static 'img_Hotel/whatsapp.png' %}" alt="WhatsApp" class="whatsapp-icon">
+      </span>
+      <span class="whatsapp-text">Contactar por WhatsApp</span>
+      <span class="whatsapp-arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .hover-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 12px;
+    overflow: hidden;
+    border: none;
+  }
+
+  .hover-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.2) !important;
+  }
+
+  .hero-secondary {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    color: white;
+  }
+
+  .hero-secondary h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+  }
+
+  /* Filter Simple */
+  .filter-simple {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px 15px;
+  }
+
+  .filter-input-simple {
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    background: white;
+  }
+
+  .filter-input-simple:focus {
+    border-color: #1e40af;
+    box-shadow: none;
+    outline: none;
+  }
+
+  .btn-clear-simple {
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    transition: background 0.2s ease;
+    cursor: pointer;
+  }
+
+  .btn-clear-simple:hover {
+    background: #5c636a;
+  }
+
+  @media (max-width: 768px) {
+    .btn-clear-simple {
+      margin-top: 8px;
+    }
+  }
+
+  .card-body {
+    font-size: 0.9rem;
+  }
+
+  .info-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .info-badges .badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 4px 10px;
+    border: 1px solid #dee2e6;
+  }
+
+  .price-section {
+    background-color: #f8f9fa;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+  }
+  
+  .price-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+    gap: 10px;
+  }
+  
+  .price-row:last-child {
+    margin-bottom: 0;
+  }
+  
+  .price-row strong {
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .carousel-inner img {
+    height: 220px !important;
+    object-fit: cover;
+  }
+
+  .card-title {
+    font-weight: 600;
+  }
+
+  .btn-sm {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+
+  .space-card {
+    margin-bottom: 1.5rem !important;
+  }
+
+  /* Modal Styles */
+  .modal-content {
+    animation: modalSlideIn 0.3s ease-out;
+  }
+
+  @keyframes modalSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .feature-item-compact {
+    font-size: 0.75rem;
+    padding: 4px 6px;
+    background: white;
+    border-radius: 5px;
+    border: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .feature-item-compact i {
+    font-size: 0.85rem;
+    color: #0d6efd;
+  }
+
+  .capacity-box-compact, .price-box-compact {
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    font-size: 0.9rem;
+  }
+
+  .modal-header {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .carousel-indicators {
+    bottom: 10px;
+  }
+
+  .carousel-indicators button {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin: 0 4px;
+  }
+
+  /* WhatsApp Button Styles */
+  .whatsapp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: white;
+    padding: 22px 52px;
+    border-radius: 56px;
+    text-decoration: none;
+    font-size: 1.25rem;
+    font-weight: 600;
+    box-shadow: 0 18px 46px rgba(37, 211, 102, 0.32);
+    transition: all 0.24s cubic-bezier(.2,.9,.3,1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .whatsapp-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .whatsapp-btn:hover::before {
+    left: 100%;
+  }
+
+  .whatsapp-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(37, 211, 102, 0.5);
+    color: white;
+  }
+
+  .whatsapp-btn:active {
+    transform: translateY(-1px) scale(1.02);
+  }
+
+  .whatsapp-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+
+  .whatsapp-btn:hover .whatsapp-icon-wrapper {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(12deg) scale(1.08);
+  }
+
+  .whatsapp-icon {
+    width: 34px;
+    height: 34px;
+    animation: pulse 1.8s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+
+  /* attention animations */
+  @keyframes pulse-shadow {
+    0% { box-shadow: 0 10px 30px rgba(37,211,102,0.18); transform: scale(1); }
+    50% { box-shadow: 0 28px 60px rgba(37,211,102,0.28); transform: scale(1.035); }
+    100% { box-shadow: 0 10px 30px rgba(37,211,102,0.18); transform: scale(1); }
+  }
+
+  @keyframes float-bob {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0); }
+  }
+
+  .whatsapp-pulse { animation: pulse-shadow 1.6s ease-in-out 1; }
+  .whatsapp-float { animation: float-bob 5.5s ease-in-out infinite; }
+
+  .whatsapp-btn:hover, .whatsapp-btn:focus { animation-play-state: paused; }
+
+  .whatsapp-text {
+    position: relative;
+    z-index: 1;
+  }
+
+  .whatsapp-arrow {
+    transition: transform 0.3s ease;
+    font-size: 1.3rem;
+  }
+
+  .whatsapp-btn:hover .whatsapp-arrow {
+    transform: translateX(5px);
+  }
+
+  @media (max-width: 768px) {
+    .whatsapp-btn {
+      padding: 18px 34px;
+      font-size: 1.05rem;
+    }
+    
+    .whatsapp-icon-wrapper {
+      width: 44px;
+      height: 44px;
+    }
+    
+    .whatsapp-icon {
+      width: 28px;
+      height: 28px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function(){
+    const cta = document.querySelector('.whatsapp-btn');
+    if (!cta) return;
+
+    // entrance animation
+    cta.animate([{ transform: 'translateY(18px)', opacity: 0 }, { transform: 'translateY(0)', opacity: 1 }], { duration: 600, easing: 'cubic-bezier(.2,.9,.3,1)' });
+
+    // enable float and periodic pulse
+    cta.classList.add('whatsapp-float');
+    function pulseNow(){
+      cta.classList.remove('whatsapp-pulse');
+      void cta.offsetWidth;
+      cta.classList.add('whatsapp-pulse');
+      setTimeout(()=> cta.classList.remove('whatsapp-pulse'), 1600);
+    }
+    let pulseInterval = setInterval(pulseNow, 9000 + Math.floor(Math.random()*3000));
+
+    // ripple effect on click
+    cta.addEventListener('click', function(e){
+      const rect = this.getBoundingClientRect();
+      const ripple = document.createElement('span');
+      const size = Math.max(rect.width, rect.height) * 1.2;
+      const x = e.clientX - rect.left - size/2;
+      const y = e.clientY - rect.top - size/2;
+      ripple.style.position = 'absolute';
+      ripple.style.left = x + 'px';
+      ripple.style.top = y + 'px';
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.borderRadius = '50%';
+      ripple.style.background = 'rgba(255,255,255,0.18)';
+      ripple.style.transform = 'scale(0)';
+      ripple.style.pointerEvents = 'none';
+      ripple.style.transition = 'transform 0.6s ease-out, opacity 0.6s ease-out';
+      this.appendChild(ripple);
+      requestAnimationFrame(()=> { ripple.style.transform = 'scale(1)'; ripple.style.opacity = '0'; });
+      setTimeout(()=> ripple.remove(), 700);
+      // pause pulses briefly to avoid overlapping animations
+      clearInterval(pulseInterval);
+      setTimeout(()=> { pulseInterval = setInterval(pulseNow, 9000 + Math.floor(Math.random()*3000)); }, 4000);
+    });
+
+    // pause float/pulse while interacting
+    ['mouseenter','focus','touchstart'].forEach(ev => cta.addEventListener(ev, ()=> { cta.classList.remove('whatsapp-pulse'); clearInterval(pulseInterval); }));
+    ['mouseleave','blur'].forEach(ev => cta.addEventListener(ev, ()=> { setTimeout(()=> { pulseInterval = setInterval(pulseNow, 9000 + Math.floor(Math.random()*3000)); }, 1200); }));
+  });
+</script>
+
+<script>
+  // Función para limpiar filtros
+  function resetFilters() {
+    document.getElementById('filterCapacity').value = '';
+    document.getElementById('filterBudget').value = '';
+    document.getElementById('filterType').value = '';
+    filterSpaces();
+  }
+
+  // Función para filtrar espacios
+  function filterSpaces() {
+    const capacity = parseInt(document.getElementById('filterCapacity').value) || 0;
+    const budget = parseInt(document.getElementById('filterBudget').value) || 0;
+    const type = document.getElementById('filterType').value || '';
+
+    const cards = document.querySelectorAll('.space-card');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+      let show = true;
+
+      const cardCapacity = parseInt(card.getAttribute('data-capacity')) || 0;
+      const cardPrice = parseInt(card.getAttribute('data-price')) || 0;
+      const cardType = (card.getAttribute('data-type') || '').toString();
+
+      // Capacity filter: show only if cardCapacity >= capacity (if capacity specified)
+      if (capacity > 0 && cardCapacity < capacity) {
+        show = false;
+      }
+
+      // Budget filter: show only if cardPrice <= budget (if budget specified)
+      if (budget > 0 && cardPrice > budget) {
+        show = false;
+      }
+
+      // Type filter: if selected, cardType must match
+      if (type && cardType !== type) {
+        show = false;
+      }
+
+      if (show) {
+        card.style.display = 'block';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    // Mostrar mensaje si no hay resultados (si existe el elemento)
+    const noSpacesEl = document.getElementById('noSpaces');
+    if (noSpacesEl) noSpacesEl.style.display = visibleCount === 0 ? 'block' : 'none';
+  }
+
+  // Event listeners para filtros
+  const capEl = document.getElementById('filterCapacity');
+  const budEl = document.getElementById('filterBudget');
+  const typeEl = document.getElementById('filterType');
+  if (capEl) capEl.addEventListener('input', filterSpaces);
+  if (budEl) budEl.addEventListener('input', filterSpaces);
+  if (typeEl) typeEl.addEventListener('change', filterSpaces);
+</script>
+
+{% endblock %}

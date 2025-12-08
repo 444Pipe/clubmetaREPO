@@ -1,0 +1,956 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Inicio - CLUB EL META{% endblock %}
+{% block content %}
+<section class="hero text-center text-white" id="heroSection" style="background-image: linear-gradient(rgba(30,58,138,0.70), rgba(30,58,138,0.70)), url({% static 'img_Hotel/fondo.jpg' %}); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 60vh; display: flex; align-items: center;">
+  <div class="container py-5">
+    <h2 class="display-5 hero-title fade-up">Bienvenido a CLUB EL META</h2>
+    <p class="lead hero-subtitle fade-up delayed">Club El Meta es una empresa dedicada al alquiler de espacios para eventos de todo tipo, adaptándose a las necesidades y gustos de cada cliente.</p>
+    <div class="mt-4">
+      <a class="btn btn-light btn-lg me-3 hero-btn fade-up more-delayed" href="{% url 'reservas:espacios' %}">Ver Espacios Disponibles</a>
+      <a class="btn btn-outline-light btn-lg hero-btn fade-up more-delayed" href="{% url 'reservas:register' %}">Reservar Ahora</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Hero overlay and layout enhancements */
+  #heroSection { position: relative; overflow: hidden; min-height: 60vh; display: flex; align-items: center; }
+  #heroSection::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    /* Make the black overlay very subtle so inline blue tint shows clearly */
+    background: linear-gradient(rgba(0,0,0,0.04), rgba(0,0,0,0.03));
+    pointer-events: none;
+    z-index: 1;
+  }
+  #heroSection .container { position: relative; z-index: 2; }
+
+  /* Entry animations (subtle, corporate) */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-up { animation: fadeUp 0.64s cubic-bezier(.2,.9,.3,1) both; }
+  .fade-up.delayed { animation-delay: 0.18s; }
+  .fade-up.more-delayed { animation-delay: 0.36s; }
+
+  .hero-title { font-weight:700; line-height:1.05; letter-spacing:0.2px; }
+  .hero-title, .hero-subtitle { display:block; text-wrap:balance; }
+  .hero-title.fade-up { animation-delay: 0.08s; }
+  .hero-subtitle.fade-up { animation-delay: 0.24s; }
+
+  /* Buttons: smooth hover, slight scale and clearer border */
+  .hero .mt-4 { display:flex; gap:0.75rem; justify-content:center; align-items:center; }
+  .hero-btn { transition: transform 0.28s cubic-bezier(.2,.9,.3,1), box-shadow 0.28s, border-color 0.28s; border: 1px solid transparent; }
+  .hero-btn:focus { outline: none; box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
+  .btn-light.hero-btn:hover { transform: translateY(-6px) scale(1.035); box-shadow: 0 18px 46px rgba(0,0,0,0.22); border-color: rgba(255,255,255,0.22); }
+  .btn-outline-light.hero-btn:hover { transform: translateY(-6px) scale(1.035); box-shadow: 0 18px 46px rgba(0,0,0,0.22); border-color: rgba(255,255,255,0.42); color: #fff; background: rgba(255,255,255,0.03); }
+
+  /* Ensure readable text on smaller viewports */
+  .hero-title { font-size: clamp(1.6rem, 3.6vw, 2.5rem); }
+  .hero-subtitle { font-size: clamp(0.95rem, 1.8vw, 1.125rem); color: rgba(255,255,255,0.95); }
+
+  /* Reveal utility for other sections */
+  .reveal { opacity: 0; transform: translateY(12px); animation: fadeUp 0.6s cubic-bezier(.2,.9,.3,1) forwards; }
+  .reveal:nth-child(1) { animation-delay: 0.12s; }
+  .reveal:nth-child(2) { animation-delay: 0.20s; }
+  .reveal:nth-child(3) { animation-delay: 0.28s; }
+
+  /* Responsive: stack buttons and keep text readable */
+  @media (max-width: 768px) {
+    #heroSection { min-height: 48vh; padding: 2.2rem 0; }
+    .hero .mt-4 { flex-direction: column; gap: 0.65rem; }
+    .hero-btn { display: block; width: 88%; max-width: 360px; margin: 0.25rem auto; }
+    .hero-title { text-align: center; }
+    .hero-subtitle { text-align: center; }
+  }
+
+</style>
+
+<style>
+  /* Make the main navbar sticky without altering colors */
+  .navbar { position: sticky !important; top: 0; z-index: 1090; }
+  .navbar { transition: box-shadow .22s ease, background-color .22s ease; }
+  @media (min-width: 992px) { .navbar { backdrop-filter: blur(4px); } }
+</style>
+
+<!-- moved .event-list and .event-dot styles to static/css/style.css -->
+
+<section class="container my-5" id="whyChooseSection">
+  <div class="row align-items-center">
+    <div class="col-md-6 mb-4 mb-md-0">
+      <h3 class="section-title-animated">¿Por qué elegir Club El Meta?</h3>
+      <ul class="list-unstyled features-list">
+        <li class="mb-3 feature-item" data-index="0">
+          <span class="feature-icon">✓</span>
+          <span class="feature-content">
+            <strong>Espacios Versátiles:</strong> Desde salas pequeñas para reuniones hasta grandes salones para eventos masivos
+          </span>
+        </li>
+        <li class="mb-3 feature-item" data-index="1">
+          <span class="feature-icon">✓</span>
+          <span class="feature-content">
+            <strong>Profesionalismo:</strong> Nuestro equipo garantiza comodidad, seguridad y una experiencia personalizada
+          </span>
+        </li>
+        <li class="mb-3 feature-item" data-index="2">
+          <span class="feature-icon">✓</span>
+          <span class="feature-content">
+            <strong>Precios Competitivos:</strong> Tarifas accesibles y transparentes para tu evento especial
+          </span>
+        </li>
+        <li class="mb-3 feature-item" data-index="3">
+          <span class="feature-icon">✓</span>
+          <span class="feature-content">
+            <strong>Facilidades:</strong> Servicios complementarios como servicio de restaurante, sonido, decoración y más
+          </span>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <div class="image-wrapper-animated">
+        <div id="whyCarousel" class="carousel slide rounded shadow" data-bs-ride="carousel" data-bs-interval="4800">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#whyCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#whyCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#whyCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#whyCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            <button type="button" data-bs-target="#whyCarousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
+            <button type="button" data-bs-target="#whyCarousel" data-bs-slide-to="5" aria-label="Slide 6"></button>
+          </div>
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="{% static 'img_Hotel/porque.jpg' %}" class="d-block w-100 carousel-img" alt="Por qué elegir Club El Meta">
+            </div>
+            <div class="carousel-item">
+              <img src="{% static 'img_Hotel/imaq.jpg' %}" class="d-block w-100 carousel-img" alt="Club El Meta 1">
+            </div>
+            <div class="carousel-item">
+              <img src="{% static 'img_Hotel/imaq1.jpg' %}" class="d-block w-100 carousel-img" alt="Club El Meta 2">
+            </div>
+            <div class="carousel-item">
+              <img src="{% static 'img_Hotel/imaq2.jpg' %}" class="d-block w-100 carousel-img" alt="Club El Meta 3">
+            </div>
+            <div class="carousel-item">
+              <img src="{% static 'img_Hotel/imaq3.jpg' %}" class="d-block w-100 carousel-img" alt="Club El Meta 4">
+            </div>
+            <div class="carousel-item">
+              <img src="{% static 'img_Hotel/imaq4.jpg' %}" class="d-block w-100 carousel-img" alt="Club El Meta 5">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#whyCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#whyCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 10px;
+    transition: all 0.2s ease;
+  }
+  
+  .feature-item:hover {
+    background: rgba(30, 64, 175, 0.05);
+    border-radius: 8px;
+  }
+  
+  .feature-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, #3b82f6, #1e40af);
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  
+  .feature-content {
+    flex: 1;
+  }
+  
+  .image-wrapper-animated img {
+    transition: transform 0.3s ease;
+  }
+
+  /* carousel image sizing for the Why Choose section */
+  .carousel-img {
+    max-height: 420px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+  }
+  
+  .image-wrapper-animated:hover img {
+    transform: scale(1.02);
+  }
+</style>
+
+<section class="bg-light py-5 events-section">
+  <div class="container text-center">
+    <h3 class="mb-4 fw-bold">Tipos de Eventos que Organizamos</h3>
+
+    <p class="text-muted mb-4" style="max-width:800px; margin:0 auto 1.5rem;">Realice su evento social o empresarial en el lugar más exclusivo de Villavicencio. Nuestras instalaciones combinan un ambiente campestre con la comodidad de la ciudad, ofreciendo jardines y espacios diseñados para que cada celebración sea inolvidable. Atendemos desde eventos íntimos hasta grandes reuniones corporativas, con un equipo profesional que se encarga de todos los detalles.</p>
+
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        <div class="events-grid">
+          <div class="card shadow-sm event-card reveal">
+            <div class="card-body">
+              <h5 class="card-title fw-bold"><span class="emoji" aria-hidden="true">🎉</span>Eventos Sociales</h5>
+              <ul class="event-list mb-0">
+                <li><span class="event-dot"></span><span>Fiestas infantiles</span></li>
+                <li><span class="event-dot"></span><span>Matrimonios</span></li>
+                <li><span class="event-dot"></span><span>Quince años</span></li>
+                <li><span class="event-dot"></span><span>Bautizos</span></li>
+                <li><span class="event-dot"></span><span>Despedidas</span></li>
+                <li><span class="event-dot"></span><span>Reuniones familiares</span></li>
+              </ul>
+              <p class="mt-3 text-muted">Espacios versátiles y decoración a medida para que cada celebración refleje su estilo.</p>
+            </div>
+          </div>
+
+          <div class="card shadow-sm event-card reveal">
+            <div class="card-body">
+              <h5 class="card-title fw-bold"><span class="emoji" aria-hidden="true">💼</span>Eventos Empresariales y Corporativos</h5>
+              <ul class="event-list mb-0">
+                <li><span class="event-dot"></span><span>Seminarios</span></li>
+                <li><span class="event-dot"></span><span>Lanzamientos</span></li>
+                <li><span class="event-dot"></span><span>Congresos</span></li>
+                <li><span class="event-dot"></span><span>Reuniones de trabajo</span></li>
+                <li><span class="event-dot"></span><span>Reconocimientos</span></li>
+                <li><span class="event-dot"></span><span>Eventos de networking</span></li>
+              </ul>
+              <p class="mt-3 text-muted">Soporte técnico, salas equipadas y servicios auxiliares para eventos profesionales.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .event-card {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    background: white;
+  }
+  
+  .event-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #1e40af, #3b82f6);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+  
+  .event-card:hover::before {
+    transform: scaleX(1);
+  }
+  
+  .event-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15) !important;
+  }
+  
+  .event-icon-wrapper {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #e0e7ff 0%, #dbeafe 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+  
+  .event-card:hover .event-icon-wrapper {
+    transform: rotate(15deg) scale(1.1);
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  }
+  
+  .event-icon-wrapper .emoji {
+    font-size: 2rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .event-card:hover .event-icon-wrapper .emoji {
+    transform: scale(1.2);
+  }
+  
+  .event-card .card-title {
+    color: #1e40af;
+    transition: color 0.3s ease;
+  }
+  
+  .event-card:hover .card-title {
+    color: #1e3a8a;
+  }
+</style>
+
+<script>
+  // Animación de entrada escalonada para las tarjetas de eventos
+  document.addEventListener('DOMContentLoaded', function() {
+    const eventCards = document.querySelectorAll('.event-card');
+    
+    const observerOptions = {
+      threshold: 0.2,
+      rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }, index * 150);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+    
+    eventCards.forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(30px)';
+      card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(card);
+    });
+    
+    // Efecto de click con ripple
+    eventCards.forEach(card => {
+      card.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        const rect = card.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        ripple.classList.add('ripple-effect');
+        
+        card.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
+  });
+</script>
+
+<script>
+  // Generic reveal handler: add .visible to elements with .reveal when they enter viewport
+  (function(){
+    const items = document.querySelectorAll('.reveal');
+    if (!items.length) return;
+    const obs = new IntersectionObserver((entries, o) => {
+      entries.forEach(en => {
+        if (en.isIntersecting) {
+          en.target.classList.add('visible');
+          o.unobserve(en.target);
+        }
+      });
+    }, {threshold: 0.18, rootMargin: '0px 0px -30px 0px'});
+    items.forEach(i => obs.observe(i));
+  })();
+</script>
+
+<style>
+  .ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(30, 64, 175, 0.3);
+    transform: scale(0);
+    animation: ripple-animation 0.6s ease-out;
+    pointer-events: none;
+  }
+  
+  @keyframes ripple-animation {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+</style>
+
+<section class="container my-5 info-columns">
+  <div class="row justify-content-center">
+    <div class="col-md-10 reveal">
+      <div class="info-box-enhanced text-center">
+        <div class="info-icon-large mb-4">
+          <i class="bi bi-info-circle-fill"></i>
+        </div>
+        <h3 class="fw-bold mb-3">¿Necesitas Información?</h3>
+        <p class="lead mb-4">Nuestro equipo está disponible para responder todas tus dudas y ayudarte a encontrar el espacio perfecto.</p>
+        
+        <div class="contact-layout">
+          <div class="contact-layout__inner">
+            <!-- Left: small map (~40%) -->
+            <div class="contact-layout__map">
+              <div class="contact-layout__map-box">
+                  <iframe class="contact-layout__iframe" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3979.290376160833!2d-73.64199979037178!3d4.163210795793118!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3e2d9252257e01%3A0x13a9394f0ef8b23d!2sClub%20Meta!5e0!3m2!1ses-419!2sco!4v1764949787914!5m2!1ses-419!2sco" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa - Club El Meta (compact)"></iframe>
+              </div>
+            </div>
+
+            <!-- Right: contact info (~60%) -->
+            <div class="contact-layout__info">
+              <div class="contact-item--boxed">
+                <div class="ci-row">
+                  <i class="bi bi-geo-alt-fill text-primary me-2"></i>
+                  <div>
+                    <div class="ci-label">Dirección</div>
+                    <div class="ci-value">Calle 48A Carrera 30, Barrio Caudal Oriental, Villavicencio - Meta</div>
+                  </div>
+                </div>
+
+                    <div class="ci-row mt-3">
+                      <i class="bi bi-clock text-primary me-2"></i>
+                      <div>
+                        <div class="ci-label">Horario de atención</div>
+                        <div class="ci-value">08:00 AM - 12:00 PM &nbsp;/&nbsp; 02:00 PM - 06:00 PM</div>
+                        <div id="current-time-info" class="small text-muted mt-1">Hora actual: --:--:--</div>
+                      </div>
+                    </div>
+
+                <!-- phone numbers removed per request; keep only address, emails and WhatsApp CTA -->
+
+                <div class="ci-row">
+                  <i class="bi bi-envelope-fill text-primary me-2"></i>
+                  <div>
+                    <div class="ci-label">Correo</div>
+                    <div class="ci-value"><a href="mailto:gerencia@clubelmeta.com">gerencia@clubelmeta.com</a></div>
+                  </div>
+                </div>
+                <div class="ci-row">
+                  <div style="width:34px;flex-shrink:0;"></div>
+                  <div>
+                    <div class="ci-value"><a href="mailto:secretaria@clubelmeta.co">secretaria@clubelmeta.co</a></div>
+                  </div>
+                </div>
+
+                <!-- WhatsApp CTA now placed directly under emails for better visibility -->
+                <div style="margin-top:12px;">
+                  <a id="whatsappContactBtn" class="whatsapp-btn btn-whatsapp-enhanced" href="https://wa.me/573507016630" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+                    <span class="btn-icon-wrapper" aria-hidden="true">
+                      <svg class="whatsapp-btn__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+                        <path fill="#ffffff" d="M20.52 3.48A11.9 11.9 0 0 0 12.01.01 11.99 11.99 0 0 0 .99 12a11.9 11.9 0 0 0 3.46 7.52L.01 24l4.68-1.23A11.99 11.99 0 0 0 12 24c6.63 0 12-5.37 12-12 0-1.9-.45-3.7-1.48-5.32zM12 21.5c-1.36 0-2.69-.34-3.86-1l-.28-.16-2.78.73.74-2.71-.18-.29A9.5 9.5 0 1 1 21.5 12 9.48 9.48 0 0 1 12 21.5zM17.1 14.3c-.28-.14-1.66-.82-1.92-.91s-.45-.14-.64.14-.73.91-.9 1.1c-.16.18-.33.2-.61.06a6.7 6.7 0 0 1-2-1.23c-.37-.35-.62-.78-.7-1.06-.07-.27-.01-.48.06-.62.18-.3.48-.8.68-1.1.19-.28.25-.47.37-.76.12-.28.06-.53-.03-.73-.08-.19-.64-1.53-.88-2.07-.23-.54-.46-.47-.64-.48l-.55-.01c-.2 0-.52.07-.79.35s-1.04 1.02-1.04 2.49c0 1.46 1.07 2.87 1.22 3.07.16.2 2.1 3.2 5.09 4.49 2.99 1.3 3.01.86 3.55.81.54-.05 1.75-.71 2-1.4.25-.69.25-1.28.18-1.4-.07-.12-.26-.2-.54-.34z"/>
+                      </svg>
+                    </span>
+                    <span class="whatsapp-btn__text">Contactar por WhatsApp</span>
+                    <span class="btn-arrow ms-2" aria-hidden="true">➜</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // update clock in 'Necesitas Información' section (12-hour format with AM/PM)
+    function formatTime12(date){
+      var hh = date.getHours();
+      var ampm = hh >= 12 ? 'PM' : 'AM';
+      var h12 = hh % 12;
+      if(h12 === 0) h12 = 12;
+      var hhStr = String(h12).padStart(2,'0');
+      var mm = String(date.getMinutes()).padStart(2,'0');
+      var ss = String(date.getSeconds()).padStart(2,'0');
+      return hhStr + ':' + mm + ':' + ss + ' ' + ampm;
+    }
+
+    function updateInfoClock(){
+      var el = document.getElementById('current-time-info');
+      if(!el) return;
+      var f = new Date();
+      el.textContent = 'Hora actual: ' + formatTime12(f);
+    }
+    setInterval(updateInfoClock,1000);
+    document.addEventListener('DOMContentLoaded', updateInfoClock);
+  </script>
+</section>
+
+<style>
+  .info-box-enhanced {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    padding: 1.6rem 1.2rem;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.28s ease;
+  }
+  
+  .info-box-enhanced::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(30, 64, 175, 0.05) 0%, transparent 70%);
+    animation: pulse-bg 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+  
+  @keyframes pulse-bg {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+  }
+  
+  .info-box-enhanced:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+  }
+  
+  .info-icon-large {
+    display: inline-block;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 6px auto;
+    animation: icon-float 3s ease-in-out infinite;
+    box-shadow: 0 6px 18px rgba(59, 130, 246, 0.18);
+  }
+  
+  @keyframes icon-float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  .info-icon-large i {
+    font-size: 2.5rem;
+    color: white;
+  }
+  
+  .contact-info-card {
+    background: white;
+    padding: 0.9rem 1rem;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.04);
+    position: relative;
+    z-index: 1;
+  }
+  
+  .contact-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+  }
+  
+  .contact-item i {
+    font-size: 1.2rem;
+  }
+
+  /* New layout for contact section: map left (~40%) and info right (~60%) */
+  .contact-layout__inner {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+  }
+
+  .contact-layout__map {
+    /* keep it compact: allow the map column to be up to 400px wide */
+    flex: 0 0 auto;
+    min-width: 220px;
+    max-width: 400px;
+    width: 100%;
+  }
+
+  .contact-layout__map-box {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    background: #fff;
+    position: relative;
+    z-index: 2;
+  }
+
+  .contact-layout__iframe {
+    display: block;
+    width: 100%;
+    height: 230px;
+    border: 0;
+  }
+
+  .contact-layout__info {
+    flex: 1 1 60%;
+  }
+
+  .contact-item--boxed {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: left;
+  }
+
+  .ci-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .ci-label {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #1e40af;
+  }
+
+  .ci-value a { color: inherit; text-decoration: underline; }
+
+  .contact-layout__cta {
+    margin-top: 18px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .whatsapp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg,#25D366 0%,#128C7E 100%);
+    color: #fff;
+    padding: 18px 34px;
+    border-radius: 40px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.08rem;
+    box-shadow: 0 10px 30px rgba(18,140,126,0.18);
+    position: relative;
+    z-index: 2;
+  }
+
+  .whatsapp-btn__icon { display: inline-block; vertical-align: middle; }
+
+  /* make CTA full-width on small screens for easier tap */
+  @media (max-width: 520px) {
+    .whatsapp-btn { display: inline-flex; width: 100%; justify-content: center; }
+  }
+
+  @media (max-width: 768px) {
+    .contact-layout__inner { flex-direction: column; }
+    .contact-layout__map { width: 100%; max-width: 100%; flex-basis: auto; }
+    .contact-layout__iframe { height: 220px; }
+  }
+  
+  .btn-whatsapp-enhanced {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: white;
+    padding: 18px 34px;
+    border-radius: 48px;
+    text-decoration: none;
+    font-size: 1.08rem;
+    font-weight: 600;
+    box-shadow: 0 14px 36px rgba(37, 211, 102, 0.28);
+    transition: all 0.22s ease;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+  
+  .btn-whatsapp-enhanced::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s ease, height 0.5s ease;
+    z-index: -1;
+  }
+  
+  .btn-whatsapp-enhanced:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .btn-whatsapp-enhanced:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(37, 211, 102, 0.5);
+    color: white;
+  }
+  
+  .btn-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-icon-wrapper i, .btn-icon-wrapper svg {
+    font-size: 1.6rem;
+    animation: icon-bounce 2s ease-in-out infinite;
+  }
+
+  /* attention animations */
+  @keyframes pulse-shadow {
+    0% { box-shadow: 0 6px 18px rgba(37,211,102,0.18); transform: scale(1); }
+    50% { box-shadow: 0 18px 46px rgba(37,211,102,0.28); transform: scale(1.02); }
+    100% { box-shadow: 0 6px 18px rgba(37,211,102,0.18); transform: scale(1); }
+  }
+
+  @keyframes float-bob {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+    100% { transform: translateY(0); }
+  }
+
+  .whatsapp-pulse {
+    animation: pulse-shadow 1.6s ease-in-out 1;
+  }
+
+  .whatsapp-float {
+    animation: float-bob 6s ease-in-out infinite;
+  }
+
+  /* pause attention animations on hover/focus for usability */
+  .whatsapp-btn:hover, .whatsapp-btn:focus { animation-play-state: paused; }
+  
+  @keyframes icon-bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+  
+  .btn-whatsapp-enhanced:hover .btn-icon-wrapper {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(15deg) scale(1.1);
+  }
+  
+  .btn-arrow {
+    transition: transform 0.3s ease;
+    font-size: 1.3rem;
+  }
+  
+  .btn-whatsapp-enhanced:hover .btn-arrow {
+    transform: translateX(5px);
+  }
+  
+  @media (max-width: 768px) {
+    .info-box-enhanced {
+      padding: 3rem 2rem;
+    }
+    
+    .btn-whatsapp-enhanced {
+      padding: 14px 28px;
+      font-size: 1rem;
+    }
+    
+    .info-icon-large {
+      width: 65px;
+      height: 65px;
+    }
+    
+    .info-icon-large i {
+      font-size: 2rem;
+    }
+  }
+</style>
+
+<script>
+  // Animación del botón de WhatsApp
+  document.addEventListener('DOMContentLoaded', function() {
+    const whatsappBtn = document.getElementById('whatsappContactBtn');
+    
+    if (whatsappBtn) {
+      // Efecto de partículas al hacer hover
+      whatsappBtn.addEventListener('mouseenter', function() {
+        this.style.animation = 'none';
+        setTimeout(() => {
+          this.style.animation = '';
+        }, 10);
+      });
+      
+      // Efecto de click con feedback
+      whatsappBtn.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        ripple.style.position = 'absolute';
+        ripple.style.borderRadius = '50%';
+        ripple.style.background = 'rgba(255, 255, 255, 0.5)';
+        ripple.style.transform = 'scale(0)';
+        ripple.style.animation = 'ripple-animation 0.6s ease-out';
+        ripple.style.pointerEvents = 'none';
+        
+        this.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+      });
+    }
+    
+    // Animación de entrada para el info-box
+    const infoBox = document.querySelector('.info-box-enhanced');
+    if (infoBox) {
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'scale(1)';
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.2 });
+      
+      infoBox.style.opacity = '0';
+      infoBox.style.transform = 'scale(0.95)';
+      infoBox.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+      observer.observe(infoBox);
+    }
+  });
+</script>
+
+<!-- Additional styles & small JS for enhanced visuals and interactions -->
+<style>
+  /* visual overrides to make the contact card more polished */
+  .info-box-enhanced {
+    padding: 2rem 1.6rem;
+    border-radius: 16px;
+    box-shadow: 0 18px 40px rgba(12, 38, 75, 0.06), inset 0 1px 0 rgba(255,255,255,0.6);
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+  }
+  .info-box-enhanced:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(12,38,75,0.12); }
+
+  .contact-layout__map-box { border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(14,44,86,0.06); background: linear-gradient(180deg,#fff,#f3f7fb); border:1px solid rgba(30,64,175,0.04); transition: transform .18s ease, box-shadow .18s ease; }
+  .contact-layout__map-box:hover { transform: translateY(-4px); box-shadow: 0 18px 46px rgba(14,44,86,0.08); }
+  .contact-layout__iframe { height: 300px; filter: saturate(.98) contrast(.98); }
+
+  .contact-layout__info { padding-left: 10px; }
+  .ci-row i { width:34px; height:34px; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; background:linear-gradient(180deg,#e6f0ff,#f8fbff); color:#1e40af; box-shadow:0 6px 14px rgba(30,64,175,0.06); flex-shrink:0; }
+  .ci-label { font-weight:700; color:#17407a; }
+  .ci-value { color:#0b3b68; }
+  .ci-value a { text-decoration: underline; color:inherit; }
+  .ci-section-label { font-weight:700; color:#0f4a86; margin-bottom:6px; font-size:0.98rem; }
+  .contact-numbers { display:flex; flex-direction:column; gap:6px; }
+  .ci-row { align-items:flex-start; }
+  .ci-row i { margin-top:6px; }
+
+  .whatsapp-btn { box-shadow: 0 14px 36px rgba(18,140,126,0.18); transition: transform .18s ease; }
+  .whatsapp-btn:hover { transform: translateY(-3px) scale(1.02); }
+
+  .site-toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: 26px; background: rgba(10,20,40,0.95); color:#fff; padding:10px 14px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.28); opacity:0; pointer-events:none; transition: opacity .22s ease, transform .22s ease; z-index:9999; font-size:0.95rem; }
+  .site-toast.show { opacity:1; transform: translateX(-50%) translateY(-6px); pointer-events:auto; }
+
+  @media (max-width:768px) { .contact-layout__iframe{ height:220px; } }
+</style>
+
+<div id="siteToast" class="site-toast" aria-hidden="true"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function(){
+    const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+    const telLinks = document.querySelectorAll('.contact-layout__info .ci-value a[href^="tel:"]');
+    const toast = document.getElementById('siteToast');
+    function showToast(msg, time=1800){
+      if(!toast) return;
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(()=> toast.classList.remove('show'), time);
+    }
+
+    telLinks.forEach(a => {
+      a.addEventListener('click', function(e){
+        if (isTouch) return; // allow normal call behavior on mobile
+        e.preventDefault();
+        const href = this.getAttribute('href') || '';
+        const num = href.replace(/^tel:\+?/, '').trim();
+        // copy to clipboard
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(num).then(() => showToast('Número copiado: ' + num)).catch(() => showToast('Número: ' + num));
+        } else {
+          showToast('Número: ' + num);
+        }
+        // small visual feedback
+        this.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(-4px)' }, { transform: 'translateY(0)' }], { duration: 380, easing: 'ease-out' });
+      });
+    });
+
+    const whatsappBtn = document.getElementById('whatsappContactBtn');
+    if (whatsappBtn) {
+      // entrance
+      whatsappBtn.animate([{ transform: 'translateY(10px)', opacity: 0 }, { transform: 'translateY(0)', opacity: 1 }], { duration: 640, easing: 'cubic-bezier(.2,.9,.3,1)' });
+      whatsappBtn.addEventListener('click', function(){ if(!isTouch) showToast('Abriendo WhatsApp...'); });
+      
+      // add subtle floating by default and periodic pulse to attract attention
+      whatsappBtn.classList.add('whatsapp-float');
+
+      let pulseTimer = null;
+      function triggerPulse() {
+        if (!whatsappBtn) return;
+        whatsappBtn.classList.remove('whatsapp-pulse');
+        // force reflow to restart animation
+        void whatsappBtn.offsetWidth;
+        whatsappBtn.classList.add('whatsapp-pulse');
+        // remove the class after animation duration
+        clearTimeout(pulseTimer);
+        pulseTimer = setTimeout(() => whatsappBtn.classList.remove('whatsapp-pulse'), 1600);
+      }
+
+      // Trigger occasional pulses: every 7-11s randomized to feel organic
+      let pulseInterval = setInterval(() => triggerPulse(), 8000 + Math.floor(Math.random()*3000));
+
+      // Pause pulse while user interacts
+      let interactionTimeout = null;
+      function pauseAttention() {
+        whatsappBtn.classList.remove('whatsapp-pulse');
+        clearInterval(pulseInterval);
+        clearTimeout(interactionTimeout);
+        interactionTimeout = setTimeout(() => {
+          pulseInterval = setInterval(() => triggerPulse(), 8000 + Math.floor(Math.random()*3000));
+        }, 4000);
+      }
+
+      ['mouseenter','focus','touchstart'].forEach(e => whatsappBtn.addEventListener(e, pauseAttention));
+      ['mouseleave','blur'].forEach(e => whatsappBtn.addEventListener(e, () => { interactionTimeout = setTimeout(triggerPulse, 600); }));
+    }
+  });
+</script>
+
+{% endblock %}

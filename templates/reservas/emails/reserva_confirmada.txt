@@ -1,0 +1,12 @@
+Hola {{ reserva.nombre_cliente }},
+
+Tu reserva para {{ reserva.configuracion_salon.salon.nombre }} el {{ reserva.fecha_evento }} ha sido confirmada.
+
+Duración: {{ reserva.get_duracion_display }}
+Precio: {{ reserva.precio_total }}
+
+Observaciones:
+{{ reserva.observaciones|default:'(sin observaciones)' }}
+
+Gracias,
+Club El Meta

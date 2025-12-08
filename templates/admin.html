@@ -1,0 +1,270 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}Panel Admin - CLUB EL META{% endblock %}
+
+{% block extra_css %}
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    /* Admin layout: fixed sidebar + main content */
+    .admin-layout { display: flex; min-height: 100vh; }
+    .admin-sidebar { width: 260px; background: #0A2757; color: #ffffff; position: fixed; top: 0; left: 0; bottom: 0; padding: 20px 12px; display:flex; flex-direction:column; z-index:2000; }
+    .admin-sidebar .brand { display:flex; align-items:center; gap:10px; padding:6px 8px; margin-bottom:18px }
+    .admin-sidebar .brand img { height:42px; width:42px; object-fit:contain; border-radius:8px }
+    .admin-sidebar nav { flex:1; overflow:auto; }
+    .admin-sidebar a.menu-link { display:flex; align-items:center; gap:12px; color:#e6eefc; padding:10px 12px; border-radius:8px; text-decoration:none; margin-bottom:6px; font-weight:600 }
+    .admin-sidebar a.menu-link:hover { background: rgba(255,255,255,0.04); color:#fff; text-decoration:none }
+    .admin-sidebar .highlight { background: #ff6b00; color: #fff; padding:8px 12px; border-radius:10px; font-weight:700; display:inline-flex; align-items:center; gap:8px }
+    .admin-sidebar .bottom-actions { margin-top:12px }
+    .admin-sidebar .logout { margin-top:auto; }
+    .main-area { margin-left: 260px; flex:1; padding: 28px; }
+    /* Cards and tables slight style adjustments to match modern look */
+    .card { border-radius: 12px; }
+    .card.shadow { box-shadow: 0 6px 18px rgba(10,39,87,0.06); }
+    .table thead th { background: #f8fafc; }
+    @media (max-width: 991px) {
+      .admin-sidebar { position: relative; width: 100%; height: auto; }
+      .main-area { margin-left: 0; padding:16px }
+    }
+    /* Oculta el footer del sitio solo en la página de admin */
+    footer { display: none !important; }
+  </style>
+{% endblock %}
+
+
+{% block header %}{% endblock %}
+
+{% block content %}
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="brand">
+      <img src="{% static 'img_Hotel/logo.png' %}" alt="Logo">
+      <div>
+        <div style="font-weight:800; font-size:16px;">Club El Meta</div>
+        <div style="font-size:12px; color: #cfe3ff">Panel Admin</div>
+      </div>
+    </div>
+    <nav>
+      <a class="menu-link" href="{% url 'reservas:index' %}"><i class="fa fa-house fa-fw"></i> Inicio</a>
+      <a class="menu-link" href="{% url 'reservas:register' %}"><i class="fa fa-calendar-check fa-fw"></i> Reservar</a>
+      <a class="menu-link" href="{% url 'reservas:calendario' %}"><i class="fa fa-calendar-days fa-fw"></i> Calendario</a>
+      <a class="menu-link" href="{% url 'reservas:reportes' %}"><i class="fa fa-chart-line fa-fw"></i> Reportes</a>
+      <a class="menu-link" href="{% url 'reservas:panel' %}"><i class="fa fa-user-shield fa-fw"></i> Panel Admin</a>
+      <div style="margin-top:12px">
+        <a class="menu-link highlight" href="/admin/reservas/bloqueoespacio/"><i class="fa fa-lock fa-fw"></i> Bloquear Espacios</a>
+      </div>
+    </nav>
+    <div class="logout">
+      <form method="post" action="{% url 'reservas:logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="menu-link" style="background: transparent; border: none; width:100%; text-align:left; padding:10px 12px; color:#ffdede;">
+          <i class="fa fa-sign-out-alt fa-fw"></i> Salir / Cerrar Sesión
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <section class="main-area">
+    <div class="container-fluid">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center gap-2">
+          {% block left_actions %}{% endblock %}
+          <h2 class="mb-0">Panel de Administración - Reservas</h2>
+        </div>
+
+        <!-- botones movidos al encabezado del listado de reservas para mejor usabilidad -->
+      </div>
+
+      <!-- Formulario oculto para borrar todas -->
+      <form id="deleteAllForm" method="post" action="{% url 'reservas:borrar_reservas' %}" style="display:none;">
+        {% csrf_token %}
+      </form>
+
+      <!-- Filtros -->
+      <form method="get" class="row g-2 mb-4 align-items-end">
+        <div class="col-md-2">
+          <label class="form-label">Estado</label>
+          <select name="estado" class="form-select">
+            <option value="">Todos</option>
+      {% for e in estados %}
+            <option value="{{ e }}" {% if f_estado == e %}selected{% endif %}>{{ e|title }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Tipo Cliente</label>
+          <select name="tipo" class="form-select">
+            <option value="">Todos</option>
+            <option value="SOCIO" {% if f_tipo == 'SOCIO' %}selected{% endif %}>Socio</option>
+            <option value="PARTICULAR" {% if f_tipo == 'PARTICULAR' %}selected{% endif %}>Particular</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Salón</label>
+          <input type="text" name="salon" value="{{ f_salon }}" class="form-control" placeholder="Nombre">
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Desde</label>
+          <input type="date" name="desde" value="{{ f_desde }}" class="form-control">
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Hasta</label>
+          <input type="date" name="hasta" value="{{ f_hasta }}" class="form-control">
+        </div>
+        <div class="col-md-2 d-grid">
+          <button class="btn btn-primary">Filtrar</button>
+        </div>
+      </form>
+
+      <!-- Métricas -->
+      <div class="row mb-4">
+        <div class="col-md-2 mb-3">
+          <div class="card p-2 shadow text-center">
+            <small class="text-muted">Total</small>
+            <h4 class="m-0 text-primary">{{ total_reservas }}</h4>
+          </div>
+        </div>
+        <div class="col-md-2 mb-3">
+          <div class="card p-2 shadow text-center">
+            <small class="text-muted">Pendientes</small>
+            <h4 class="m-0 text-warning">{{ pendientes }}</h4>
+          </div>
+        </div>
+        <div class="col-md-2 mb-3">
+          <div class="card p-2 shadow text-center">
+  
+        <small class="text-muted">Confirmadas</small>
+        <h4 class="m-0 text-success">{{ confirmadas }}</h4>
+      </div>
+    </div>
+    <div class="col-md-2 mb-3">
+      <div class="card p-2 shadow text-center">
+        <small class="text-muted">Canceladas</small>
+        <h4 class="m-0 text-danger">{{ canceladas }}</h4>
+      </div>
+    </div>
+    <div class="col-md-2 mb-3">
+      <div class="card p-2 shadow text-center">
+        <small class="text-muted">Completadas</small>
+        <h4 class="m-0 text-secondary">{{ completadas }}</h4>
+      </div>
+    </div>
+    <div class="col-md-2 mb-3">
+      <div class="card p-2 shadow text-center">
+        <small class="text-muted">Ingresos</small>
+        <h4 class="m-0">${{ ingresos|floatformat:0|intcomma }}</h4>
+      </div>
+    </div>
+  </div>
+
+      <div class="card shadow">
+    <div class="card-header bg-primary text-white d-flex align-items-center">
+      <h5 class="mb-0">Listado de Reservas</h5>
+      <div class="ms-auto d-flex gap-2">
+        <a class="btn btn-sm btn-outline-light" href="{% url 'reservas:export_csv' %}?estado={{ f_estado }}&tipo={{ f_tipo }}&salon={{ f_salon }}&desde={{ f_desde }}&hasta={{ f_hasta }}"><i class="fa fa-download"></i> Exportar CSV</a>
+        <button class="btn btn-sm btn-danger" onclick="if(confirm('¿Seguro que deseas borrar TODAS las reservas? Esta acción no se puede deshacer.')) { document.getElementById('deleteAllForm').submit(); }"><i class="fa fa-trash"></i> Borrar Todas</button>
+      </div>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Cliente</th>
+              <th>Salón</th>
+              <th>Fecha Evento</th>
+              <th>Horario</th>
+              <th>Personas</th>
+              <th>Tipo Cliente</th>
+              <th>Total</th>
+              <th>Estado</th>
+              <th>Fecha Reserva</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for reserva in reservas %}
+            <tr>
+              <td><strong>{{ reserva.id }}</strong></td>
+              <td>
+                {{ reserva.nombre_cliente }}<br>
+                <small class="text-muted">
+                  {% if reserva.email_cliente %}{{ reserva.email_cliente }}{% endif %}
+                  {% if reserva.telefono_cliente %}{{ reserva.telefono_cliente }}{% endif %}
+                </small>
+              </td>
+              <td>
+                <strong>{{ reserva.configuracion_salon.salon.nombre }}</strong><br>
+                <small class="text-muted">{{ reserva.configuracion_salon.get_tipo_configuracion_display }}</small>
+              </td>
+              <td>{{ reserva.fecha_evento }}</td>
+              <td>
+                {% if reserva.hora_inicio %}
+                  <strong>{{ reserva.hora_inicio|time:"H:i" }}</strong>
+                  {% if reserva.tiempo_decoracion > 0 %}
+                    <br><small class="text-muted">
+                      🎨 +{{ reserva.tiempo_decoracion }}h decoración
+                    </small>
+                  {% endif %}
+                {% else %}
+                  <small class="text-muted">No especificada</small>
+                {% endif %}
+              </td>
+              <td>{{ reserva.numero_personas }}</td>
+              <td>
+                <span class="badge {% if reserva.tipo_cliente == 'SOCIO' %}bg-success{% else %}bg-info{% endif %}">
+                  {{ reserva.get_tipo_cliente_display }}
+                </span>
+              </td>
+              <td><strong>${{ reserva.precio_total|floatformat:2|intcomma }}</strong></td>
+              <td>
+                <span class="badge 
+                  {% if reserva.estado == 'PENDIENTE' %}bg-warning{% endif %}
+                  {% if reserva.estado == 'CONFIRMADA' %}bg-success{% endif %}
+                  {% if reserva.estado == 'CANCELADA' %}bg-danger{% endif %}
+                  {% if reserva.estado == 'COMPLETADA' %}bg-secondary{% endif %}">
+                  {{ reserva.get_estado_display }}
+                </span>
+              </td>
+              <td>
+                <small>{{ reserva.fecha_creacion|date:"d/m/Y H:i" }}</small>
+              </td>
+              <td>
+                <div class="d-flex gap-1 align-items-center">
+                  <form method="post" action="" style="display:inline-block;">
+                    {% csrf_token %}
+                    <input type="hidden" name="reserva_id" value="{{ reserva.id }}">
+                    <select name="nuevo_estado" class="form-select form-select-sm" onchange="this.form.submit()" style="min-width: 120px;">
+                      {% for e in estados %}
+                        <option value="{{ e }}" {% if reserva.estado == e %}selected{% endif %}>{{ e|title }}</option>
+                      {% endfor %}
+                    </select>
+                  </form>
+                  <form method="post" action="{% url 'reservas:borrar_reserva_individual' reserva.id %}" style="display:inline-block;" onsubmit="return confirm('¿Estás seguro de eliminar la reserva #{{ reserva.id }}?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-danger" title="Eliminar reserva">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="10" class="text-center text-muted py-4">
+                No hay reservas registradas
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

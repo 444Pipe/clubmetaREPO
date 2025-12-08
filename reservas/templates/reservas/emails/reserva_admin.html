@@ -1,0 +1,16 @@
+<html>
+  <body style="font-family: Arial, Helvetica, sans-serif; color: #222;">
+    <h3>Nueva Reserva Registrada</h3>
+    <p>Se ha creado una nueva reserva en el sistema:</p>
+    <ul>
+      <li><strong>Reserva:</strong> #{{ reserva.id }}</li>
+      <li><strong>Cliente:</strong> {{ reserva.nombre_cliente }} ({{ reserva.email_cliente }})</li>
+      <li><strong>Espacio:</strong> {{ reserva.configuracion_salon.salon.nombre }} - {{ reserva.configuracion_salon.get_tipo_configuracion_display }}</li>
+      <li><strong>Fecha:</strong> {{ reserva.fecha_evento }}</li>
+      <li><strong>Hora inicio:</strong> {{ reserva.hora_inicio }}</li>
+      <li><strong>Duración:</strong> {{ reserva.duracion }}</li>
+      <li><strong>Total:</strong> ${{ precio }}</li>
+    </ul>
+    <p>Revise el panel administrativo para confirmar o gestionar la reserva.</p>
+  </body>
+</html>

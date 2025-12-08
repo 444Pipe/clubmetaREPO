@@ -1,0 +1,8 @@
+Hola {{ socio.nombre }},
+
+Le enviamos esta notificación desde Club El Meta. Por favor revise su correo para más detalles.
+
+Si requiere asistencia, contacte al área administrativa.
+
+Saludos,
+Club El Meta

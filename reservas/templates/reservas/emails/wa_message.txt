@@ -1,0 +1,2 @@
+Reserva #%{{ reserva.id }} en {{ reserva.configuracion_salon.salon.nombre }} el {{ reserva.fecha_evento }}. Total: {{ reserva.precio_total }}.
+Por favor comuníquese con el Club El Meta para coordinar detalles.

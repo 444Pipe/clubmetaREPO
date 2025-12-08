@@ -1,0 +1,412 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Reservar Espacio - CLUB EL META{% endblock %}
+
+<style>
+  /* Hacer placeholders más transparentes */
+  ::placeholder {
+    color: #adb5bd !important;
+    opacity: 0.5 !important;
+  }
+  
+  :-ms-input-placeholder {
+    color: #adb5bd !important;
+    opacity: 0.5 !important;
+  }
+  
+  ::-ms-input-placeholder {
+    color: #adb5bd !important;
+    opacity: 0.5 !important;
+  }
+</style>
+
+{% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-body">
+          <h3 class="card-title mb-3">Formulario de Reserva de Espacio</h3>
+
+          {% if errors %}
+          <div class="alert alert-danger">
+            <ul>
+              {% for e in errors %}
+          // Default to 'No' on page load (ignore previous tests in localStorage)
+          mostrarNo.checked = true;
+          {% if success and registration %}
+          <!-- Mensaje de éxito y confetti -->
+          <div id="successBox" class="text-center p-4" style="background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); border-radius: 12px; border: 2px solid #28a745;">
+            <div style="font-size: 60px; margin-bottom: 15px;">🎉</div>
+            <h4 style="color: #155724; font-weight: bold; margin-bottom: 20px;">¡Reserva Registrada Exitosamente!</h4>
+            
+            <div class="alert alert-light" style="background: white; border-radius: 8px; padding: 20px; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+              <h5 style="color: #1e3a8a; margin-bottom: 15px;"><i class="bi bi-receipt"></i> Detalles de tu Reserva</h5>
+              <p style="margin: 8px 0;"><strong>Reserva #{{ registration.reserva_id }}</strong></p>
+              <p style="margin: 8px 0;">📍 {{ registration.espacio_nombre }}</p>
+              <p style="margin: 8px 0;">📅 {{ registration.fecha_evento }} a las {{ registration.hora_inicio }}</p>
+              <p style="margin: 8px 0;">⏱️ {{ registration.duracion_horas }} horas</p>
+              <p style="margin: 8px 0;">👥 {{ registration.num_personas }} personas</p>
+              <p style="margin: 15px 0; font-size: 1.3rem; color: #155724;"><strong>Total: ${{ registration.total_price }}</strong></p>
+            </div>
+
+            <!-- MENSAJE IMPORTANTE DE PAGO -->
+            <div class="alert alert-warning" style="background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%); border: 2px solid #ffc107; border-radius: 10px; padding: 20px; margin: 25px 0; box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);">
+              <h5 style="color: #856404; font-weight: bold; margin-bottom: 15px;">
+                <i class="bi bi-exclamation-triangle-fill" style="font-size: 24px;"></i> 
+                ¡IMPORTANTE! - Confirma tu Reserva
+              </h5>
+              <p style="color: #856404; font-size: 16px; line-height: 1.6; margin: 0;">
+                📞 <strong>Por favor contáctanos lo antes posible:</strong><br>
+                • WhatsApp: <a href="https://wa.me/573507016630?text=Hola, quiero confirmar mi reserva #{{ registration.reserva_id }}" target="_blank" style="color: #25D366; font-weight: bold; text-decoration: none;">
+                  <i class="bi bi-whatsapp"></i> 350 701 6630
+                </a><br>
+                • Abono requerido: <strong style="color: #d97706;">${{ registration.abono_50 }}</strong> (50% del total)<br><br>
+                <small style="font-size: 14px;">💳 Una vez recibido el abono, tu reserva quedará 100% confirmada.</small>
+              </p>
+
+              <hr style="border-color: rgba(133,100,4,0.12); margin: 12px 0;">
+
+              <p style="color: #856404; font-size: 15px; line-height: 1.6; margin: 0;">
+                <strong>Proceso de confirmación (política):</strong><br>
+                Para garantizar el evento se debe enviar confirmación por escrito donde se especifiquen los servicios reservados y realizar el anticipo del <strong>50 %</strong> del valor de la cotización, <strong>30 días antes</strong> del evento. El saldo deberá estar cancelado <strong>48 horas antes</strong> del evento. Los consumos y servicios adicionales fuera de esta reserva deberán ser cancelados al finalizar el evento.
+              </p>
+            </div>
+
+            <div class="mt-3 d-flex flex-wrap justify-content-center gap-2">
+              <a href="https://wa.me/573507016630?text=Hola, quiero confirmar mi reserva #{{ registration.reserva_id }}" target="_blank" class="btn btn-success btn-lg" style="background: #25D366; border: none; padding: 12px 30px;">
+                <i class="bi bi-whatsapp"></i> Contactar por WhatsApp
+              </a>
+              <a href="{% url 'reservas:index' %}" class="btn btn-outline-primary">Ir al Inicio</a>
+              <a href="{% url 'reservas:espacios' %}" class="btn btn-outline-success btn-sm">Ver más espacios</a>
+              <a href="https://wa.me/573507016630?text=Hola%2C%20acabo%20de%20realizar%20una%20reserva%20%23{{ registration.reserva_id }}%20para%20{{ registration.espacio_nombre }}%20el%20{{ registration.fecha_evento }}%20a%20las%20{{ registration.hora_inicio }}.%20Quisiera%20confirmar%20los%20detalles.%20Mi%20direcci%C3%B3n%20de%20referencia%3A%20Calle%2048A%20Carrera%2030%2C%20Barrio%20Caudal%20Oriental%2C%20Villavicencio%20-%20Meta." class="btn btn-success btn-sm" target="_blank">
+                <i class="bi bi-whatsapp"></i> Contactar por WhatsApp
+              </a>
+              {% if user.is_authenticated and user.is_staff %}
+                <a href="{% url 'reservas:panel' %}" class="btn btn-outline-secondary btn-sm">Ir al Panel</a>
+              {% endif %}
+            </div>
+          </div>
+          <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+          <script>
+            // efecto confetti
+            (function(){
+              var duration = 5 * 1000;
+              var end = Date.now() + duration;
+              (function frame() {
+                confetti({
+                  particleCount: 5,
+                  angle: 60,
+                  spread: 55,
+                  origin: { x: 0 }
+                });
+                confetti({
+                  particleCount: 5,
+                  angle: 120,
+                  spread: 55,
+                  origin: { x: 1 }
+                });
+                if (Date.now() < end) {
+                  requestAnimationFrame(frame);
+                }
+              }());
+            })();
+          </script>
+          {% endif %}
+
+          {% if not success %}
+          <form id="reservationForm" method="post" action="{% url 'reservas:register' %}">
+            {% csrf_token %}
+
+            <!-- Sección: Socio (mover arriba para agilizar validación) -->
+            <div class="mb-3">
+              <label class="form-label">¿Eres Socio del Club?</label><br>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="es_socio" id="socio_si" value="si">
+                <label class="form-check-label" for="socio_si">Sí</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="es_socio" id="socio_no" value="no" checked>
+                <label class="form-check-label" for="socio_no">No</label>
+              </div>
+              <div id="codigoSocioBox" class="mt-2" style="display:none;">
+                <input type="text" name="socio_code" id="socio_code" class="form-control" maxlength="20" placeholder="Ingresa tu código de socio">
+              </div>
+            </div>
+
+            <!-- Sección: Información del Cliente -->
+            <div class="mb-4">
+              <h5 class="text-primary mb-3"><i class="bi bi-person-circle"></i> Datos del Cliente</h5>
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Nombre Completo</label>
+                  <input type="text" name="nombre_cliente" class="form-control" required placeholder="Ej: Juan Pérez">
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Correo Electrónico</label>
+                  <input type="email" name="email_cliente" class="form-control" required placeholder="ejemplo@correo.com">
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Teléfono</label>
+                  <input type="tel" name="telefono_cliente" class="form-control" required placeholder="3201234567">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  <label class="form-label">Número de Personas</label>
+                  <input type="number" name="num_personas" class="form-control" min="1" required value="1">
+                  <small class="text-muted">¿Cuántos invitados asistirán?</small>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">¿Vienes de alguna Entidad o Empresa?</label><br>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="tiene_entidad" id="entidad_si" value="si">
+                    <label class="form-check-label" for="entidad_si">Sí</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="tiene_entidad" id="entidad_no" value="no" checked>
+                    <label class="form-check-label" for="entidad_no">No</label>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3" id="entidadBox" style="display:none;">
+                  <label class="form-label">Nombre de la Entidad/Empresa</label>
+                  <input type="text" name="nombre_entidad" id="nombre_entidad" class="form-control" placeholder="Ej: Empresa ABC S.A.S.">
+                </div>
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- Sección: Selección de Espacio -->
+            <div class="mb-4">
+              <h5 class="text-primary mb-3"><i class="bi bi-building"></i> Espacio y Disponibilidad</h5>
+              <div class="mb-3">
+                <label class="form-label fw-bold">Selecciona el Espacio</label>
+                <select name="espacio_id" id="espacioSelect" class="form-select form-select-lg" required>
+                  <option value="">-- Seleccione un salón --</option>
+                  {% for r in rooms %}
+                    <option value="{{ r.id }}" data-salon="{{ r.name }}" data-salon-id="{{ r.salon_id }}" data-price-particular-4h="{{ r.price_particular_4h }}" data-price-particular-8h="{{ r.price_particular_8h }}" data-price-socio-4h="{{ r.price_socio_4h }}" data-price-socio-8h="{{ r.price_socio_8h }}">{{ r.name }} ({{ r.desc }}) — {{ r.price }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div id="bloqueosInfo" class="mt-3" style="display:none;">
+                <div class="alert alert-warning">
+                  <strong><i class="bi bi-calendar-x"></i> Fechas no disponibles para este espacio:</strong>
+                  <ul id="bloqueosList" class="mb-0 mt-2"></ul>
+                </div>
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- Sección: Fecha y Horarios -->
+            <div class="mb-4">
+              <h5 class="text-primary mb-3"><i class="bi bi-calendar-event"></i> Fecha y Horarios</h5>
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label class="form-label fw-bold">Fecha del Evento</label>
+                  <input type="date" name="fecha_evento" id="fechaEvento" class="form-control form-control-lg" required>
+                  <div id="availabilityStatus" class="mt-2" style="display:none;"></div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="form-label fw-bold">Hora de Inicio</label>
+                  <input type="time" name="hora_inicio" class="form-control form-control-lg" required>
+                  <small class="text-muted">¿A qué hora inicia tu evento?</small>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="form-label fw-bold">Duración</label>
+                  <select name="duracion_horas" class="form-select form-select-lg" required>
+                    <option value="4" selected>4 horas</option>
+                    <option value="5">5 horas</option>
+                    <option value="6">6 horas</option>
+                    <option value="8">8 horas</option>
+                  </select>
+                  <small class="text-muted">Termina a las <span id="horaFin" class="fw-bold">--:--</span></small>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Tiempo para Decoración <span class="badge bg-success">Gratis</span></label>
+                  <select name="tiempo_decoracion" class="form-select">
+                    <option value="0" selected>No necesito</option>
+                    <option value="1">1 hora antes</option>
+                    <option value="2">2 horas antes</option>
+                    <option value="3">3 horas antes</option>
+                  </select>
+                  <small class="text-muted">Tiempo adicional para montaje (sin costo extra)</small>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div id="tiempoTotalInfo" class="alert alert-info mt-4" style="display:none;">
+                    <strong><i class="bi bi-clock"></i> Ocupación total:</strong> <span id="ocupacionTotal"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- Sección: Detalles Adicionales -->
+            <div class="mb-4">
+              <h5 class="text-primary mb-3"><i class="bi bi-chat-dots"></i> Detalles Adicionales (Opcional)</h5>
+              <textarea name="note" class="form-control" rows="3" placeholder="Cuéntanos más sobre tu evento: tipo de celebración, decoración especial, necesidades particulares, etc."></textarea>
+            </div>
+
+            <button id="submitBtn" type="submit" class="btn btn-primary btn-lg w-100 py-3">
+              <i class="bi bi-check-circle"></i> Confirmar Reserva
+            </button>
+          </form>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
+<script>
+  // Calcular hora de fin y tiempo total
+  function calcularHorarios() {
+    const horaInicio = document.querySelector('input[name="hora_inicio"]').value;
+    const duracion = parseInt(document.querySelector('select[name="duracion_horas"]').value);
+    const decoracion = parseInt(document.querySelector('select[name="tiempo_decoracion"]').value);
+    
+    if (horaInicio && duracion) {
+      // Calcular hora de fin
+      const [horas, minutos] = horaInicio.split(':').map(Number);
+      const horaFinTotal = horas + duracion;
+      const horaFin = `${String(horaFinTotal).padStart(2, '0')}:${String(minutos).padStart(2, '0')}`;
+      document.getElementById('horaFin').textContent = horaFin;
+      
+      // Mostrar tiempo total si hay decoración
+      if (decoracion > 0) {
+        const horaInicioReal = horas - decoracion;
+        const horaInicioRealStr = `${String(horaInicioReal).padStart(2, '0')}:${String(minutos).padStart(2, '0')}`;
+        const tiempoTotal = duracion + decoracion;
+        document.getElementById('ocupacionTotal').textContent = 
+          `${horaInicioRealStr} - ${horaFin} (${tiempoTotal} horas: ${decoracion}h decoración + ${duracion}h evento)`;
+        document.getElementById('tiempoTotalInfo').style.display = 'block';
+      } else {
+        document.getElementById('tiempoTotalInfo').style.display = 'none';
+      }
+    }
+  }
+
+  // Mostrar/ocultar campo de código de socio
+  document.addEventListener('DOMContentLoaded', function() {
+    // Event listeners para cálculo de horarios
+    document.querySelector('input[name="hora_inicio"]').addEventListener('change', calcularHorarios);
+    document.querySelector('select[name="duracion_horas"]').addEventListener('change', calcularHorarios);
+    document.querySelector('select[name="tiempo_decoracion"]').addEventListener('change', calcularHorarios);
+    
+    var socioSi = document.getElementById('socio_si');
+    var socioNo = document.getElementById('socio_no');
+    var codigoBox = document.getElementById('codigoSocioBox');
+    function toggleSocioBox() {
+      if (socioSi.checked) {
+        codigoBox.style.display = '';
+        document.getElementById('socio_code').required = true;
+      } else {
+        codigoBox.style.display = 'none';
+        document.getElementById('socio_code').required = false;
+      }
+    }
+    socioSi.addEventListener('change', toggleSocioBox);
+    socioNo.addEventListener('change', toggleSocioBox);
+    toggleSocioBox();
+    
+    // Mostrar/ocultar campo de entidad
+    var entidadSi = document.getElementById('entidad_si');
+    var entidadNo = document.getElementById('entidad_no');
+    var entidadBox = document.getElementById('entidadBox');
+    function toggleEntidadBox() {
+      if (entidadSi.checked) {
+        entidadBox.style.display = '';
+        document.getElementById('nombre_entidad').required = true;
+      } else {
+        entidadBox.style.display = 'none';
+        document.getElementById('nombre_entidad').required = false;
+      }
+    }
+    entidadSi.addEventListener('change', toggleEntidadBox);
+    entidadNo.addEventListener('change', toggleEntidadBox);
+    toggleEntidadBox();
+    
+    // Mostrar bloqueos cuando se selecciona un espacio
+    const espacioSelect = document.getElementById('espacioSelect');
+    const bloqueosInfo = document.getElementById('bloqueosInfo');
+    const bloqueosList = document.getElementById('bloqueosList');
+    const getBloqueosSalonUrl = "{% url 'reservas:get_bloqueos_salon' %}";
+    
+    espacioSelect.addEventListener('change', function() {
+      const selectedOption = this.options[this.selectedIndex];
+      const salonId = selectedOption.getAttribute('data-salon-id');
+      
+      if (!salonId) {
+        bloqueosInfo.style.display = 'none';
+        return;
+      }
+      
+      // Hacer petición para obtener bloqueos del salón
+      fetch(getBloqueosSalonUrl + '?salon_id=' + salonId)
+        .then(response => response.json())
+        .then(data => {
+          if (data.bloqueos && data.bloqueos.length > 0) {
+            bloqueosList.innerHTML = '';
+            data.bloqueos.forEach(bloqueo => {
+              const li = document.createElement('li');
+              // Agregar 'T00:00:00' para evitar problemas de zona horaria
+              const fechaInicio = new Date(bloqueo.fecha_inicio + 'T00:00:00').toLocaleDateString('es-ES');
+              const fechaFin = new Date(bloqueo.fecha_fin + 'T00:00:00').toLocaleDateString('es-ES');
+              li.innerHTML = `<strong>${bloqueo.motivo}</strong>: Desde ${fechaInicio} hasta ${fechaFin}`;
+              if (bloqueo.descripcion) {
+                li.innerHTML += ` - ${bloqueo.descripcion}`;
+              }
+              bloqueosList.appendChild(li);
+            });
+            bloqueosInfo.style.display = 'block';
+          } else {
+            bloqueosInfo.style.display = 'none';
+          }
+        })
+        .catch(error => {
+          console.error('Error al obtener bloqueos:', error);
+          bloqueosInfo.style.display = 'none';
+        });
+    });
+  });
+</script>
+<script>
+  // enmascarado visual del campo tarjeta (cliente)
+  // Eliminado campo de tarjeta: lógica retenida solo si se reintroduce
+  // var cleave = new Cleave('#cardInput', {creditCard: true});
+  // opcional: validar Luhn client-side (simple) antes de submit
+  function luhnCheck(value){
+    var s = value.replace(/\D/g,'');
+    var sum = 0;
+    var double = false;
+    for (var i = s.length - 1; i >= 0; i--){
+      var d = parseInt(s.charAt(i));
+      if (double) {
+        d = d * 2;
+        if (d > 9) d -= 9;
+      }
+      sum += d;
+      double = !double;
+    }
+    return (sum % 10) === 0;
+  }
+
+  var form = document.getElementById('reservationForm');
+  if(form){
+    form.addEventListener('submit', function(e){
+      // Placeholder de validación extra si se requiere en el futuro
+    });
+  }
+</script>
+{% endblock %}
+{% endblock %}

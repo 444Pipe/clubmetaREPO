@@ -1,0 +1,145 @@
+{% extends 'admin/base_admin.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Reportes - CLUB EL META{% endblock %}
+
+{% block admin_content %}
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Reportes</h2>
+    <div>
+      <small class="text-muted">Rango: <strong>{{ fecha_inicio }} → {{ fecha_fin }}</strong></small>
+    </div>
+  </div>
+
+  <form method="get" class="row g-2 mb-4 align-items-center">
+    <div class="col-auto">
+      <select name="preset" id="presetSelect" class="form-select form-select-sm">
+        <option value="7d" {% if preset == '7d' %}selected{% endif %}>Últimos 7 días</option>
+        <option value="15d" {% if preset == '15d' %}selected{% endif %}>Últimos 15 días</option>
+        <option value="30d" {% if preset == '30d' %}selected{% endif %}>Últimos 30 días</option>
+        <option value="90d" {% if preset == '90d' %}selected{% endif %}>Últimos 90 días</option>
+        <option value="6m" {% if preset == '6m' %}selected{% endif %}>Últimos 6 meses</option>
+        <option value="month" {% if preset == 'month' %}selected{% endif %}>Mes actual</option>
+        <option value="year" {% if preset == 'year' %}selected{% endif %}>Año actual</option>
+        <option value="custom" {% if preset == 'custom' %}selected{% endif %}>Rango personalizado</option>
+      </select>
+    </div>
+    <div class="col-auto">
+      <input type="date" name="fecha_inicio" id="fechaInicio" value="{{ fecha_inicio }}" class="form-control form-control-sm">
+    </div>
+    <div class="col-auto">
+      <input type="date" name="fecha_fin" id="fechaFin" value="{{ fecha_fin }}" class="form-control form-control-sm">
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary btn-sm">Filtrar</button>
+    </div>
+  </form>
+
+  <script>
+    // Habilita/deshabilita inputs de fecha según preset
+    (function(){
+      function updateDateInputs(){
+        var preset = document.getElementById('presetSelect').value;
+        var start = document.getElementById('fechaInicio');
+        var end = document.getElementById('fechaFin');
+        if(preset === 'custom'){
+          start.removeAttribute('disabled');
+          end.removeAttribute('disabled');
+        } else {
+          start.setAttribute('disabled','disabled');
+          end.setAttribute('disabled','disabled');
+        }
+      }
+      var sel = document.getElementById('presetSelect');
+      if(sel){
+        // On page load just update inputs (no submit)
+        updateDateInputs();
+        // When the user changes preset, update inputs and auto-submit for quick feedback
+        sel.addEventListener('change', function(e){
+          updateDateInputs();
+          if(this.value !== 'custom'){
+            var form = this.closest('form');
+            if(form) form.submit();
+          }
+        });
+      }
+    })();
+  </script>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="card-title">Total reservas</h6>
+          <h3 class="card-text">{{ total_reservas|default:'—' }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="card-title">Ingresos totales</h6>
+          <h3 class="card-text">{{ ingresos_totales|default:'—'|floatformat:0|intcomma }}</h3>
+          <small class="text-muted">Acumulado: {{ ingresos_totales_all|default:0|floatformat:0|intcomma }}</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="card-title">Promedio personas</h6>
+          <h3 class="card-text">{{ promedio_personas|default:'—' }}</h3>
+          <small class="text-muted">Promedio de personas por reserva en el rango seleccionado (total personas / número de reservas).</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Ingresos por día</h5>
+      <div style="width:100%; height:420px;">
+        <canvas id="chartIngresos" style="width:100%; height:100%;"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Ranking de espacios por ingresos</h5>
+      <div style="width:100%; height:300px;">
+        <canvas id="chartEspacios" style="width:100%; height:100%;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Datos desde la vista (si vienen serializados como listas/JSON)
+    const labels = {{ fechas_labels|default:'[]'|safe }};
+    const ingresos = {{ ingresos_values|default:'[]'|safe }};
+    const espacios_labels = {{ espacios_labels|default:'[]'|safe }};
+    const espacios_values = {{ espacios_values|default:'[]'|safe }};
+
+    if (document.getElementById('chartIngresos')) {
+      new Chart(document.getElementById('chartIngresos'), {
+        type: 'line',
+        data: { labels: labels, datasets: [{ label: 'Ingresos', data: ingresos, borderColor: '#0d6efd', backgroundColor: 'rgba(13,110,253,0.1)', tension: 0.3 }] },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+    }
+
+    if (document.getElementById('chartEspacios')) {
+      new Chart(document.getElementById('chartEspacios'), {
+        type: 'bar',
+        data: { labels: espacios_labels, datasets: [{ label: 'Ingresos', data: espacios_values, backgroundColor: '#198754' }] },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+    }
+  </script>
+{% endblock %}

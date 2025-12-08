@@ -1,0 +1,212 @@
+{% extends 'base.html' %}
+<!-- Comentario: El formulario de borrado masivo se movió dentro del bloque de contenido para cumplir la regla de extends -->
+{% load static %}
+{% block title %}Panel Admin - CLUB EL META{% endblock %}
+{% block content %}
+<div class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Panel de Administración - Reservas</h2>
+    
+    <!-- Menú hamburguesa -->
+    <div class="dropdown">
+      <button class="btn btn-primary" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-list" style="font-size: 1.5rem;"></i>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+        <li>
+          <a class="dropdown-item" href="{% url 'reservas:export_csv' %}?estado={{ f_estado }}&tipo={{ f_tipo }}&salon={{ f_salon }}&desde={{ f_desde }}&hasta={{ f_hasta }}">
+            <i class="bi bi-download"></i> Exportar CSV
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="/admin/reservas/bloqueoespacio/" target="_blank">
+            <i class="bi bi-lock"></i> Bloquear Espacios
+          </a>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li>
+          <a class="dropdown-item text-danger" href="#" onclick="event.preventDefault(); if(confirm('¿Seguro que deseas borrar TODAS las reservas? Esta acción no se puede deshacer.')) { document.getElementById('deleteAllForm').submit(); }">
+            <i class="bi bi-trash"></i> Borrar Todas
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Formulario oculto para borrar todas -->
+  <form id="deleteAllForm" method="post" action="{% url 'reservas:borrar_reservas' %}" style="display:none;">
+    {% csrf_token %}
+  </form>
+
+  <!-- Filtros -->
+  <form method="get" class="row g-2 mb-4 align-items-end">
+    <div class="col-md-2">
+      <label class="form-label">Estado</label>
+      <select name="estado" class="form-select">
+        <option value="">Todos</option>
+  {% for e in estados %}
+        <option value="{{ e }}" {% if f_estado == e %}selected{% endif %}>{{ e|title }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">Tipo Cliente</label>
+      <select name="tipo" class="form-select">
+        <option value="">Todos</option>
+        <option value="SOCIO" {% if f_tipo == 'SOCIO' %}selected{% endif %}>Socio</option>
+        <option value="PARTICULAR" {% if f_tipo == 'PARTICULAR' %}selected{% endif %}>Particular</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">Salón</label>
+      <input type="text" name="salon" value="{{ f_salon }}" class="form-control" placeholder="Nombre">
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">Desde</label>
+      <input type="date" name="desde" value="{{ f_desde }}" class="form-control">
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">Hasta</label>
+      <input type="date" name="hasta" value="{{ f_hasta }}" class="form-control">
+    </div>
+    <div class="col-md-2 d-grid">
+      <button class="btn btn-primary">Filtrar</button>
+    </div>
+  </form>
+
+  <!-- Métricas -->
+  <div class="row mb-4">
+    <div class="col-md-2 mb-3">
+      <div class="card p-2 shadow text-center">
+        <small class="text-muted">Total</small>
+        <h4 class="m-0 text-primary">{{ total_reservas }}</h4>
+      </div>
+    </div>
+    <div class="col-md-2 mb-3">
+      <div class="card p-2 shadow text-center">
+        <small class="text-muted">Pendientes</small>
+        <h4 class="m-0 text-warning">{{ pendientes }}</h4>
+      </div>
+    </div>
+    <div class="col-md-2 mb-3">
+      <div class="card p-2 shadow text-center">
+        <small class="text-muted">Confirmadas</small>
+        <h4 class="m-0 text-success">{{ confirmadas }}</h4>
+      </div>
+    </div>
+    <div class="col-md-2 mb-3">
+      <div class="card p-2 shadow text-center">
+        <small class="text-muted">Canceladas</small>
+        <h4 class="m-0 text-danger">{{ canceladas }}</h4>
+      </div>
+    </div>
+    <div class="col-md-2 mb-3">
+      <div class="card p-2 shadow text-center">
+        <small class="text-muted">Completadas</small>
+        <h4 class="m-0 text-secondary">{{ completadas }}</h4>
+      </div>
+    </div>
+    <div class="col-md-2 mb-3">
+      <div class="card p-2 shadow text-center">
+        <small class="text-muted">Ingresos</small>
+        <h4 class="m-0">${{ ingresos|floatformat:0 }}</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Listado de Reservas</h5>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Cliente</th>
+              <th>Salón</th>
+              <th>Fecha Evento</th>
+              <th>Horario</th>
+              <th>Personas</th>
+              <th>Tipo Cliente</th>
+              <th>Total</th>
+              <th>Estado</th>
+              <th>Fecha Reserva</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for reserva in reservas %}
+            <tr>
+              <td><strong>{{ reserva.id }}</strong></td>
+              <td>
+                {{ reserva.nombre_cliente }}<br>
+                <small class="text-muted">
+                  {% if reserva.email_cliente %}{{ reserva.email_cliente }}{% endif %}
+                  {% if reserva.telefono_cliente %}{{ reserva.telefono_cliente }}{% endif %}
+                </small>
+              </td>
+              <td>
+                <strong>{{ reserva.configuracion_salon.salon.nombre }}</strong><br>
+                <small class="text-muted">{{ reserva.configuracion_salon.get_tipo_configuracion_display }}</small>
+              </td>
+              <td>{{ reserva.fecha_evento }}</td>
+              <td>
+                {% if reserva.hora_inicio %}
+                  <strong>{{ reserva.hora_inicio|time:"H:i" }}</strong>
+                  {% if reserva.tiempo_decoracion > 0 %}
+                    <br><small class="text-muted">
+                      🎨 +{{ reserva.tiempo_decoracion }}h decoración
+                    </small>
+                  {% endif %}
+                {% else %}
+                  <small class="text-muted">No especificada</small>
+                {% endif %}
+              </td>
+              <td>{{ reserva.numero_personas }}</td>
+              <td>
+                <span class="badge {% if reserva.tipo_cliente == 'SOCIO' %}bg-success{% else %}bg-info{% endif %}">
+                  {{ reserva.get_tipo_cliente_display }}
+                </span>
+              </td>
+              <td><strong>${{ reserva.precio_total }}</strong></td>
+              <td>
+                <span class="badge 
+                  {% if reserva.estado == 'PENDIENTE' %}bg-warning{% endif %}
+                  {% if reserva.estado == 'CONFIRMADA' %}bg-success{% endif %}
+                  {% if reserva.estado == 'CANCELADA' %}bg-danger{% endif %}
+                  {% if reserva.estado == 'COMPLETADA' %}bg-secondary{% endif %}">
+                  {{ reserva.get_estado_display }}
+                </span>
+              </td>
+              <td>
+                <small>{{ reserva.fecha_creacion|date:"d/m/Y H:i" }}</small>
+              </td>
+              <td>
+                <form method="post" action="" style="display:inline-block;">
+                  {% csrf_token %}
+                  <input type="hidden" name="reserva_id" value="{{ reserva.id }}">
+                  <select name="nuevo_estado" class="form-select form-select-sm" onchange="this.form.submit()">
+                    {% for e in estados %}
+                      <option value="{{ e }}" {% if reserva.estado == e %}selected{% endif %}>{{ e|title }}</option>
+                    {% endfor %}
+                  </select>
+                </form>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="10" class="text-center text-muted py-4">
+                No hay reservas registradas
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

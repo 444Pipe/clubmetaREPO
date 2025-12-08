@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}Panel Admin - CLUB EL META{% endblock %}
+
+{% block extra_css %}
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    /* Admin layout: fixed sidebar + main content */
+    .admin-layout { display: flex; min-height: 100vh; }
+    .admin-sidebar { width: 260px; background: #0A2757; color: #ffffff; position: fixed; top: 0; left: 0; bottom: 0; padding: 20px 12px; display:flex; flex-direction:column; }
+    .admin-sidebar .brand { display:flex; align-items:center; gap:10px; padding:6px 8px; margin-bottom:18px }
+    .admin-sidebar .brand img { height:42px; width:42px; object-fit:contain; border-radius:8px }
+    .admin-sidebar nav { flex:1; overflow:auto; }
+    .admin-sidebar a.menu-link { display:flex; align-items:center; gap:12px; color:#e6eefc; padding:10px 12px; border-radius:8px; text-decoration:none; margin-bottom:6px; font-weight:600 }
+    .admin-sidebar a.menu-link:hover { background: rgba(255,255,255,0.04); color:#fff; text-decoration:none }
+    .admin-sidebar .highlight { background: #ff6b00; color: #fff; padding:8px 12px; border-radius:10px; font-weight:700; display:inline-flex; align-items:center; gap:8px }
+    .admin-sidebar .bottom-actions { margin-top:12px }
+    .admin-sidebar .logout { margin-top:auto; }
+    .main-area { margin-left: 280px; flex:1; padding: 28px; }
+    /* Cards and tables slight style adjustments to match modern look */
+    .card { border-radius: 12px; }
+    .card.shadow { box-shadow: 0 6px 18px rgba(10,39,87,0.06); }
+    .table thead th { background: #f8fafc; }
+    @media (max-width: 991px) {
+      .admin-sidebar { position: relative; width: 100%; height: auto; }
+      .main-area { margin-left: 0; padding:16px }
+    }
+    /* Oculta el footer del sitio solo en la página de admin */
+    footer { display: none !important; }
+  </style>
+{% endblock %}
+
+... (backup of admin.html)

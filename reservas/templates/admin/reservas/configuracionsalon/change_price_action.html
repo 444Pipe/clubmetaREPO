@@ -1,0 +1,19 @@
+{% extends 'admin/base_site.html' %}
+{% load i18n %}
+
+{% block content %}
+<h1>Cambiar precios de las configuraciones seleccionadas</h1>
+<p>Vas a actualizar los precios de <strong>{{ queryset_count }}</strong> configuración(es).</p>
+<form method="post" novalidate>
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  {% for obj in objects %}
+    <input type="hidden" name="_selected_action" value="{{ obj.pk }}" />
+    <p>{{ obj.salon }} — {{ obj.tipo_configuracion }} — Capac: {{ obj.capacidad }}</p>
+  {% endfor %}
+
+  <button type="submit" name="apply" class="default">Aplicar</button>
+  <a href="..">Volver</a>
+</form>
+{% endblock %}

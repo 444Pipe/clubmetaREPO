@@ -1,0 +1,16 @@
+Hola {{ cliente }},
+
+Gracias por tu reserva en Club El Meta.
+
+Detalles de la reserva:
+- Reserva: #{{ reserva.id }}
+- Espacio: {{ reserva.configuracion_salon.salon.nombre }} - {{ reserva.configuracion_salon.get_tipo_configuracion_display }}
+- Fecha: {{ reserva.fecha_evento }}
+- Hora inicio: {{ reserva.hora_inicio }}
+- Duración: {{ reserva.duracion }}
+- Total: ${{ precio }}
+
+Próximos pasos: nuestro equipo se pondrá en contacto para coordinar la confirmación y el pago.
+
+Saludos,
+Club El Meta

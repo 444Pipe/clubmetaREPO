@@ -1,0 +1,17 @@
+<html>
+  <body style="font-family: Arial, Helvetica, sans-serif; color: #222;">
+    <h3>Nueva Reserva Asociada</h3>
+    <p>Hola <strong>{{ socio.nombre }}</strong>,</p>
+    <p>Se ha registrado una nueva reserva asociada a su cuenta con los siguientes datos:</p>
+    <ul>
+      <li><strong>Reserva:</strong> #{{ reserva.id }}</li>
+      <li><strong>Espacio:</strong> {{ reserva.configuracion_salon.salon.nombre }} - {{ reserva.configuracion_salon.get_tipo_configuracion_display }}</li>
+      <li><strong>Fecha:</strong> {{ reserva.fecha_evento }}</li>
+      <li><strong>Hora inicio:</strong> {{ reserva.hora_inicio }}</li>
+      <li><strong>Duración:</strong> {{ reserva.duracion }}</li>
+      <li><strong>Total:</strong> ${{ precio }}</li>
+    </ul>
+    <p>Si necesita asistencia, por favor contacte al área administrativa.</p>
+    <p>Saludos,<br>Club El Meta</p>
+  </body>
+</html>

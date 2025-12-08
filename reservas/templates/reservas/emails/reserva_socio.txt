@@ -1,0 +1,15 @@
+Hola {{ socio.nombre }},
+
+Se ha creado una nueva reserva asociada a su cuenta:
+
+- Reserva: #{{ reserva.id }}
+- Espacio: {{ reserva.configuracion_salon.salon.nombre }} - {{ reserva.configuracion_salon.get_tipo_configuracion_display }}
+- Fecha: {{ reserva.fecha_evento }}
+- Hora inicio: {{ reserva.hora_inicio }}
+- Duración: {{ reserva.duracion }}
+- Total: ${{ precio }}
+
+Si necesita asistencia, por favor contacte al área administrativa.
+
+Saludos,
+Club El Meta

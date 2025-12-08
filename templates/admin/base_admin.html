@@ -1,0 +1,78 @@
+{% extends 'admin/admin_empty.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}Panel Admin - CLUB EL META{% endblock %}
+
+{% block admin_base_css %}
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    /* Scoped admin layout: prevenir colisiones con CSS público */
+    .admin-layout { display: flex !important; min-height: 100vh; box-sizing: border-box; }
+    .admin-layout .admin-sidebar { width: 260px; background: #0A2757; color: #ffffff; position: fixed; top: 0; left: 0; bottom: 0; padding: 20px 12px; display:flex !important; flex-direction:column; z-index:2000; }
+    .admin-layout .admin-sidebar .brand { display:flex; align-items:center; gap:10px; padding:6px 8px; margin-bottom:18px; }
+    .admin-layout .admin-sidebar .brand img { height:42px !important; max-height:42px !important; width:auto !important; max-width:100% !important; object-fit:contain; display:block; border-radius:8px; }
+    .admin-layout .admin-sidebar nav { flex:1; overflow:auto; }
+    .admin-layout .admin-sidebar a.menu-link { display:flex; align-items:center; gap:12px; color:#e6eefc; padding:10px 12px; border-radius:8px; text-decoration:none; margin-bottom:6px; font-weight:600; }
+    .admin-layout .admin-sidebar a.menu-link:hover { background: rgba(255,255,255,0.04); color:#fff; text-decoration:none; }
+    .admin-layout .admin-sidebar .highlight { background: #ff6b00; color: #fff; padding:8px 12px; border-radius:10px; font-weight:700; display:inline-flex; align-items:center; gap:8px; }
+    .admin-layout .admin-sidebar .bottom-actions { margin-top:12px; }
+    .admin-layout .admin-sidebar .logout { margin-top:auto; }
+    .admin-layout .main-area { margin-left: 260px !important; flex:1; padding: 28px; min-height:100vh; box-sizing: border-box; }
+    /* Cards and tables slight style adjustments to match modern look */
+    .admin-layout .card { border-radius: 12px; }
+    .admin-layout .card.shadow { box-shadow: 0 6px 18px rgba(10,39,87,0.06); }
+    .admin-layout .table thead th { background: #f8fafc; }
+    @media (max-width: 991px) {
+      .admin-layout .admin-sidebar { position: relative; width: 100%; height: auto; }
+      .admin-layout .main-area { margin-left: 0 !important; padding:16px; }
+    }
+    /* Oculta el footer del sitio solo dentro del layout admin */
+    .admin-layout footer { display: none !important; }
+    /* Reglas defensivas para FullCalendar y componentes del panel */
+    .admin-layout .panel-main { overflow: visible; }
+    .admin-layout .panel-main .fc { margin-top: 0 !important; }
+  </style>
+{% endblock %}
+
+
+{% block header %}{% endblock %}
+
+{% block content %}
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="brand">
+      <img src="{% static 'img_Hotel/logo.png' %}" alt="Logo">
+      <div>
+        <div style="font-weight:800; font-size:16px;">Club El Meta</div>
+        <div style="font-size:12px; color: #cfe3ff">Panel Admin</div>
+      </div>
+    </div>
+    <nav>
+      <a class="menu-link" href="{% url 'reservas:index' %}"><i class="fa fa-house fa-fw"></i> Inicio</a>
+      <a class="menu-link" href="{% url 'reservas:register' %}"><i class="fa fa-calendar-check fa-fw"></i> Reservar</a>
+      <a class="menu-link" href="{% url 'reservas:calendario' %}"><i class="fa fa-calendar-days fa-fw"></i> Calendario</a>
+      <a class="menu-link" href="{% url 'reservas:reportes' %}"><i class="fa fa-chart-line fa-fw"></i> Reportes</a>
+      <a class="menu-link" href="{% url 'reservas:panel' %}"><i class="fa fa-user-shield fa-fw"></i> Panel Admin</a>
+      <div style="margin-top:12px">
+        <a class="menu-link highlight" href="/admin/reservas/bloqueoespacio/"><i class="fa fa-lock fa-fw"></i> Bloquear Espacios</a>
+      </div>
+    </nav>
+    <div class="logout">
+      <form method="post" action="{% url 'reservas:logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="menu-link" style="background: transparent; border: none; width:100%; text-align:left; padding:10px 12px; color:#ffdede;">
+          <i class="fa fa-sign-out-alt fa-fw"></i> Salir / Cerrar Sesión
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <section class="main-area">
+    <main class="panel-main container-fluid">
+      {% block admin_content %}{% endblock %}
+    </main>
+  </section>
+
+</div>
+{% endblock %}

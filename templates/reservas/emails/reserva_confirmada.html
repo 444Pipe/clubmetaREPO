@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Reserva Confirmada</title>
+  <style>
+    /* Base safe styles (email-friendly) */
+    body { margin:0; padding:0; background-color:#f4f6fb; color:#1f2937; -webkit-font-smoothing:antialiased; }
+    .wrapper { width:100%; table-layout:fixed; background-color:#f4f6fb; padding:24px 0; }
+    .main { background:#ffffff; margin:0 auto; border-radius:8px; max-width:600px; overflow:hidden; box-shadow:0 6px 18px rgba(15,23,42,0.06); }
+    .header { background: linear-gradient(90deg,#0b5ed7 0%, #0a58ca 100%); padding:20px 24px; color:#ffffff; }
+    .brand { font-family: 'Segoe UI', Roboto, Arial, sans-serif; font-size:20px; font-weight:700; }
+    .preheader { display:none !important; visibility:hidden; opacity:0; color:transparent; height:0; width:0; }
+    .content { padding:24px; font-family: Arial, Helvetica, sans-serif; font-size:15px; line-height:1.5; color:#111827 }
+    .greeting { margin:0 0 12px 0; }
+    .title { font-size:18px; margin:6px 0 14px 0; color:#0f1724; }
+    .details { background:#f8fafc; border:1px solid #eef2f7; border-radius:6px; padding:12px; margin:12px 0; }
+    .details table { width:100%; border-collapse:collapse; font-size:14px; }
+    .details td { padding:6px 4px; vertical-align:top; }
+    .label { color:#374151; width:40%; font-weight:600 }
+    .value { color:#111827; text-align:right }
+    .cta { display:inline-block; background:#0b5ed7; color:#ffffff; text-decoration:none; padding:12px 18px; border-radius:8px; font-weight:600; margin-top:10px }
+    .muted { color:#6b7280; font-size:13px }
+    .footer { padding:18px 24px; background:#ffffff; border-top:1px solid #eef2f7; font-size:13px; color:#6b7280 }
+    .signature { margin-top:16px; }
+    @media only screen and (max-width:480px) {
+      .content { padding:16px }
+      .header { padding:16px }
+      .brand { font-size:18px }
+      .cta { padding:10px 14px }
+    }
+  </style>
+</head>
+<body>
+
+  <span class="preheader">Tu reserva en {{ reserva.configuracion_salon.salon.nombre }} ha sido confirmada para {{ reserva.fecha_evento }}.</span>
+
+  <table class="wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+    <tr>
+      <td align="center">
+        <table class="main" width="600" cellpadding="0" cellspacing="0" role="presentation">
+          <tr>
+            <td class="header">
+              <div class="brand">Club El Meta</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="content">
+              <p class="greeting">Hola <strong>{{ reserva.nombre_cliente }}</strong>,</p>
+
+              <p class="title">¡Tu reserva está confirmada!</p>
+
+              <p>Hemos confirmado tu reserva para <strong>{{ reserva.configuracion_salon.salon.nombre }}</strong> en la fecha <strong>{{ reserva.fecha_evento }}</strong>. A continuación encontrarás los detalles principales.</p>
+
+              <div class="details" role="article">
+                <table cellpadding="0" cellspacing="0" role="presentation">
+                  <tr>
+                    <td class="label">Duración</td>
+                    <td class="value">{{ reserva.get_duracion_display }}</td>
+                  </tr>
+                  <tr>
+                    <td class="label">Personas</td>
+                    <td class="value">{{ reserva.numero_personas }}</td>
+                  </tr>
+                  <tr>
+                    <td class="label">Precio</td>
+                    <td class="value">${{ reserva.precio_total }}</td>
+                  </tr>
+                </table>
+              </div>
+
+              {% if reserva.observaciones %}
+              <p><strong>Observaciones:</strong><br style="line-height:6px" />{{ reserva.observaciones }}</p>
+              {% endif %}
+
+              <p class="muted">Si necesitas hacer cambios o tienes preguntas, responde a este correo o ponte en contacto con la administración.</p>
+
+              <p><a class="cta" href="#">Ver detalles de mi reserva</a></p>
+
+              <div class="signature">
+                <p style="margin:0"><strong>Atentamente,</strong></p>
+                <p style="margin:4px 0 0 0">Equipo de Administración — <span style="color:#0b5ed7">Club El Meta</span></p>
+                <p class="muted" style="margin:8px 0 0 0">Dirección · Teléfono · Horario de atención</p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="footer" align="center">
+              <div>Club El Meta &middot; Administración</div>
+              <div style="margin-top:6px" class="muted">Este correo es una notificación automática. Por favor no respondas a esta dirección.</div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+<html>
+  <body style="font-family: Arial, Helvetica, sans-serif; color: #222;">
+    <h2>Confirmación de Reserva - Club El Meta</h2>
+    <p>Hola <strong>{{ cliente }}</strong>,</p>
+    <p>Gracias por realizar una reserva con nosotros. A continuación los detalles:</p>
+    <ul>
+      <li><strong>Reserva:</strong> #{{ reserva.id }}</li>
+      <li><strong>Espacio:</strong> {{ reserva.configuracion_salon.salon.nombre }} - {{ reserva.configuracion_salon.get_tipo_configuracion_display }}</li>
+      <li><strong>Fecha:</strong> {{ reserva.fecha_evento }}</li>
+      <li><strong>Hora inicio:</strong> {{ reserva.hora_inicio }}</li>
+      <li><strong>Duración:</strong> {{ reserva.duracion }}</li>
+      <li><strong>Total:</strong> ${{ precio }}</li>
+    </ul>
+    <p>Nuestro equipo se comunicará contigo para coordinar la confirmación y el pago.</p>
+    <p>Saludos,<br>Club El Meta</p>
+  </body>
+</html>
