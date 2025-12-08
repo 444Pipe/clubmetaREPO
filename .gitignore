@@ -1,2 +1,12 @@
 # Ignore collected static files
 staticfiles/
+
+# Local env and virtualenvs
+.env
+venv/
+.venv/
+
+# Python cache and DB
+__pycache__/
+*.pyc
+db.sqlite3
