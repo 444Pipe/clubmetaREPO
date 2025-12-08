@@ -29,7 +29,7 @@ ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS if h.strip()]
 # ---------------------------
 CSRF_TRUSTED_ORIGINS = [
     "https://*.railway.app",
-    "https://clubmetarepo-production.up.railway.app",  
+    "https://clubelmeta-production.up.railway.app",  # CAMBIA ESTO POR TU DOMINIO REAL
 ]
 
 
@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'reservas',
+    'reservas.apps.ReservasConfig',
 ]
 
 
