@@ -31,6 +31,24 @@ def _render_message(subject, template_txt, template_html, context):
     return text_content, html_content
 
 
+def _save_email_log(reserva, to_email, subject, body_text, body_html, success, error):
+    """Helper to persist EmailLog entries, swallowing any errors during logging."""
+    try:
+        from .models import EmailLog
+        EmailLog.objects.create(
+            reserva=reserva if getattr(reserva, 'pk', None) else None,
+            channel='EMAIL',
+            to_email=to_email,
+            subject=subject,
+            body_text=body_text,
+            body_html=body_html,
+            success=bool(success),
+            error=error if error else None,
+        )
+    except Exception:
+        pass
+
+
 def reserva_pre_save(sender, instance, **kwargs):
     """Guardar el estado previo antes de guardar la reserva para detectar transiciones."""
     if instance.pk:
@@ -42,13 +60,9 @@ def reserva_pre_save(sender, instance, **kwargs):
 
 
 def reserva_post_save(sender, instance, created, **kwargs):
-    """Enviar correos cuando se crea una reserva o cuando cambia a CONFIRMADA.
+    """Enviar correos cuando se crea una reserva o cuando cambia a CONFIRMADA."""
 
-    - Al crear: envía correo de notificación al cliente/socio/admin (comportamiento original).
-    - Si en una actualización la reserva cambia su `estado` a `CONFIRMADA`, envía un
-      correo real al `email_cliente` con los datos mínimos.
-    """
-    # Comportamiento al crear (igual que antes)
+    # 🟦 COMPORTAMIENTO AL CREAR
     if created:
         context = {
             'reserva': instance,
@@ -56,7 +70,7 @@ def reserva_post_save(sender, instance, created, **kwargs):
             'precio': instance.precio_total,
         }
 
-        # Enviar al cliente
+        # 🟩 1. ENVÍO AL CLIENTE
         if instance.email_cliente:
             subject = f"Confirmación de Reserva #{instance.id} - {instance.configuracion_salon.salon.nombre}"
             txt, html = _render_message(subject,
@@ -64,35 +78,21 @@ def reserva_post_save(sender, instance, created, **kwargs):
                                         'reservas/emails/reserva_cliente.html',
                                         context)
             try:
-                # enviar en background (no bloquear request)
+                # (🟢 FIX → argumentos POSICIONALES)
                 send_email_async(
-                    subject=subject,
-                    template_txt='reservas/emails/reserva_cliente.txt',
-                    template_html='reservas/emails/reserva_cliente.html',
-                    context=context,
-                    recipient_list=[instance.email_cliente]
+                    subject,
+                    'reservas/emails/reserva_cliente.txt',
+                    'reservas/emails/reserva_cliente.html',
+                    context,
+                    [instance.email_cliente]
                 )
                 success, error = True, None
             except Exception:
                 success, error = False, traceback.format_exc()
 
-            try:
-                from .models import EmailLog
-                EmailLog.objects.create(
-                    reserva=instance,
-                    channel='EMAIL',
-                    to_email=instance.email_cliente,
-                    subject=subject,
-                    body_text=txt,
-                    body_html=html,
-                    success=bool(success),
-                    error=error if error else None,
-                )
-            except Exception as e:
-                import logging
-                logging.exception("Fallo al crear EmailLog (cliente, creación reserva): %s", e)
+            _save_email_log(instance, instance.email_cliente, subject, txt, html, success, error)
 
-        # Si es socio, intentar notificar al registro de socio asociado
+        # 🟨 2. SI ES SOCIO → NOTIFICAR
         if instance.tipo_cliente == 'SOCIO':
             try:
                 from .models import Socio
@@ -105,34 +105,21 @@ def reserva_post_save(sender, instance, created, **kwargs):
                                                 {**context, 'socio': socio})
                     try:
                         send_email_async(
-                            subject=subject,
-                            template_txt='reservas/emails/reserva_socio.txt',
-                            template_html='reservas/emails/reserva_socio.html',
-                            context={**context, 'socio': socio},
-                            recipient_list=[socio.email]
+                            subject,
+                            'reservas/emails/reserva_socio.txt',
+                            'reservas/emails/reserva_socio.html',
+                            {**context, 'socio': socio},
+                            [socio.email]
                         )
                         success, error = True, None
                     except Exception:
                         success, error = False, traceback.format_exc()
-                    try:
-                        from .models import EmailLog
-                        EmailLog.objects.create(
-                            reserva=instance,
-                            channel='EMAIL',
-                            to_email=socio.email,
-                            subject=subject,
-                            body_text=txt,
-                            body_html=html,
-                            success=bool(success),
-                            error=error if error else None,
-                        )
-                    except Exception as e:
-                        import logging
-                        logging.exception("Fallo al crear EmailLog (socio): %s", e)
+
+                    _save_email_log(instance, socio.email, subject, txt, html, success, error)
             except Exception:
                 pass
 
-        # Enviar copia al admin si está configurado
+        # 🟥 3. COPIA AL ADMIN
         admin_email = getattr(settings, 'ADMIN_EMAIL', None)
         if admin_email:
             try:
@@ -143,44 +130,33 @@ def reserva_post_save(sender, instance, created, **kwargs):
                                             {**context, 'admin': True})
                 try:
                     send_email_async(
-                        subject=subject,
-                        template_txt='reservas/emails/reserva_admin.txt',
-                        template_html='reservas/emails/reserva_admin.html',
-                        context={**context, 'admin': True},
-                        recipient_list=[admin_email]
+                        subject,
+                        'reservas/emails/reserva_admin.txt',
+                        'reservas/emails/reserva_admin.html',
+                        {**context, 'admin': True},
+                        [admin_email]
                     )
                     success, error = True, None
                 except Exception:
                     success, error = False, traceback.format_exc()
-                try:
-                    from .models import EmailLog
-                    EmailLog.objects.create(
-                        reserva=instance,
-                        channel='EMAIL',
-                        to_email=admin_email,
-                        subject=subject,
-                        body_text=txt,
-                        body_html=html,
-                        success=bool(success),
-                        error=error if error else None,
-                    )
-                except Exception as e:
-                    import logging
-                    logging.exception("Fallo al crear EmailLog (admin): %s", e)
+
+                _save_email_log(instance, admin_email, subject, txt, html, success, error)
             except Exception:
                 pass
+
         return
 
-    # En actualización: detectar transición de estado a CONFIRMADA
+    # 🟦 COMPORTAMIENTO AL CONFIRMAR RESERVA
     old_estado = getattr(instance, '_old_estado', None)
     if old_estado != instance.estado and instance.estado == 'CONFIRMADA':
-        # Usar plantillas para correo de confirmación (HTML + TXT)
+
         subject = f"Reserva Confirmada #{instance.id} - {instance.configuracion_salon.salon.nombre}"
         context = {
             'reserva': instance,
             'cliente': instance.nombre_cliente,
             'precio': instance.precio_total,
         }
+
         try:
             txt, html = _render_message(subject,
                                         'reservas/emails/reserva_confirmada.txt',
@@ -188,38 +164,22 @@ def reserva_post_save(sender, instance, created, **kwargs):
                                         context)
             try:
                 send_email_async(
-                    subject=subject,
-                    template_txt='reservas/emails/reserva_confirmada.txt',
-                    template_html='reservas/emails/reserva_confirmada.html',
-                    context=context,
-                    recipient_list=[instance.email_cliente]
+                    subject,
+                    'reservas/emails/reserva_confirmada.txt',
+                    'reservas/emails/reserva_confirmada.html',
+                    context,
+                    [instance.email_cliente]
                 )
                 success, error = True, None
             except Exception:
                 success, error = False, traceback.format_exc()
         except Exception:
+            txt, html = '', None
             success = False
             error = traceback.format_exc()
-            txt = ''
-            html = None
 
-        # Registrar intento en EmailLog (guardar también body_html si está disponible)
-        try:
-            from .models import EmailLog
-            EmailLog.objects.create(
-                reserva=instance,
-                channel='EMAIL',
-                to_email=instance.email_cliente,
-                subject=subject,
-                body_text=txt,
-                body_html=html,
-                success=bool(success),
-                error=error if error else None,
-            )
-        except Exception as e:
-            import logging
-            logging.exception("Fallo al crear EmailLog (confirmación): %s", e)
+        # Log
+        _save_email_log(instance, instance.email_cliente, subject, txt, html, success, error)
 
 
-# La conexión a `post_save` se realiza en `reservas.apps.ReservasConfig.ready()`
-# para evitar registros globales que disparen el handler para otros modelos.
+# La conexión a post_save se realiza en apps.ReservasConfig.ready()

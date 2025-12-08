@@ -1,4 +1,4 @@
-from threading import Thread
+import threading
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -24,7 +24,7 @@ def send_email_async(subject, template_txt, template_html, context, recipient_li
     except Exception:
         html_body = None
 
-    def _send():
+    def send_email_thread():
         reserva = None
         try:
             if isinstance(context, dict):
@@ -79,4 +79,5 @@ def send_email_async(subject, template_txt, template_html, context, recipient_li
             except Exception:
                 pass
 
-    Thread(target=_send, daemon=True).start()
+    thread = threading.Thread(target=send_email_thread, daemon=True)
+    thread.start()
