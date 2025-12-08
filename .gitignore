@@ -7,10 +7,9 @@
 venv/
 .venv/
 
-# Python cache and DB
+. Python cache and DB
 __pycache__/
 *.pyc
-db.sqlite3
 .vscode/
 .idea/
 media/
