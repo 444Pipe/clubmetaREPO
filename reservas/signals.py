@@ -2,20 +2,14 @@ from django.db.models.signals import post_save, pre_save
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
-from django.core.mail import EmailMultiAlternatives, send_mail
+from reservas.utils.email_async import send_email_async
 import traceback
 
 
-def send_email(subject, to_emails, template_txt, template_html, context, from_email=None):
-    """Renderiza plantillas y envía un email; devuelve (success, error, text, html)."""
-    from_email = from_email or getattr(settings, 'DEFAULT_FROM_EMAIL', 'no-reply@clubelmeta.local')
+def _render_message(subject, template_txt, template_html, context):
+    """Render templates and return (text_content, html_content)."""
     text_content = ''
     html_content = None
-    # Normalizar/sanitizar lista de destinatarios (evitar None/strings vacíos)
-    try:
-        to_emails = [e for e in (to_emails or []) if e]
-    except Exception:
-        to_emails = []
     try:
         text_content = render_to_string(template_txt, context)
     except Exception:
@@ -25,29 +19,16 @@ def send_email(subject, to_emails, template_txt, template_html, context, from_em
     except Exception:
         html_content = None
 
-    # Fallback para asegurar una versión text/plain:
-    # Si text_content está vacío y existe html_content, generar text desde html
     if not text_content and html_content:
         try:
             text_content = strip_tags(html_content).strip()
         except Exception:
             text_content = ''
-    # Si sigue vacío, usar el subject como último recurso
+
     if not text_content:
         text_content = subject
 
-    try:
-        # Si no hay destinatarios válidos, no intentar enviar y devolver error claro
-        if not to_emails:
-            return False, 'No hay destinatarios válidos', text_content, html_content
-
-        msg = EmailMultiAlternatives(subject, text_content, from_email, to_emails)
-        if html_content:
-            msg.attach_alternative(html_content, "text/html")
-        msg.send(fail_silently=False)
-        return True, None, text_content, html_content
-    except Exception:
-        return False, traceback.format_exc(), text_content, html_content
+    return text_content, html_content
 
 
 def reserva_pre_save(sender, instance, **kwargs):
@@ -78,11 +59,23 @@ def reserva_post_save(sender, instance, created, **kwargs):
         # Enviar al cliente
         if instance.email_cliente:
             subject = f"Confirmación de Reserva #{instance.id} - {instance.configuracion_salon.salon.nombre}"
-            success, error, txt, html = send_email(subject,
-                                                   [instance.email_cliente],
-                                                   'reservas/emails/reserva_cliente.txt',
-                                                   'reservas/emails/reserva_cliente.html',
-                                                   context)
+            txt, html = _render_message(subject,
+                                        'reservas/emails/reserva_cliente.txt',
+                                        'reservas/emails/reserva_cliente.html',
+                                        context)
+            try:
+                # enviar en background (no bloquear request)
+                send_email_async(
+                    subject=subject,
+                    template_txt='reservas/emails/reserva_cliente.txt',
+                    template_html='reservas/emails/reserva_cliente.html',
+                    context=context,
+                    recipient_list=[instance.email_cliente]
+                )
+                success, error = True, None
+            except Exception:
+                success, error = False, traceback.format_exc()
+
             try:
                 from .models import EmailLog
                 EmailLog.objects.create(
@@ -106,11 +99,21 @@ def reserva_post_save(sender, instance, created, **kwargs):
                 socio = Socio.objects.filter(email__iexact=instance.email_cliente).first()
                 if socio and socio.email:
                     subject = f"Notificación de Reserva Socio #{instance.id} - {socio.nombre}"
-                    success, error, txt, html = send_email(subject,
-                                                           [socio.email],
-                                                           'reservas/emails/reserva_socio.txt',
-                                                           'reservas/emails/reserva_socio.html',
-                                                           {**context, 'socio': socio})
+                    txt, html = _render_message(subject,
+                                                'reservas/emails/reserva_socio.txt',
+                                                'reservas/emails/reserva_socio.html',
+                                                {**context, 'socio': socio})
+                    try:
+                        send_email_async(
+                            subject=subject,
+                            template_txt='reservas/emails/reserva_socio.txt',
+                            template_html='reservas/emails/reserva_socio.html',
+                            context={**context, 'socio': socio},
+                            recipient_list=[socio.email]
+                        )
+                        success, error = True, None
+                    except Exception:
+                        success, error = False, traceback.format_exc()
                     try:
                         from .models import EmailLog
                         EmailLog.objects.create(
@@ -134,11 +137,21 @@ def reserva_post_save(sender, instance, created, **kwargs):
         if admin_email:
             try:
                 subject = f"Nueva Reserva #{instance.id} - {instance.configuracion_salon.salon.nombre}"
-                success, error, txt, html = send_email(subject,
-                                                       [admin_email],
-                                                       'reservas/emails/reserva_admin.txt',
-                                                       'reservas/emails/reserva_admin.html',
-                                                       {**context, 'admin': True})
+                txt, html = _render_message(subject,
+                                            'reservas/emails/reserva_admin.txt',
+                                            'reservas/emails/reserva_admin.html',
+                                            {**context, 'admin': True})
+                try:
+                    send_email_async(
+                        subject=subject,
+                        template_txt='reservas/emails/reserva_admin.txt',
+                        template_html='reservas/emails/reserva_admin.html',
+                        context={**context, 'admin': True},
+                        recipient_list=[admin_email]
+                    )
+                    success, error = True, None
+                except Exception:
+                    success, error = False, traceback.format_exc()
                 try:
                     from .models import EmailLog
                     EmailLog.objects.create(
@@ -169,11 +182,21 @@ def reserva_post_save(sender, instance, created, **kwargs):
             'precio': instance.precio_total,
         }
         try:
-            success, error, txt, html = send_email(subject,
-                                                   [instance.email_cliente],
-                                                   'reservas/emails/reserva_confirmada.txt',
-                                                   'reservas/emails/reserva_confirmada.html',
-                                                   context)
+            txt, html = _render_message(subject,
+                                        'reservas/emails/reserva_confirmada.txt',
+                                        'reservas/emails/reserva_confirmada.html',
+                                        context)
+            try:
+                send_email_async(
+                    subject=subject,
+                    template_txt='reservas/emails/reserva_confirmada.txt',
+                    template_html='reservas/emails/reserva_confirmada.html',
+                    context=context,
+                    recipient_list=[instance.email_cliente]
+                )
+                success, error = True, None
+            except Exception:
+                success, error = False, traceback.format_exc()
         except Exception:
             success = False
             error = traceback.format_exc()

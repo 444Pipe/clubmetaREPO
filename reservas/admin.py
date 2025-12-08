@@ -259,13 +259,25 @@ class SocioAdmin(admin.ModelAdmin):
         for socio in queryset:
             # enviar email
             try:
-                success, error, txt, html = signals_module.send_email(
+                # render synchronously for logging, send async to avoid blocking
+                txt, html = signals_module._render_message(
                     subject,
-                    [socio.email],
                     'reservas/emails/admin_manual_notification.txt',
                     'reservas/emails/admin_manual_notification.html',
                     {'socio': socio}
                 )
+                try:
+                    from reservas.utils.email_async import send_email_async
+                    send_email_async(
+                        subject=subject,
+                        template_txt='reservas/emails/admin_manual_notification.txt',
+                        template_html='reservas/emails/admin_manual_notification.html',
+                        context={'socio': socio},
+                        recipient_list=[socio.email]
+                    )
+                    success, error = True, None
+                except Exception:
+                    success, error = False, 'async send failed'
                 try:
                     EmailLog.objects.create(
                         reserva=None,
@@ -613,8 +625,27 @@ try:
             for log in queryset:
                 try:
                     if log.channel == 'EMAIL' and log.to_email:
-                        # Re-rendering templates is not available here; resend a simple email
-                        success, error, txt, html = signals_module.send_email(log.subject or 'Notificación', [log.to_email], 'reservas/emails/reserva_admin.txt', 'reservas/emails/reserva_admin.html', {'reserva': log.reserva} if hasattr(log, 'reserva') else {})
+                        # Re-render templates and send async
+                        txt, html = signals_module._render_message(
+                            log.subject or 'Notificación',
+                            'reservas/emails/reserva_admin.txt',
+                            'reservas/emails/reserva_admin.html',
+                            {'reserva': log.reserva} if hasattr(log, 'reserva') else {}
+                        )
+                        try:
+                            from reservas.utils.email_async import send_email_async
+                            send_email_async(
+                                subject=log.subject or 'Notificación',
+                                template_txt='reservas/emails/reserva_admin.txt',
+                                template_html='reservas/emails/reserva_admin.html',
+                                context={'reserva': log.reserva} if hasattr(log, 'reserva') else {},
+                                recipient_list=[log.to_email]
+                            )
+                            success = True
+                            error = None
+                        except Exception as e:
+                            success = False
+                            error = str(e)
                         # create a new EmailLog for this attempt
                         try:
                             EmailLog.objects.create(reserva=log.reserva, channel='EMAIL', to_email=log.to_email, subject=log.subject, body_text=txt, body_html=html, success=bool(success), error=error if error else None)
