@@ -1,1 +1,1 @@
-web: gunicorn clubelmeta.wsgi
+web: gunicorn clubelmeta.wsgi --log-file -

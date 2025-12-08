@@ -63,6 +63,7 @@ ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", EMAIL_HOST_USER)
 # ---------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -142,6 +143,7 @@ LANGUAGES = [('es', _('Spanish'))]
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'   # <- Railway usa esto para servir estáticos
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 # ---------------------------
