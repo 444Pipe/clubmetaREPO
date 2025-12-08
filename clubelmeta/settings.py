@@ -6,11 +6,11 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 # ---------------------------
 # SECURITY
 # ---------------------------
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key")
-
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 # ---------------------------
@@ -18,13 +18,19 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 # ---------------------------
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
-# permitir localhost en modo debug
 if DEBUG:
-    ALLOWED_HOSTS.append("127.0.0.1")
-    ALLOWED_HOSTS.append("localhost")
+    ALLOWED_HOSTS += ["127.0.0.1", "localhost"]
 
-# limpiar espacios (evita errores)
-ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS if host.strip()]
+ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS if h.strip()]
+
+
+# ---------------------------
+# CSRF CONFIG (OBLIGATORIO EN RAILWAY)
+# ---------------------------
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.railway.app",
+    "https://clubmetarepo-production.up.railway.app",  
+]
 
 
 # ---------------------------
@@ -43,7 +49,7 @@ INSTALLED_APPS = [
 
 
 # ---------------------------
-# EMAIL CONFIG (Railway env vars)
+# EMAIL CONFIG
 # ---------------------------
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
@@ -74,7 +80,11 @@ MIDDLEWARE = [
 ]
 
 
+# ---------------------------
+# URLS Y WSGI
+# ---------------------------
 ROOT_URLCONF = 'clubelmeta.urls'
+WSGI_APPLICATION = 'clubelmeta.wsgi.application'
 
 
 # ---------------------------
@@ -96,11 +106,8 @@ TEMPLATES = [
 ]
 
 
-WSGI_APPLICATION = 'clubelmeta.wsgi.application'
-
-
 # ---------------------------
-# DATABASE (SQLite para Railway)
+# DATABASE
 # ---------------------------
 DATABASES = {
     'default': {
@@ -134,11 +141,13 @@ USE_TZ = True
 LOCALE_PATHS = [BASE_DIR / 'locale']
 
 from django.utils.translation import gettext_lazy as _
-LANGUAGES = [('es', _('Spanish'))]
+LANGUAGES = [
+    ('es', _('Spanish')),
+]
 
 
 # ---------------------------
-# STATICFILES & MEDIA (NECESARIO PARA RAILWAY)
+# STATIC & MEDIA
 # ---------------------------
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -147,16 +156,10 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'static'),
 ]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
-
-# ---------------------------
-# DEFAULT AUTO FIELD
-# ---------------------------
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # ---------------------------
@@ -165,3 +168,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/panel/'
 LOGOUT_REDIRECT_URL = '/'
+
+
+# ---------------------------
+# DEFAULT AUTO FIELD
+# ---------------------------
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
