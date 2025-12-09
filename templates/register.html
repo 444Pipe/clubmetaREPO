@@ -824,29 +824,46 @@
     var granTotalMonto = document.getElementById('granTotalMonto');
     
     function calcularTotales() {
-      // Buscar inputs cada vez que se ejecuta (incluye hidden inputs)
+      // Si la sección de servicios adicionales está oculta o el usuario eligió "No",
+      // no incluir servicios en el cálculo.
+      var mostrarSiRadio = document.getElementById('mostrar_servicios_si');
+      var serviciosContainerEl = document.getElementById('serviciosContainer');
       var serviciosInputs = document.querySelectorAll('input.servicio-cantidad');
       var totalServicios = 0;
-      
-      console.log('Calculando totales...', serviciosInputs.length, 'inputs encontrados');
-      
-      // Calcular subtotal de cada servicio
-      serviciosInputs.forEach(function(input) {
-        var cantidad = parseInt(input.value) || 0;
-        var precio = parseFloat(input.getAttribute('data-precio')) || 0;
-        var subtotal = cantidad * precio;
-        var servicioId = input.id.replace('servicio_', '');
-        
-        console.log('Servicio', servicioId, '- Cantidad:', cantidad, 'Precio:', precio, 'Subtotal:', subtotal);
-        
-        // Actualizar subtotal del servicio
-        var subtotalSpan = document.querySelector('.subtotal-servicio[data-servicio-id="' + servicioId + '"]');
-        if (subtotalSpan) {
-          subtotalSpan.textContent = subtotal > 0 ? formatPrice(subtotal) : '$0';
-        }
-        
-        totalServicios += subtotal;
-      });
+
+      var serviciosActivos = false;
+      if (mostrarSiRadio && mostrarSiRadio.checked && serviciosContainerEl && serviciosContainerEl.style.display !== 'none') {
+        serviciosActivos = true;
+      }
+
+      console.log('Calculando totales... servicios activos:', serviciosActivos, 'inputs encontrados', serviciosInputs.length);
+
+      // Calcular subtotal de cada servicio sólo si están activos
+      if (serviciosActivos) {
+        serviciosInputs.forEach(function(input) {
+          var cantidad = parseInt(input.value) || 0;
+          var precio = parseFloat(input.getAttribute('data-precio')) || 0;
+          var subtotal = cantidad * precio;
+          var servicioId = input.id.replace('servicio_', '');
+
+          console.log('Servicio', servicioId, '- Cantidad:', cantidad, 'Precio:', precio, 'Subtotal:', subtotal);
+
+          // Actualizar subtotal del servicio
+          var subtotalSpan = document.querySelector('.subtotal-servicio[data-servicio-id="' + servicioId + '"]');
+          if (subtotalSpan) {
+            subtotalSpan.textContent = subtotal > 0 ? formatPrice(subtotal) : '$0';
+          }
+
+          totalServicios += subtotal;
+        });
+      } else {
+        // Si no están activos, asegurarse de que los subtotales muestren $0 y no se sumen
+        serviciosInputs.forEach(function(input) {
+          var servicioId = input.id.replace('servicio_', '');
+          var subtotalSpan = document.querySelector('.subtotal-servicio[data-servicio-id="' + servicioId + '"]');
+          if (subtotalSpan) subtotalSpan.textContent = '$0';
+        });
+      }
       
       console.log('Total servicios:', totalServicios);
       
@@ -931,6 +948,9 @@
 
       function syncTinto() {
         if (tintoInput.dataset.autoset === 'false') return; // no sobreescribir si el usuario cambió manualmente
+        // Sólo sincronizar si el usuario está mostrando servicios adicionales
+        var mostrarSiRadio = document.getElementById('mostrar_servicios_si');
+        if (mostrarSiRadio && !mostrarSiRadio.checked) return;
         const n = parseInt(numPersonasInput.value) || 0;
         tintoInput.value = n;
         // recalcular totales si la función está disponible globalmente
@@ -942,6 +962,12 @@
 
       // Actualizar mientras el usuario cambia el número de personas (pero respetar edición manual)
       numPersonasInput.addEventListener('input', syncTinto);
+
+      // Si el usuario activa la visualización de servicios, sincronizar la Estación de Tinto inmediatamente
+      var mostrarSiRadio = document.getElementById('mostrar_servicios_si');
+      if (mostrarSiRadio) {
+        mostrarSiRadio.addEventListener('change', function(){ if (mostrarSiRadio.checked) syncTinto(); });
+      }
 
       // Si el usuario edita manualmente la cantidad de tinto, desactivar autosync
       tintoInput.addEventListener('input', function(){ tintoInput.dataset.autoset = 'false'; });
