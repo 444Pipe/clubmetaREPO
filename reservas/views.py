@@ -588,6 +588,15 @@ def export_reservas_csv(request):
         cell.alignment = Alignment(horizontal='center', vertical='center')
         cell.border = border
     
+    # Additional styles: alternate row fill and estado colors
+    alt_fill = PatternFill(start_color="F7FAFF", end_color="F7FAFF", fill_type="solid")
+    estado_fills = {
+        'CONFIRMADA': PatternFill(start_color="C6F6D5", end_color="C6F6D5", fill_type="solid"),
+        'COMPLETADA': PatternFill(start_color="C6F6D5", end_color="C6F6D5", fill_type="solid"),
+        'PENDIENTE': PatternFill(start_color="FFF3BF", end_color="FFF3BF", fill_type="solid"),
+        'CANCELADA': PatternFill(start_color="FEE2E2", end_color="FEE2E2", fill_type="solid"),
+    }
+
     row = 2
     total_ingresos = 0
     for r in qs:
@@ -631,6 +640,23 @@ def export_reservas_csv(request):
         
         for col in range(1, 21):
             ws1.cell(row, col).border = border
+            # Wrap largo texto de servicios / observaciones
+            if col == 15 or col == 20:
+                ws1.cell(row, col).alignment = Alignment(wrap_text=True)
+
+        # Apply alternate shading for readabilty
+        if row % 2 == 0:
+            for col in range(1, 21):
+                ws1.cell(row, col).fill = alt_fill
+
+        # Color by estado (column Q / 18)
+        try:
+            estado_cell = ws1.cell(row, 18)
+            estado_key = r.estado
+            if estado_key in estado_fills:
+                estado_cell.fill = estado_fills[estado_key]
+        except Exception:
+            pass
         
         # Ajustar altura de fila si hay servicios
         if servicios_adicionales and len(servicios_adicionales) > 1:
@@ -644,6 +670,11 @@ def export_reservas_csv(request):
     ws1.cell(row, 17).number_format = '$#,##0.00'
     ws1.cell(row, 16).fill = total_fill
     ws1.cell(row, 17).fill = total_fill
+
+    # Freeze header and enable autofilter for easier navigation
+    ws1.freeze_panes = ws1['A2']
+    last_row = row
+    ws1.auto_filter.ref = f"A1:T{last_row}"
     
     # Ajustar anchos
     ws1.column_dimensions['A'].width = 8
