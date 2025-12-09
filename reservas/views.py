@@ -1141,10 +1141,14 @@ def get_bloqueos_salon(request):
         hoy = date.today()
         
         # Obtener bloqueos activos del salón que aún no han terminado
+        # Algunos registros en BD pueden tener `fecha_fin` anterior a `fecha_inicio` (datos inconsistentes).
+        # Para evitar omitir bloqueos futuros en el formulario (aunque fecha_fin esté mal),
+        # incluimos bloqueos cuya fecha_fin sea >= hoy OR cuya fecha_inicio sea >= hoy.
+        from django.db.models import Q
         bloqueos = BloqueoEspacio.objects.filter(
-            salon_id=salon_id,
-            activo=True,
-            fecha_fin__gte=hoy  # Solo mostrar bloqueos cuya fecha de fin sea hoy o futura
+            Q(salon_id=salon_id),
+            Q(activo=True),
+            (Q(fecha_fin__gte=hoy) | Q(fecha_inicio__gte=hoy))
         ).order_by('fecha_inicio')
         
         result = []
