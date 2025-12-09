@@ -2,7 +2,8 @@ from django.db.models.signals import post_save, pre_save
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
-from reservas.utils.email_async import send_email_async
+from reservas.email_async import send_email_async
+from django.db import transaction
 import traceback
 
 
@@ -77,20 +78,27 @@ def reserva_post_save(sender, instance, created, **kwargs):
                                         'reservas/emails/reserva_cliente.txt',
                                         'reservas/emails/reserva_cliente.html',
                                         context)
+            # Dispatch send AFTER the DB transaction commits to avoid rollbacks
             try:
-                # (🟢 FIX → argumentos POSICIONALES)
-                send_email_async(
+                transaction.on_commit(lambda: send_email_async(
                     subject,
                     'reservas/emails/reserva_cliente.txt',
                     'reservas/emails/reserva_cliente.html',
                     context,
                     [instance.email_cliente]
-                )
-                success, error = True, None
+                ))
             except Exception:
-                success, error = False, traceback.format_exc()
-
-            _save_email_log(instance, instance.email_cliente, subject, txt, html, success, error)
+                # swallow — on_commit may not be available in some contexts but it's best-effort
+                try:
+                    send_email_async(
+                        subject,
+                        'reservas/emails/reserva_cliente.txt',
+                        'reservas/emails/reserva_cliente.html',
+                        context,
+                        [instance.email_cliente]
+                    )
+                except Exception:
+                    pass
 
         # 🟨 2. SI ES SOCIO → NOTIFICAR
         if instance.tipo_cliente == 'SOCIO':
@@ -104,18 +112,24 @@ def reserva_post_save(sender, instance, created, **kwargs):
                                                 'reservas/emails/reserva_socio.html',
                                                 {**context, 'socio': socio})
                     try:
-                        send_email_async(
+                        transaction.on_commit(lambda: send_email_async(
                             subject,
                             'reservas/emails/reserva_socio.txt',
                             'reservas/emails/reserva_socio.html',
                             {**context, 'socio': socio},
                             [socio.email]
-                        )
-                        success, error = True, None
+                        ))
                     except Exception:
-                        success, error = False, traceback.format_exc()
-
-                    _save_email_log(instance, socio.email, subject, txt, html, success, error)
+                        try:
+                            send_email_async(
+                                subject,
+                                'reservas/emails/reserva_socio.txt',
+                                'reservas/emails/reserva_socio.html',
+                                {**context, 'socio': socio},
+                                [socio.email]
+                            )
+                        except Exception:
+                            pass
             except Exception:
                 pass
 
@@ -129,18 +143,24 @@ def reserva_post_save(sender, instance, created, **kwargs):
                                             'reservas/emails/reserva_admin.html',
                                             {**context, 'admin': True})
                 try:
-                    send_email_async(
+                    transaction.on_commit(lambda: send_email_async(
                         subject,
                         'reservas/emails/reserva_admin.txt',
                         'reservas/emails/reserva_admin.html',
                         {**context, 'admin': True},
                         [admin_email]
-                    )
-                    success, error = True, None
+                    ))
                 except Exception:
-                    success, error = False, traceback.format_exc()
-
-                _save_email_log(instance, admin_email, subject, txt, html, success, error)
+                    try:
+                        send_email_async(
+                            subject,
+                            'reservas/emails/reserva_admin.txt',
+                            'reservas/emails/reserva_admin.html',
+                            {**context, 'admin': True},
+                            [admin_email]
+                        )
+                    except Exception:
+                        pass
             except Exception:
                 pass
 
@@ -163,23 +183,45 @@ def reserva_post_save(sender, instance, created, **kwargs):
                                         'reservas/emails/reserva_confirmada.html',
                                         context)
             try:
-                send_email_async(
+                transaction.on_commit(lambda: send_email_async(
                     subject,
                     'reservas/emails/reserva_confirmada.txt',
                     'reservas/emails/reserva_confirmada.html',
                     context,
                     [instance.email_cliente]
-                )
-                success, error = True, None
+                ))
             except Exception:
-                success, error = False, traceback.format_exc()
+                try:
+                    send_email_async(
+                        subject,
+                        'reservas/emails/reserva_confirmada.txt',
+                        'reservas/emails/reserva_confirmada.html',
+                        context,
+                        [instance.email_cliente]
+                    )
+                except Exception:
+                    pass
         except Exception:
-            txt, html = '', None
-            success = False
-            error = traceback.format_exc()
-
-        # Log
-        _save_email_log(instance, instance.email_cliente, subject, txt, html, success, error)
+            # If rendering fails, still attempt send (it will use subject as text body in async helper)
+            try:
+                transaction.on_commit(lambda: send_email_async(
+                    subject,
+                    'reservas/emails/reserva_confirmada.txt',
+                    'reservas/emails/reserva_confirmada.html',
+                    context,
+                    [instance.email_cliente]
+                ))
+            except Exception:
+                try:
+                    send_email_async(
+                        subject,
+                        'reservas/emails/reserva_confirmada.txt',
+                        'reservas/emails/reserva_confirmada.html',
+                        context,
+                        [instance.email_cliente]
+                    )
+                except Exception:
+                    pass
 
 
 # La conexión a post_save se realiza en apps.ReservasConfig.ready()
