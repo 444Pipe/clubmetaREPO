@@ -22,31 +22,7 @@
   </div>
 </section>
 
-<!-- Filtros -->
-<section class="container my-3">
-  <div class="filter-simple">
-    <div class="row g-2">
-      <div class="col-md-3">
-        <input type="number" class="form-control filter-input-simple" id="filterCapacity" placeholder="Capacidad mínima" min="1">
-      </div>
-      <div class="col-md-3">
-        <input type="number" class="form-control filter-input-simple" id="filterBudget" placeholder="Presupuesto máximo" min="0">
-      </div>
-      <div class="col-md-3">
-        <select class="form-select filter-input-simple" id="filterType">
-          <option value="">Tipo de evento</option>
-          <option value="social">Evento Social</option>
-          <option value="corporativo">Corporativo</option>
-          <option value="concierto">Concierto</option>
-          <option value="feria">Feria/Exposición</option>
-        </select>
-      </div>
-      <div class="col-md-3">
-        <button class="btn-clear-simple w-100" onclick="resetFilters()">Limpiar Filtros</button>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- Filtros removed as per request -->
 
 <!-- Lista de Espacios con Carrusel -->
 <section class="container espacios mb-5">
@@ -638,66 +614,6 @@
   });
 </script>
 
-<script>
-  // Función para limpiar filtros
-  function resetFilters() {
-    document.getElementById('filterCapacity').value = '';
-    document.getElementById('filterBudget').value = '';
-    document.getElementById('filterType').value = '';
-    filterSpaces();
-  }
-
-  // Función para filtrar espacios
-  function filterSpaces() {
-    const capacity = parseInt(document.getElementById('filterCapacity').value) || 0;
-    const budget = parseInt(document.getElementById('filterBudget').value) || 0;
-    const type = document.getElementById('filterType').value || '';
-
-    const cards = document.querySelectorAll('.space-card');
-    let visibleCount = 0;
-
-    cards.forEach(card => {
-      let show = true;
-
-      const cardCapacity = parseInt(card.getAttribute('data-capacity')) || 0;
-      const cardPrice = parseInt(card.getAttribute('data-price')) || 0;
-      const cardType = (card.getAttribute('data-type') || '').toString();
-
-      // Capacity filter: show only if cardCapacity >= capacity (if capacity specified)
-      if (capacity > 0 && cardCapacity < capacity) {
-        show = false;
-      }
-
-      // Budget filter: show only if cardPrice <= budget (if budget specified)
-      if (budget > 0 && cardPrice > budget) {
-        show = false;
-      }
-
-      // Type filter: if selected, cardType must match
-      if (type && cardType !== type) {
-        show = false;
-      }
-
-      if (show) {
-        card.style.display = 'block';
-        visibleCount++;
-      } else {
-        card.style.display = 'none';
-      }
-    });
-
-    // Mostrar mensaje si no hay resultados (si existe el elemento)
-    const noSpacesEl = document.getElementById('noSpaces');
-    if (noSpacesEl) noSpacesEl.style.display = visibleCount === 0 ? 'block' : 'none';
-  }
-
-  // Event listeners para filtros
-  const capEl = document.getElementById('filterCapacity');
-  const budEl = document.getElementById('filterBudget');
-  const typeEl = document.getElementById('filterType');
-  if (capEl) capEl.addEventListener('input', filterSpaces);
-  if (budEl) budEl.addEventListener('input', filterSpaces);
-  if (typeEl) typeEl.addEventListener('change', filterSpaces);
-</script>
+<!-- Filters JS removed -->
 
 {% endblock %}
