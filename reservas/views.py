@@ -948,56 +948,84 @@ def export_reservas_csv_fallback(request):
     response['Content-Disposition'] = f'attachment; filename="reservas_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv"'
     response.write('\ufeff')
 
-    writer = csv.writer(response)
+    # Use semicolon delimiter for better Excel compatibility in locales that use comma as decimal
+    writer = csv.writer(response, delimiter=';')
 
-    # Section 1: Listado de Reservas (tabla)
+    def fmt_money(value):
+        try:
+            n = float(value or 0)
+        except Exception:
+            n = 0.0
+        s = f"{n:,.2f}"
+        # Convert 1,234,567.89 -> 1.234.567,89 (Spanish format)
+        s = s.replace(',', 'X').replace('.', ',').replace('X', '.')
+        return s
+
+    # Title
     writer.writerow([f"Listado de Reservas - Generado: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"])
     writer.writerow([])
-    writer.writerow(['ID', 'Cliente', 'Email', 'Teléfono', 'Salón', 'Configuración', 'Fecha Evento',
-                     'Hora Inicio', 'Personas', 'Duración', 'Tipo Cliente', 'Precio Total', 'Estado', 'Fecha Reserva', 'Observaciones'])
 
+    # Header (match spreadsheet columns)
+    headers = ['ID', 'Cliente', 'Email', 'Teléfono', 'Entidad/Empresa', 'Salón', 'Configuración',
+               'Fecha Evento', 'Hora Inicio', 'Duración', 'Personas', 'Tiempo Decoración', 'Tipo Cliente',
+               'Precio Salón', 'Servicios Adicionales', 'Subtotal Servicios', 'Precio Total', 'Estado', 'Fecha Reserva', 'Observaciones']
+    writer.writerow(headers)
+
+    total_ingresos = 0
     for r in qs:
+        # Servicios adicionales
+        servicios_adicionales = []
+        subtotal_servicios = 0
+        try:
+            servicios_qs = r.servicios_adicionales.all()
+            for sa in servicios_qs:
+                servicios_adicionales.append(f"{sa.servicio.nombre} x{sa.cantidad}")
+                subtotal_servicios += float(sa.subtotal or 0)
+        except Exception:
+            servicios_qs = []
+
+        precio_total = float(r.precio_total or 0)
+        # Estimar precio salón (precio total menos servicios si aplica)
+        precio_salon = precio_total - subtotal_servicios if precio_total >= subtotal_servicios else precio_total
+
         writer.writerow([
             r.id,
             r.nombre_cliente,
             r.email_cliente,
             r.telefono_cliente,
-            r.configuracion_salon.salon.nombre if r.configuracion_salon and r.configuracion_salon.salon else '',
-            r.configuracion_salon.get_tipo_configuracion_display() if r.configuracion_salon else '',
+            r.nombre_entidad or 'N/A',
+            r.configuracion_salon.salon.nombre if r.configuracion_salon and r.configuracion_salon.salon else 'N/A',
+            r.configuracion_salon.get_tipo_configuracion_display() if r.configuracion_salon else 'N/A',
             r.fecha_evento.strftime('%Y-%m-%d') if r.fecha_evento else '',
             r.hora_inicio.strftime('%H:%M') if getattr(r, 'hora_inicio', None) else '',
-            r.numero_personas,
             r.get_duracion_display(),
+            r.numero_personas,
+            f"{r.tiempo_decoracion}h" if getattr(r, 'tiempo_decoracion', None) is not None else '',
             r.get_tipo_cliente_display(),
-            f"{float(r.precio_total or 0):.2f}",
+            fmt_money(precio_salon),
+            " | ".join(servicios_adicionales) if servicios_adicionales else 'N/A',
+            fmt_money(subtotal_servicios),
+            fmt_money(precio_total),
             r.get_estado_display(),
             r.fecha_creacion.strftime('%Y-%m-%d %H:%M:%S') if r.fecha_creacion else '',
             (r.observaciones or '').replace('\n', ' ')
         ])
 
-    # Blank separator
+        if r.estado in ['CONFIRMADA', 'COMPLETADA']:
+            total_ingresos += precio_total
+
+    # Separator and totals
     writer.writerow([])
+    writer.writerow(['', '', '', '', '', '', '', '', '', '', '', '', '', 'TOTAL INGRESOS:', fmt_money(total_ingresos)])
 
-    # Section 2: Resumen y métricas
-    writer.writerow(['RESUMEN'])
-    # Totales y promedios
-    total_reservas = qs.count()
-    ingresos_confirmadas = qs.filter(estado__in=['CONFIRMADA', 'COMPLETADA']).aggregate(total=Sum('precio_total'))['total'] or 0
-    promedio_precio = float(ingresos_confirmadas) / total_reservas if total_reservas > 0 else 0
-
-    writer.writerow(['Total reservas (filtradas):', total_reservas])
-    writer.writerow(['Ingresos (CONFIRMADA+COMPLETADA):', f"{float(ingresos_confirmadas):.2f}"])
-    writer.writerow(['Promedio por reserva (sobre filtradas):', f"{promedio_precio:.2f}"])
-
-    # Conteos por estado
+    # Conteo por Estado
     writer.writerow([])
     writer.writerow(['Conteo por Estado'])
     estados = ['PENDIENTE', 'CONFIRMADA', 'CANCELADA', 'COMPLETADA']
     for e in estados:
-        count = qs.filter(estado=e).count()
-        writer.writerow([e, count])
+        writer.writerow([e, qs.filter(estado=e).count()])
 
-    # Por salón: cantidad y monto
+    # Por salón
     writer.writerow([])
     writer.writerow(['Por Salón', 'Cantidad Reservas', 'Monto Total'])
     salas = qs.values('configuracion_salon__salon__nombre').annotate(cantidad=Count('id'), monto=Sum('precio_total')).order_by('-cantidad')
@@ -1005,17 +1033,16 @@ def export_reservas_csv_fallback(request):
         nombre = s.get('configuracion_salon__salon__nombre') or 'Sin salón'
         cantidad = s.get('cantidad') or 0
         monto = float(s.get('monto') or 0)
-        writer.writerow([nombre, cantidad, f"{monto:.2f}"])
+        writer.writerow([nombre, cantidad, fmt_money(monto)])
 
-    # Servicios adicionales: sumar subtotales si existe el modelo
+    # Servicios adicionales totales
     try:
         from .models import ReservaServicioAdicional
         servicios_totales = ReservaServicioAdicional.objects.filter(reserva__in=qs)
         ingresos_servicios = sum([float(s.subtotal or 0) for s in servicios_totales])
         writer.writerow([])
-        writer.writerow(['Ingresos por Servicios Adicionales:', f"{ingresos_servicios:.2f}"])
+        writer.writerow(['Ingresos por Servicios Adicionales:', fmt_money(ingresos_servicios)])
     except Exception:
-        # ignore if model missing
         pass
 
     return response
