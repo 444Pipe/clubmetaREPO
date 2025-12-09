@@ -1149,9 +1149,15 @@ def get_bloqueos_salon(request):
         
         result = []
         for bloqueo in bloqueos:
+            # Normalize dates: if fecha_fin is before fecha_inicio, treat fecha_fin as fecha_inicio
+            fecha_inicio = bloqueo.fecha_inicio
+            fecha_fin = bloqueo.fecha_fin
+            if fecha_fin < fecha_inicio:
+                fecha_fin = fecha_inicio
+
             result.append({
-                'fecha_inicio': bloqueo.fecha_inicio.strftime('%Y-%m-%d'),
-                'fecha_fin': bloqueo.fecha_fin.strftime('%Y-%m-%d'),
+                'fecha_inicio': fecha_inicio.strftime('%Y-%m-%d'),
+                'fecha_fin': fecha_fin.strftime('%Y-%m-%d'),
                 'motivo': bloqueo.get_motivo_display(),
                 'descripcion': bloqueo.descripcion
             })
@@ -1408,7 +1414,7 @@ def get_calendar_events(request):
                     'id': f'bloqueo_{bloqueo.id}',
                     'title': f'BLOQUEADO - {bloqueo.salon.nombre}',
                     'start': bloqueo.fecha_inicio.strftime('%Y-%m-%d'),
-                    'end': (bloqueo.fecha_fin + dt.timedelta(days=1)).strftime('%Y-%m-%d'),
+                    'end': (bloqueo.fecha_fin + timedelta(days=1)).strftime('%Y-%m-%d'),
                     'backgroundColor': '#dc2626',
                     'borderColor': '#b91c1c',
                     'display': 'background',

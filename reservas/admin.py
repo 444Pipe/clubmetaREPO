@@ -424,8 +424,8 @@ class BloqueoEspacioAdmin(admin.ModelAdmin):
 
     def activo_badge(self, obj):
         if obj.activo:
-            return format_html('<span style="background:#10b981; color:white; padding:4px 8px; border-radius:12px; font-size:0.85rem;">Sí</span>')
-        return format_html('<span style="background:#6b7280; color:white; padding:4px 8px; border-radius:12px; font-size:0.85rem;">No</span>')
+            return format_html('<span style="background:#10b981; color:white; padding:4px 8px; border-radius:12px; font-size:0.85rem;">{}</span>', 'Sí')
+        return format_html('<span style="background:#6b7280; color:white; padding:4px 8px; border-radius:12px; font-size:0.85rem;">{}</span>', 'No')
     activo_badge.short_description = 'Activo'
 
 
