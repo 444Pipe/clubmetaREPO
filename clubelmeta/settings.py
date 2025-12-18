@@ -14,6 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
+
 # ---------------------------
 # ALLOWED HOSTS
 # ---------------------------
@@ -30,7 +31,7 @@ ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS if h.strip()]
 # ---------------------------
 CSRF_TRUSTED_ORIGINS = [
     "https://*.railway.app",
-    "https://clubelmeta-production.up.railway.app",  # CAMBIA ESTO POR TU DOMINIO REAL
+    "https://clubelmeta-production.up.railway.app",  # CAMBIA POR TU DOMINIO FINAL
 ]
 
 
@@ -38,14 +39,14 @@ CSRF_TRUSTED_ORIGINS = [
 # APPS
 # ---------------------------
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.humanize',
-    'reservas.apps.ReservasConfig',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django.contrib.humanize",
+    "reservas.apps.ReservasConfig",
 ]
 
 
@@ -69,23 +70,23 @@ ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", EMAIL_HOST_USER)
 # MIDDLEWARE
 # ---------------------------
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 
 # ---------------------------
 # URLS Y WSGI
 # ---------------------------
-ROOT_URLCONF = 'clubelmeta.urls'
-WSGI_APPLICATION = 'clubelmeta.wsgi.application'
+ROOT_URLCONF = "clubelmeta.urls"
+WSGI_APPLICATION = "clubelmeta.wsgi.application"
 
 
 # ---------------------------
@@ -93,15 +94,15 @@ WSGI_APPLICATION = 'clubelmeta.wsgi.application'
 # ---------------------------
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.template.context_processors.csrf',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.template.context_processors.csrf",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
@@ -111,77 +112,74 @@ TEMPLATES = [
 # ---------------------------
 # DATABASE
 # ---------------------------
-# Usamos `dj_database_url.config()` con un `default` sqlite para cubrir
-# dos escenarios sin duplicar configuración:
-# - En producción Railway: `DATABASE_URL` está presente -> dj_database_url
-#   parsea y devuelve la configuración PostgreSQL automáticamente.
-# - En desarrollo local: si no existe `DATABASE_URL`, se usa el `default`
-#   `sqlite:///db.sqlite3`, por lo que el entorno local sigue usando SQLite.
-# Todas las credenciales vienen de la variable `DATABASE_URL` (no hardcodeadas).
+# - Producción (Railway): usa DATABASE_URL (PostgreSQL + SSL)
+# - Local: SQLite automáticamente
 DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3',
+    "default": dj_database_url.config(
+        default="sqlite:///db.sqlite3",
         conn_max_age=600,
-        ssl_require=True
+        ssl_require=not DEBUG,
     )
 }
-
 
 
 # ---------------------------
 # PASSWORD VALIDATION
 # ---------------------------
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 
 # ---------------------------
 # INTERNATIONALIZATION
 # ---------------------------
-LANGUAGE_CODE = 'es'
-TIME_ZONE = 'America/Bogota'
+LANGUAGE_CODE = "es"
+TIME_ZONE = "America/Bogota"
 
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-LOCALE_PATHS = [BASE_DIR / 'locale']
+LOCALE_PATHS = [BASE_DIR / "locale"]
 
 from django.utils.translation import gettext_lazy as _
+
 LANGUAGES = [
-    ('es', _('Spanish')),
+    ("es", _("Spanish")),
 ]
 
 
 # ---------------------------
 # STATIC & MEDIA
 # ---------------------------
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+# SOLO en desarrollo local
+if DEBUG:
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, "static"),
+    ]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 # ---------------------------
 # LOGIN CONFIG
 # ---------------------------
-LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/panel/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = "/panel/"
+LOGOUT_REDIRECT_URL = "/"
 
 
 # ---------------------------
 # DEFAULT AUTO FIELD
 # ---------------------------
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
