@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import dj_database_url
 
 load_dotenv()
 
@@ -110,12 +111,21 @@ TEMPLATES = [
 # ---------------------------
 # DATABASE
 # ---------------------------
+# Usamos `dj_database_url.config()` con un `default` sqlite para cubrir
+# dos escenarios sin duplicar configuración:
+# - En producción Railway: `DATABASE_URL` está presente -> dj_database_url
+#   parsea y devuelve la configuración PostgreSQL automáticamente.
+# - En desarrollo local: si no existe `DATABASE_URL`, se usa el `default`
+#   `sqlite:///db.sqlite3`, por lo que el entorno local sigue usando SQLite.
+# Todas las credenciales vienen de la variable `DATABASE_URL` (no hardcodeadas).
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3',
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
+
 
 
 # ---------------------------

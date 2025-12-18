@@ -50,8 +50,8 @@ def send_email_async(subject, template_txt, template_html, context, recipient_li
                 from reservas.models import EmailLog
                 EmailLog.objects.create(
                     reserva=reserva if hasattr(reserva, 'pk') else None,
-                    channel='Email',
-                    to_email=(recipient_list[0] if recipient_list else None),
+                    channel='EMAIL',
+                    to_email=(','.join(recipient_list) if recipient_list else None),
                     subject=subject,
                     body_text=text_body,
                     body_html=html_body,
@@ -68,8 +68,8 @@ def send_email_async(subject, template_txt, template_html, context, recipient_li
                 from reservas.models import EmailLog
                 EmailLog.objects.create(
                     reserva=reserva if hasattr(reserva, 'pk') else None,
-                    channel='Email',
-                    to_email=(recipient_list[0] if recipient_list else None),
+                    channel='EMAIL',
+                    to_email=(','.join(recipient_list) if recipient_list else None),
                     subject=subject,
                     body_text=text_body,
                     body_html=html_body,
