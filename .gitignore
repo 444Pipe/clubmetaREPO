@@ -1,5 +1,5 @@
 # Ignore collected static files
-/staticfiles/
+staticfiles/
 
 # Local env and virtualenvs
 .env
