@@ -2,6 +2,7 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 import dj_database_url
+import cloudinary
 
 load_dotenv()
 
@@ -27,11 +28,11 @@ ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS if h.strip()]
 
 
 # ---------------------------
-# CSRF CONFIG (OBLIGATORIO EN RAILWAY)
+# CSRF CONFIG (Railway / Dominio)
 # ---------------------------
 CSRF_TRUSTED_ORIGINS = [
     "https://*.railway.app",
-    "https://clubelmeta-production.up.railway.app",  # CAMBIA POR TU DOMINIO FINAL
+    "https://clubelmeta-production.up.railway.app",
 ]
 
 
@@ -39,6 +40,11 @@ CSRF_TRUSTED_ORIGINS = [
 # APPS
 # ---------------------------
 INSTALLED_APPS = [
+    # Cloudinary
+    "cloudinary",
+    "cloudinary_storage",
+
+    # Django
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -46,6 +52,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize",
+
+    # Local
     "reservas.apps.ReservasConfig",
 ]
 
@@ -112,8 +120,8 @@ TEMPLATES = [
 # ---------------------------
 # DATABASE
 # ---------------------------
-# - Producción (Railway): usa DATABASE_URL (PostgreSQL + SSL)
-# - Local: SQLite automáticamente
+# Producción: PostgreSQL (Railway)
+# Local: SQLite automático
 DATABASES = {
     "default": dj_database_url.config(
         default="sqlite:///db.sqlite3",
@@ -154,21 +162,32 @@ LANGUAGES = [
 
 
 # ---------------------------
-# STATIC & MEDIA
+# STATIC FILES (Whitenoise)
 # ---------------------------
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-# SOLO en desarrollo local
-if DEBUG:
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, "static"),
-    ]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+
+
+# ---------------------------
+# MEDIA FILES (Cloudinary)
+# ---------------------------
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+
+cloudinary.config(
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET"),
+    secure=True,
+)
 
 
 # ---------------------------
