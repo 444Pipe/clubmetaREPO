@@ -180,6 +180,7 @@ STATICFILES_FINDERS = [
 ]
 
 
+
 # ---------------------------
 # MEDIA FILES (Cloudinary)
 # ---------------------------
