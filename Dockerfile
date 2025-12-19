@@ -20,12 +20,16 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # Copy project
+COPY entrypoint.sh /app/entrypoint.sh
 COPY . /app/
+
+RUN chmod +x /app/entrypoint.sh
 
 # Collect static files at build time
 RUN python manage.py collectstatic --noinput
 
 EXPOSE 8080
 
-ENTRYPOINT ["/app/entrypoint.sh"]
-CMD ["gunicorn", "clubelmeta.wsgi:application", "--bind", "0.0.0.0:8080", "--log-file", "-"]
+WORKDIR /app
+
+ENTRYPOINT ["./entrypoint.sh"]
