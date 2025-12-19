@@ -37,7 +37,7 @@
           <div class="carousel-inner">
             {% for img in r.images %}
             <div class="carousel-item {% if forloop.first %}active{% endif %}">
-              <img src="{% static 'img_Hotel/' %}{{ img }}" class="d-block w-100" alt="{{ r.name }}" style="height: 250px; object-fit: cover;">
+              <img src="{% static 'img/' %}{{ img }}" class="d-block w-100" alt="{{ r.name }}" style="height: 250px; object-fit: cover;">
             </div>
             {% endfor %}
           </div>
@@ -128,7 +128,7 @@
                   <div class="carousel-inner">
                     {% for img in r.images %}
                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                      <img src="{% static 'img_Hotel/' %}{{ img }}" class="d-block w-100 rounded" alt="{{ r.name }}" style="height: 300px; object-fit: cover;">
+                      <img src="{% static 'img/' %}{{ img }}" class="d-block w-100 rounded" alt="{{ r.name }}" style="height: 300px; object-fit: cover;">
                     </div>
                     {% endfor %}
                   </div>
@@ -259,7 +259,7 @@
        target="_blank" 
        class="whatsapp-btn">
       <span class="whatsapp-icon-wrapper">
-        <img src="{% static 'img_Hotel/whatsapp.png' %}" alt="WhatsApp" class="whatsapp-icon">
+        <img src="{% static 'img/whatsapp.png' %}" alt="WhatsApp" class="whatsapp-icon">
       </span>
       <span class="whatsapp-text">Contactar por WhatsApp</span>
       <span class="whatsapp-arrow">→</span>
