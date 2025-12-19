@@ -2,7 +2,6 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 import dj_database_url
-import cloudinary
 
 load_dotenv()
 
@@ -40,10 +39,6 @@ CSRF_TRUSTED_ORIGINS = [
 # APPS
 # ---------------------------
 INSTALLED_APPS = [
-    # Cloudinary
-    "cloudinary",
-    "cloudinary_storage",
-
     # Django
     "django.contrib.admin",
     "django.contrib.auth",
@@ -166,18 +161,9 @@ STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # ---------------------------
-# MEDIA FILES (Cloudinary)
+# MEDIA FILES
 # ---------------------------
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 MEDIA_URL = "/media/"
-
-
-cloudinary.config(
-    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
-    api_key=os.getenv("CLOUDINARY_API_KEY"),
-    api_secret=os.getenv("CLOUDINARY_API_SECRET"),
-    secure=True,
-)
 
 
 # ---------------------------
