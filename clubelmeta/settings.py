@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY
 # ---------------------------
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key")
-DEBUG = True
+DEBUG = False
 
 
 # ---------------------------
@@ -79,6 +79,7 @@ ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", EMAIL_HOST_USER)
 # ---------------------------
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -162,13 +163,16 @@ LANGUAGES = [
 
 
 # ---------------------------
-# STATIC FILES (simple, no collectstatic)
+# STATIC FILES (Docker/Production)
 # ---------------------------
 STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # ---------------------------
 # MEDIA FILES (Cloudinary)
