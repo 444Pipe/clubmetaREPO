@@ -121,14 +121,7 @@ def get_salon_images(salon_or_name):
 
     for key in SALON_IMAGES.keys():
         if key in (nombre_buscar or ''):
-            # Convertir cada entrada relativa en SALON_IMAGES a URL estática completa
-            urls = []
-            for rel in SALON_IMAGES[key]:
-                try:
-                    urls.append(static(f'img/{rel}'))
-                except Exception:
-                    urls.append(f'/static/img/{rel}')
-            return urls
+            return SALON_IMAGES[key]
 
     return []
 
