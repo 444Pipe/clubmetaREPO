@@ -68,10 +68,17 @@ def get_salon_images(salon_or_name):
         imagen_attr = None
         nombre_attr = None
 
-    if imagen_attr:
-        # Si el admin guardó una ruta puntual dentro de static/img/, devolverla
-        if isinstance(imagen_attr, str) and '/' in imagen_attr:
-            return [imagen_attr]
+    if imagen_attr and isinstance(imagen_attr, str):
+        # Soportar múltiples rutas separadas por comas en el campo `imagen` del admin.
+        # Ejemplo: "salon mi llanura/mika.jpg, salon mi llanura/otra.jpg"
+        parts = [p.strip() for p in imagen_attr.split(',') if p.strip()]
+        if parts:
+            # Si todos los elementos contienen '/', tratarlos como rutas relativas dentro de static/img/
+            if all('/' in p for p in parts):
+                return parts
+            # Si sólo hay una entrada y contiene '/', devolverla como única imagen
+            if len(parts) == 1 and '/' in parts[0]:
+                return [parts[0]]
 
     # Determinar el nombre a usar para buscar en SALON_IMAGES
     nombre_buscar = nombre_attr or (salon_or_name if isinstance(salon_or_name, str) else '')
