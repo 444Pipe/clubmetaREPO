@@ -49,6 +49,9 @@ SALON_IMAGES = {
     'Salón Presidente': ["salon presidente/presidente.jpg", "salon presidente/presidente1.jpg"]
 }
 
+from django.templatetags.static import static
+
+
 def get_salon_images(salon_or_name):
     """Obtiene las imágenes del salón.
 
@@ -68,7 +71,46 @@ def get_salon_images(salon_or_name):
 
     # Si la instancia tiene una ruta en el campo imagen, úsala (como único elemento)
     if imagen_attr:
-        return [imagen_attr]
+        # Si admin guardó una carpeta, listar todos los ficheros dentro de static/img/<carpeta>
+        from django.conf import settings
+        import os
+
+        carpeta_rel = imagen_attr.strip().rstrip('/')
+        carpeta_fs = os.path.join(settings.BASE_DIR, 'static', 'img', carpeta_rel)
+        if os.path.isdir(carpeta_fs):
+            urls = []
+            for fname in sorted(os.listdir(carpeta_fs)):
+                # filtrar por extensiones de imagen comunes
+                if fname.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp', '.avif', '.svg')):
+                    try:
+                        urls.append(static(f'img/{carpeta_rel}/{fname}'))
+                    except Exception:
+                        urls.append(f'/static/img/{carpeta_rel}/{fname}')
+            if urls:
+                return urls
+
+        # Si no es carpeta, tratar como ruta a archivo dentro de static/img/
+        try:
+            return [static(f'img/{imagen_attr}')]
+        except Exception:
+            return [f'/static/img/{imagen_attr}']
+
+    # Si la instancia tiene imágenes relacionadas (SalonImage), devolver sus URLs
+    try:
+        # buscar related_name 'images' (definido en el modelo SalonImage)
+        if hasattr(salon_or_name, 'images'):
+            related = salon_or_name.images.all()
+            if related.exists():
+                urls = []
+                for img in related:
+                    try:
+                        urls.append(img.image.url)
+                    except Exception:
+                        # fallback a ruta relativa
+                        urls.append(f'/media/{img.image.name}')
+                return urls
+    except Exception:
+        pass
 
     # Determinar el nombre a usar para buscar en SALON_IMAGES
     nombre_buscar = ''
