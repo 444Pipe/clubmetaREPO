@@ -14,13 +14,13 @@ import datetime as dt
 # Mapeo de imágenes por salón (hardcoded por ahora)
 SALON_IMAGES = {
     'Mi Llanura': [
-        "salon mi llanura/WhatsApp Image 2025-12-01 at 11.51.19 AM (1).jpeg",
-        "salon mi llanura/WhatsApp Image 2025-12-01 at 11.51.19 AM.jpeg",
-        "salon mi llanura/WhatsApp Image 2025-12-01 at 11.51.20 AM.jpeg",
-        "salon mi llanura/milanuraa.avif",
-        "salon mi llanura/millanura.avif",
-        "salon mi llanura/millanuraaa.avif",
-        "salon mi llanura/mika.jpg"
+        "salon_mi_llanura/WhatsApp Image 2025-12-01 at 11.51.19 AM (1).jpeg",
+        "salon_mi_llanura/WhatsApp Image 2025-12-01 at 11.51.19 AM.jpeg",
+        "salon_mi_llanura/WhatsApp Image 2025-12-01 at 11.51.20 AM.jpeg",
+        "salon_mi_llanura/milanuraa.avif",
+        "salon_mi_llanura/millanura.avif",
+        "salon_mi_llanura/millanuraaa.avif",
+        "salon_mi_llanura/mika.jpg"
     ],
     'Salón Bar': [
         "salon bar/bar.jpg",
