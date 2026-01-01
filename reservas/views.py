@@ -49,11 +49,37 @@ SALON_IMAGES = {
     'Salón Presidente': ["salon presidente/presidente.jpg", "salon presidente/presidente1.jpg"]
 }
 
-def get_salon_images(nombre_salon):
-    """Obtiene las imágenes del salón basado en su nombre"""
+def get_salon_images(salon_or_name):
+    """Obtiene las imágenes del salón.
+
+    Acepta tanto el nombre del salón (str) como una instancia de `Salon`.
+    - Si la instancia tiene el campo `imagen` y contiene una ruta (p. ej. 'carpeta/archivo.jpg'),
+      devuelve esa ruta como único elemento (uso por admin para imágenes individuales).
+    - Si no, intenta hacer match con las claves de `SALON_IMAGES` por nombre.
+    - Si no encuentra nada devuelve lista vacía.
+    """
+    # Si nos pasaron una instancia, intentar usar su campo imagen
+    imagen_attr = None
+    nombre_attr = None
+    try:
+        imagen_attr = getattr(salon_or_name, 'imagen', None)
+        nombre_attr = getattr(salon_or_name, 'nombre', None)
+    except Exception:
+        imagen_attr = None
+        nombre_attr = None
+
+    if imagen_attr:
+        # Si el admin guardó una ruta puntual dentro de static/img/, devolverla
+        if isinstance(imagen_attr, str) and '/' in imagen_attr:
+            return [imagen_attr]
+
+    # Determinar el nombre a usar para buscar en SALON_IMAGES
+    nombre_buscar = nombre_attr or (salon_or_name if isinstance(salon_or_name, str) else '')
+
     for key in SALON_IMAGES.keys():
-        if key in nombre_salon:
+        if key in (nombre_buscar or ''):
             return SALON_IMAGES[key]
+
     return []
 
 # Validación de código de socio contra base de datos
@@ -127,7 +153,7 @@ def espacios(request):
                 'price_socio_8h': int(primera_config.precio_socio_8h or primera_config.precio_socio_4h),
                 'capacity': primera_config.capacidad,
                 'type': 'social',
-                'images': get_salon_images(salon.nombre),
+                'images': get_salon_images(salon),
                 'configuraciones': list(configuraciones)  # Lista de todas las configuraciones
             })
     
@@ -160,7 +186,7 @@ def register(request):
             'price_socio_8h': int(config.precio_socio_8h or config.precio_socio_4h),
             'capacity': config.capacidad,
             'type': 'social',
-            'images': get_salon_images(config.salon.nombre)
+            'images': get_salon_images(config.salon)
         })
     
     if request.method == 'GET':
