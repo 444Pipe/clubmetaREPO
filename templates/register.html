@@ -1053,3 +1053,56 @@
 
 {% endblock %}
 {% endblock %}
+
+<script>
+  // Deshabilitar selección de lunes (la Corporación no trabaja los lunes)
+  document.addEventListener('DOMContentLoaded', function(){
+    var fechaInput = document.getElementById('fechaEvento');
+    var availability = document.getElementById('availabilityStatus');
+    function isMonday(dateStr){
+      if(!dateStr) return false;
+      var parts = dateStr.split('-'); // yyyy-mm-dd
+      if(parts.length !== 3) return false;
+      var d = new Date(parseInt(parts[0],10), parseInt(parts[1],10)-1, parseInt(parts[2],10));
+      return d.getDay() === 1; // 1 = Monday
+    }
+
+    if(!fechaInput) return;
+
+    fechaInput.addEventListener('change', function(e){
+      var v = this.value;
+      if(isMonday(v)){
+        if(availability){
+          availability.style.display = '';
+          availability.className = 'alert alert-danger';
+          availability.textContent = 'Los lunes la Corporación está cerrada. Por favor elige otra fecha.';
+        } else {
+          alert('Los lunes la Corporación está cerrada. Por favor elige otra fecha.');
+        }
+        this.value = '';
+        this.focus();
+      } else {
+        if(availability){ availability.style.display = 'none'; availability.textContent = ''; }
+      }
+    });
+
+    // Evitar envío de formulario si fecha es lunes
+    var form = document.getElementById('reservationForm');
+    if(form){
+      form.addEventListener('submit', function(evt){
+        var v = fechaInput.value;
+        if(isMonday(v)){
+          evt.preventDefault();
+          if(availability){
+            availability.style.display = '';
+            availability.className = 'alert alert-danger';
+            availability.textContent = 'No se permite reservar los lunes. Elige otra fecha.';
+          } else {
+            alert('No se permite reservar los lunes. Elige otra fecha.');
+          }
+          fechaInput.focus();
+        }
+      });
+    }
+  });
+</script>

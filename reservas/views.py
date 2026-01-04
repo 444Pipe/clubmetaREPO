@@ -246,6 +246,9 @@ def register(request):
         fecha_evento_obj = datetime.strptime(fecha_evento, '%Y-%m-%d').date()
         if fecha_evento_obj < date.today():
             errors.append("La fecha del evento no puede ser en el pasado.")
+        # No permitir reservas los lunes (weekday() == 0)
+        if fecha_evento_obj.weekday() == 0:
+            errors.append("No se permiten reservas los lunes. Por favor elige otra fecha.")
     except ValueError:
         errors.append("Formato de fecha inválido.")
         fecha_evento_obj = None
