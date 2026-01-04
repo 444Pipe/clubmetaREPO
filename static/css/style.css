@@ -85,11 +85,16 @@ h2.display-5, h3{color: #fff}
 a.theme-link{color:var(--accent-500);font-weight:600}
 
 /* Events cards ("Tipos de Eventos") */
-.events-section{padding:36px 0}
-.events-section .card{padding:22px;border-radius:12px;background:var(--card);border:0}
-.events-section .card .card-title{font-weight:700;color:var(--primary-700);display:flex;align-items:center;gap:8px}
-.events-section .card .card-text{color:var(--muted-600);margin-top:8px}
-.events-section .row{gap:18px}
+.events-section{padding:48px 0; background: #fff}
+.events-section .container{max-width:1100px}
+.events-section .section-title{font-size:1.6rem;font-weight:700;color:var(--primary-700);margin-bottom:26px;letter-spacing:0.2px}
+
+.events-section .card{padding:0;border-radius:10px;background:transparent;border:0}
+.events-section .event-card{width:100%;max-width:none;border-radius:12px;background:#ffffff;border:1px solid rgba(16,24,40,0.04);box-shadow:0 6px 18px rgba(16,24,40,0.04);overflow:hidden;display:flex;flex-direction:column;height:100%}
+.events-section .event-card .card-body{padding:1.6rem 1.8rem;display:flex;flex-direction:column;justify-content:space-between;gap:12px;min-height:190px}
+.events-section .card .card-title{font-weight:700;color:var(--primary-700);display:flex;align-items:center;gap:12px;font-size:1.05rem}
+.events-section .card .card-text{color:var(--muted-600);margin-top:8px;font-size:0.95rem}
+.events-section .row{gap:20px}
 
 /* Event list inline replacement: move from templates to static file to avoid cache/inconsistency issues */
 .event-list { list-style: none; padding: 0; margin: 0; }
@@ -100,58 +105,35 @@ a.theme-link{color:var(--accent-500);font-weight:600}
 /* Layout improvements: make event cards a nice centered grid */
 .events-grid{
   display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap:28px;
   align-items:stretch;
-  justify-items:center;
 }
-.events-section .card{width:100%;max-width:560px;transition:transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s ease}
-.events-section .card .card-body{min-height:160px;display:flex;flex-direction:column;justify-content:center;padding:1.6rem}
-.events-section .card-title{font-size:1.06rem}
+.events-section .card{width:100%;transition:transform .18s ease, box-shadow .18s ease}
+.events-section .card .card-body{min-height:220px}
+.events-section .card-title{font-size:1.04rem}
 
 /* Enhanced visual styles for event cards */
 .event-card{
-  border-radius:14px;
-  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
-  box-shadow: 0 8px 24px rgba(16,24,40,0.06), 0 2px 6px rgba(16,24,40,0.04);
+  border-radius:10px;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(16,24,40,0.04);
   border: 1px solid rgba(16,24,40,0.04);
   position:relative;
-  overflow:visible;
 }
-.event-card::before{
-  content: '';
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%) scaleX(1);
-  width: 60px;
-  height: 4px;
-  border-radius: 4px;
-  background: linear-gradient(90deg,#1e40af,#3b82f6);
-  box-shadow: 0 4px 12px rgba(30,64,175,0.12);
-  opacity: 0.95;
-}
-.event-card:hover{
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 20px 50px rgba(16,24,40,0.12), 0 6px 20px rgba(30,64,175,0.06);
-}
+.event-card:hover{transform:translateY(-6px);box-shadow:0 12px 28px rgba(16,24,40,0.06)}
 
 /* Title accent */
-.event-card .card-title{
-  display:flex;align-items:center;gap:10px;margin-bottom:8px;color:#123173;font-weight:700
-}
-.event-card .card-title::before{
-  content:'';display:inline-block;width:10px;height:10px;border-radius:50%;background:linear-gradient(180deg,#3b82f6,#1e40af);box-shadow:0 2px 6px rgba(30,64,175,0.18)
-}
+.event-card .card-title{display:flex;align-items:center;gap:10px;margin-bottom:8px;color:#123173;font-weight:700}
 
 /* Emoji styling for card titles */
-.emoji { font-size: 1.25rem; display: inline-block; transform: translateY(1px); }
-.card-title .emoji { margin-right: 6px }
+.emoji { font-size: 1.05rem; display: inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:8px; background: linear-gradient(180deg, rgba(30,58,138,0.08), rgba(59,130,246,0.06)); color: var(--primary-700); box-shadow: inset 0 1px 0 rgba(255,255,255,0.6); margin-right:8px }
+.card-title .emoji { margin-right: 8px }
 
 /* List adjustments */
-.event-list li{justify-content:flex-start}
+.event-list li{justify-content:flex-start;padding:8px 0;align-items:center}
 .event-list span{display:inline-block}
-.event-dot{width:8px;height:8px;background:linear-gradient(180deg,#1e40af,#3b82f6);box-shadow:0 2px 6px rgba(30,64,175,0.12)}
+.event-dot{width:8px;height:8px;background:linear-gradient(180deg,#1e40af,#3b82f6);box-shadow:0 2px 6px rgba(30,64,175,0.08);flex-shrink:0}
 
 /* subtle entrance animation */
 .reveal{opacity:0;transform:translateY(18px) scale(.995);transition:opacity .6s ease, transform .6s cubic-bezier(.2,.9,.2,1)}
