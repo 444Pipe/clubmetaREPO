@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}Inicio - CLUB EL META{% endblock %}
 {% block content %}
-<section class="hero text-center text-white" id="heroSection" style="background-image: linear-gradient(rgba(30,58,138,0.70), rgba(30,58,138,0.70)), url({% static 'img/fondin.jpeg' %}); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 60vh; display: flex; align-items: center;">
+<section class="hero text-center text-white" id="heroSection" style="background-image: linear-gradient(rgba(30,58,138,0.55), rgba(30,58,138,0.55)), url({% static 'img/fondin.jpeg' %}); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 75vh; display: flex; align-items: center;">
   <div class="container py-5">
     <h2 class="display-5 hero-title fade-up">Bienvenido a  CLUB EL META</h2>
     <p class="lead hero-subtitle fade-up delayed"> La Corporación Club El Meta es un club social sin ánimo de lucro, creado para fomentar las actividades sociales, recreativas y de esparcimiento, dirigido a sus asociados y clientes particulares.</p>
@@ -15,13 +15,13 @@
 
 <style>
   /* Hero overlay and layout enhancements */
-  #heroSection { position: relative; overflow: hidden; min-height: 60vh; display: flex; align-items: center; }
+  #heroSection { position: relative; overflow: hidden; min-height: 75vh; display: flex; align-items: center; }
   #heroSection::before {
     content: '';
     position: absolute;
     inset: 0;
-    /* Make the black overlay very subtle so inline blue tint shows clearly */
-    background: linear-gradient(rgba(0,0,0,0.04), rgba(0,0,0,0.03));
+    /* Slightly reduced overlay so more of the background shows through */
+    background: linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0.02));
     pointer-events: none;
     z-index: 1;
   }
@@ -57,7 +57,7 @@
 
   /* Responsive: stack buttons and keep text readable */
   @media (max-width: 768px) {
-    #heroSection { min-height: 48vh; padding: 2.2rem 0; }
+    #heroSection { min-height: 56vh; padding: 2.2rem 0; }
     .hero .mt-4 { flex-direction: column; gap: 0.65rem; }
     .hero-btn { display: block; width: 88%; max-width: 360px; margin: 0.25rem auto; }
     .hero-title { text-align: center; }
