@@ -199,11 +199,37 @@
   .image-wrapper-animated:hover img {
     transform: scale(1.02);
   }
+
+  /* Estilo enmarcado para el título de la sección de eventos */
+  .section-title-frame {
+    display: inline-block;
+    position: relative;
+    padding: 0.6rem 1.1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(37,99,235,0.12);
+    background: linear-gradient(180deg, rgba(37,99,235,0.03), transparent);
+    box-shadow: 0 8px 20px rgba(2,6,23,0.06);
+    color: #0f172a;
+    font-size: 1.25rem;
+  }
+
+  .section-title-frame::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -12px;
+    width: 64px;
+    height: 6px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #2563eb, #06b6d4);
+    box-shadow: 0 6px 12px rgba(37,99,235,0.12);
+  }
 </style>
 
 <section class="bg-light py-5 events-section">
   <div class="container text-center">
-    <h3 class="mb-4 fw-bold">Tipos de Eventos que Organizamos</h3>
+    <h3 class="mb-4 fw-bold section-title-frame">Tipos de Eventos que Organizamos</h3>
 
   
 
