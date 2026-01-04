@@ -200,46 +200,12 @@
     transform: scale(1.02);
   }
 
-  /* Estilo enmarcado para el título de la sección de eventos */
-  .section-title-frame {
-    display: inline-block;
-    position: relative;
-    padding: 0.9rem 1.6rem;
-    border-radius: 14px;
-    border: 2px solid #1e40af; /* marco azul consistente */
-    background: #2563eb; /* azul sólido para mejor contraste */
-    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
-    color: #ffffff !important; /* asegurar texto blanco */
-    -webkit-text-fill-color: #ffffff;
-    text-shadow: 0 2px 6px rgba(0,0,0,0.35); /* sombra para mejorar legibilidad */
-    font-size: 1.6rem; /* más grande */
-    font-weight: 800;
-    letter-spacing: 0.2px;
-    transition: transform 0.18s ease, box-shadow 0.18s ease;
-  }
-
-  .section-title-frame:hover{
-    transform: translateY(-3px);
-    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.18);
-  }
-
-  .section-title-frame::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: -12px;
-    width: 68px;
-    height: 8px;
-    border-radius: 8px;
-    background: #06b6d4; /* barra de acento turquesa */
-    box-shadow: 0 8px 18px rgba(6,182,212,0.15);
-  }
+  
 </style>
 
 <section class="bg-light py-5 events-section">
   <div class="container text-center">
-    <h3 class="mb-4 fw-bold section-title-frame">Tipos de Eventos que Organizamos</h3>
+    <h3 class="mb-4 fw-bold">Tipos de Eventos que Organizamos</h3>
 
   
 
