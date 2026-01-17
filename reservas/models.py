@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 
@@ -134,7 +135,20 @@ class Reserva(models.Model):
                 else:
                     self.precio_total = self.configuracion_salon.precio_particular_8h or self.configuracion_salon.precio_particular_4h
         
+        # Validate required fields at model level
+        try:
+            self.full_clean()
+        except ValidationError:
+            # Re-raise to make validation failures explicit to callers
+            raise
+
         super().save(*args, **kwargs)
+
+    def clean(self):
+        """Validaciones de modelo: exigir email del cliente."""
+        super().clean()
+        if not self.email_cliente or not str(self.email_cliente).strip():
+            raise ValidationError({'email_cliente': 'El correo del cliente es obligatorio.'})
 
 
 
