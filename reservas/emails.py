@@ -149,25 +149,25 @@ def send_raw_email_sync(subject, text_body, html_body, recipient_list, reserva=N
         return True
     except Exception as e:
         err = traceback.format_exc()
+        try:
+            from reservas.models import EmailLog
+            to_email_val = None
             try:
-                from reservas.models import EmailLog
-                to_email_val = None
-                try:
-                    if 'to_addrs' in locals() and to_addrs:
-                        to_email_val = ','.join(to_addrs)
-                except Exception:
-                    to_email_val = None
-
-                EmailLog.objects.create(
-                    reserva=reserva if hasattr(reserva, 'pk') else None,
-                    channel='EMAIL',
-                    to_email=to_email_val,
-                    subject=subject,
-                    body_text=text_body,
-                    body_html=html_body,
-                    success=False,
-                    error=err,
-                )
+                if 'to_addrs' in locals() and to_addrs:
+                    to_email_val = ','.join(to_addrs)
             except Exception:
-                pass
+                to_email_val = None
+
+            EmailLog.objects.create(
+                reserva=reserva if hasattr(reserva, 'pk') else None,
+                channel='EMAIL',
+                to_email=to_email_val,
+                subject=subject,
+                body_text=text_body,
+                body_html=html_body,
+                success=False,
+                error=err,
+            )
+        except Exception:
+            pass
         return False
