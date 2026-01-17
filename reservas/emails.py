@@ -5,16 +5,21 @@ from django.template.loader import render_to_string
 from django.conf import settings
 
 try:
-    from resend import Resend
+    import resend as _resend
 except Exception:
-    Resend = None
+    _resend = None
 
 
 def _get_resend_client():
     api_key = os.getenv('RESEND_API_KEY')
-    if not api_key or Resend is None:
+    if not api_key or _resend is None:
         return None
-    return Resend(api_key)
+    # configure module-level api key as required by the SDK
+    try:
+        _resend.api_key = api_key
+    except Exception:
+        pass
+    return _resend
 
 
 def send_email_async(subject, template_txt, template_html, context, recipient_list):
@@ -64,14 +69,31 @@ def send_email_async(subject, template_txt, template_html, context, recipient_li
             if not from_addr:
                 raise RuntimeError('No from address configured (EMAIL_FROM or DEFAULT_FROM_EMAIL)')
 
-            # Send via Resend API
-            client.emails.send(
-                from_=from_addr,
-                to=to_addrs,
-                subject=subject,
-                html=html_body or text_body,
-                text=text_body or None,
-            )
+            # Send via Resend API (support both v2 module API shapes)
+            sent = False
+            if hasattr(client, 'Emails') and callable(getattr(client.Emails, 'send', None)):
+                params = {
+                    'from': from_addr,
+                    'to': to_addrs,
+                    'subject': subject,
+                    'html': html_body or text_body,
+                }
+                if text_body:
+                    params['text'] = text_body
+                client.Emails.send(params)
+                sent = True
+            elif hasattr(client, 'emails') and callable(getattr(client.emails, 'send', None)):
+                # older/newer shape: client.emails.send(from_=..., to=..., ...)
+                client.emails.send(
+                    from_=from_addr,
+                    to=to_addrs,
+                    subject=subject,
+                    html=html_body or text_body,
+                    text=text_body or None,
+                )
+                sent = True
+            else:
+                raise RuntimeError('Resend client has no send method')
 
             # Log success
             try:
@@ -123,13 +145,29 @@ def send_raw_email_sync(subject, text_body, html_body, recipient_list, reserva=N
         if client is None:
             raise RuntimeError('Resend client not configured (RESEND_API_KEY missing or library not installed)')
 
-        client.emails.send(
-            from_=from_addr,
-            to=to_addrs,
-            subject=subject,
-            html=html_body or text_body,
-            text=text_body or None,
-        )
+        sent = False
+        if hasattr(client, 'Emails') and callable(getattr(client.Emails, 'send', None)):
+            params = {
+                'from': from_addr,
+                'to': to_addrs,
+                'subject': subject,
+                'html': html_body or text_body,
+            }
+            if text_body:
+                params['text'] = text_body
+            client.Emails.send(params)
+            sent = True
+        elif hasattr(client, 'emails') and callable(getattr(client.emails, 'send', None)):
+            client.emails.send(
+                from_=from_addr,
+                to=to_addrs,
+                subject=subject,
+                html=html_body or text_body,
+                text=text_body or None,
+            )
+            sent = True
+        else:
+            raise RuntimeError('Resend client has no send method')
 
         try:
             from reservas.models import EmailLog
