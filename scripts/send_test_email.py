@@ -6,7 +6,7 @@ import django
 django.setup()
 
 from django.conf import settings
-from django.core.mail import EmailMultiAlternatives
+from reservas.emails import send_raw_email_sync
 
 
 def send_test_email(to_address):
@@ -15,26 +15,12 @@ def send_test_email(to_address):
     html = '<p>Este es un <strong>correo de prueba</strong> enviado desde la aplicación.</p>'
     from_email = settings.DEFAULT_FROM_EMAIL
 
-    msg = EmailMultiAlternatives(subject, text, from_email, [to_address])
-    msg.attach_alternative(html, 'text/html')
     try:
-        sent = msg.send(fail_silently=False)
-        print('send() returned', sent)
-        try:
-            from reservas.models import EmailLog
-            EmailLog.objects.create(reserva=None, channel='EMAIL', to_email=to_address, subject=subject, body_text=text, body_html=None, success=bool(sent), error=None)
-            print('EmailLog registrado.')
-        except Exception as e:
-            print('No se pudo crear EmailLog:', e)
-        return True
+        ok = send_raw_email_sync(subject, text, html, [to_address], reserva=None)
+        print('Resultado envio:', ok)
+        return ok
     except Exception as e:
-        print('Error al enviar correo:', e)
-        try:
-            from reservas.models import EmailLog
-            EmailLog.objects.create(reserva=None, channel='EMAIL', to_email=to_address, subject=subject, body_text=text, body_html=None, success=False, error=str(e))
-            print('EmailLog (error) registrado.')
-        except Exception as e2:
-            print('No se pudo crear EmailLog (error):', e2)
+        print('Error al enviar correo (unexpected):', e)
         return False
 
 
