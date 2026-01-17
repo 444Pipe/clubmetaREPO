@@ -13,7 +13,7 @@ except Exception:
 
 def _get_resend_client():
     # Some environments may set env vars slightly later; retry briefly.
-    max_attempts = 5
+    max_attempts = 25
     wait_seconds = 0.2
     for attempt in range(max_attempts):
         api_key = os.getenv('RESEND_API_KEY')
@@ -58,8 +58,23 @@ def send_email_async(subject, template_txt, template_html, context, recipient_li
         from_addr = os.getenv('EMAIL_FROM') or getattr(settings, 'DEFAULT_FROM_EMAIL', None)
 
         try:
-            if client is None:
-                raise RuntimeError('Resend client not configured (RESEND_API_KEY missing or library not installed)')
+                if client is None:
+                    # don't raise inside the background worker; record a clear EmailLog and return
+                    try:
+                        from reservas.models import EmailLog
+                        EmailLog.objects.create(
+                            reserva=reserva if hasattr(reserva, 'pk') else None,
+                            channel='EMAIL',
+                            to_email=None,
+                            subject=subject,
+                            body_text=text_body,
+                            body_html=html_body,
+                            success=False,
+                            error='Resend client not configured after retries (RESEND_API_KEY missing or library not installed)'
+                        )
+                    except Exception:
+                        pass
+                    return
 
             # Normalize recipient list: accept string or list/tuple, strip and remove empty
             if isinstance(recipient_list, (list, tuple)):
