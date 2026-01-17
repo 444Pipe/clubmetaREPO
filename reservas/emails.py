@@ -1,5 +1,6 @@
 import os
 import threading
+import time
 import traceback
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -11,15 +12,20 @@ except Exception:
 
 
 def _get_resend_client():
-    api_key = os.getenv('RESEND_API_KEY')
-    if not api_key or _resend is None:
-        return None
-    # configure module-level api key as required by the SDK
-    try:
-        _resend.api_key = api_key
-    except Exception:
-        pass
-    return _resend
+    # Some environments may set env vars slightly later; retry briefly.
+    max_attempts = 5
+    wait_seconds = 0.2
+    for attempt in range(max_attempts):
+        api_key = os.getenv('RESEND_API_KEY')
+        if api_key and _resend is not None:
+            try:
+                _resend.api_key = api_key
+            except Exception:
+                pass
+            return _resend
+        # not ready yet, sleep and retry
+        time.sleep(wait_seconds)
+    return None
 
 
 def send_email_async(subject, template_txt, template_html, context, recipient_list):
