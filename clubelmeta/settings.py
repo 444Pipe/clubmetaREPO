@@ -58,6 +58,7 @@ INSTALLED_APPS = [
 # ---------------------------
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
+# Legacy SMTP settings (kept for compatibility but not used when using Resend)
 EMAIL_HOST = os.getenv("EMAIL_HOST", "")
 EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
 EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True") == "True"
@@ -65,8 +66,10 @@ EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True") == "True"
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
 
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
-ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", EMAIL_HOST_USER)
+# Support both DEFAULT_FROM_EMAIL and EMAIL_FROM env names (Railway may use EMAIL_FROM)
+DEFAULT_FROM_EMAIL = os.getenv("EMAIL_FROM", os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER))
+# Support ADMIN_EMAIL or EMAIL_ADMIN env names
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", os.getenv("EMAIL_ADMIN", EMAIL_HOST_USER))
 
 
 # ---------------------------
