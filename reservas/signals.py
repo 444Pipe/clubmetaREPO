@@ -71,6 +71,13 @@ def reserva_post_save(sender, instance, created, **kwargs):
             'precio': instance.precio_total,
         }
 
+        # Debugging aid: if reserva has no client email, record an EmailLog entry
+        try:
+            if not getattr(instance, 'email_cliente', None):
+                _save_email_log(instance, None, f"Reserva creada sin email_cliente #{getattr(instance,'id', 'n/a')}", '', '', False, 'Reserva.email_cliente vacío al crear reserva')
+        except Exception:
+            pass
+
         # 🟩 1. ENVÍO AL CLIENTE
         if instance.email_cliente:
             subject = f"Confirmación de Reserva #{instance.id} - {instance.configuracion_salon.salon.nombre}"
