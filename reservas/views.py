@@ -170,7 +170,22 @@ def register(request):
     """Página de registro/reserva"""
     from .models import ConfiguracionSalon, ServicioAdicional
     
+    # Si se recibe `espacio_id` por GET (viene desde la lista de espacios),
+    # filtramos las configuraciones para mostrar sólo las del salón seleccionado.
+    espacio_get = request.GET.get('espacio_id')
     configuraciones = ConfiguracionSalon.objects.filter(salon__disponible=True).select_related('salon').order_by('salon__nombre', 'tipo_configuracion')
+    selected_salon = None
+    default_config_id = None
+    try:
+        if espacio_get:
+            salon_id = int(espacio_get)
+            configuraciones = configuraciones.filter(salon__id=salon_id)
+            # obtener nombre del salón para contexto
+            from .models import Salon
+            selected_salon = Salon.objects.filter(id=salon_id).first()
+    except Exception:
+        # ignorar si el parámetro no es válido
+        selected_salon = None
     
     # Obtener servicios adicionales activos (excluir montajes ya que se manejan por separado)
     servicios_adicionales = ServicioAdicional.objects.filter(activo=True).exclude(nombre__icontains='montaje').order_by('nombre')
@@ -195,12 +210,20 @@ def register(request):
             'type': 'social',
             'images': get_salon_images(config.salon)
         })
+
+        # si no hay default aún y el parámetro GET vino, usar la primera configuración como seleccionada
+        if selected_salon and default_config_id is None:
+            default_config_id = config.id
     
     if request.method == 'GET':
-        return render(request, 'register.html', {
+        ctx = {
             'rooms': rooms,
-            'servicios_adicionales': servicios_adicionales
-        })
+            'servicios_adicionales': servicios_adicionales,
+        }
+        if selected_salon:
+            ctx['selected_salon'] = selected_salon
+            ctx['default_config_id'] = default_config_id
+        return render(request, 'register.html', ctx)
     
     # Procesar POST
     nombre_cliente = request.POST.get('nombre_cliente', '').strip()

@@ -271,7 +271,11 @@
               <div class="mb-3">
                 <label class="form-label fw-bold">Selecciona el Espacio</label>
                 <select name="espacio_id" id="espacioSelect" class="form-select form-select-lg" required>
-                  <option value="">-- Seleccione un salón --</option>
+                  {% if not selected_salon %}
+                    <option value="">-- Seleccione un salón --</option>
+                  {% else %}
+                    <option value="">-- Seleccione configuración --</option>
+                  {% endif %}
                   {% for r in rooms %}
                     <option value="{{ r.id }}" 
                             data-salon="{{ r.name }}" 
@@ -279,7 +283,8 @@
                             data-price-particular-4h="{{ r.price_particular_4h }}"
                             data-price-particular-8h="{{ r.price_particular_8h }}"
                             data-price-socio-4h="{{ r.price_socio_4h }}"
-                            data-price-socio-8h="{{ r.price_socio_8h }}">
+                            data-price-socio-8h="{{ r.price_socio_8h }}"
+                            {% if default_config_id and default_config_id == r.id %}selected{% endif %}>
                       {{ r.name }} ({{ r.desc }})
                     </option>
                   {% endfor %}
