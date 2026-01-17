@@ -50,8 +50,19 @@ def send_email_async(subject, template_txt, template_html, context, recipient_li
             if client is None:
                 raise RuntimeError('Resend client not configured (RESEND_API_KEY missing or library not installed)')
 
-            # Resend expects a list for `to`.
-            to_addrs = list(recipient_list) if isinstance(recipient_list, (list, tuple)) else [recipient_list]
+            # Normalize recipient list: accept string or list/tuple, strip and remove empty
+            if isinstance(recipient_list, (list, tuple)):
+                to_addrs = [r.strip() for r in recipient_list if r and str(r).strip()]
+            elif recipient_list:
+                to_addrs = [str(recipient_list).strip()]
+            else:
+                to_addrs = []
+
+            if not to_addrs:
+                raise RuntimeError('No recipient specified for email')
+
+            if not from_addr:
+                raise RuntimeError('No from address configured (EMAIL_FROM or DEFAULT_FROM_EMAIL)')
 
             # Send via Resend API
             client.emails.send(
@@ -138,18 +149,25 @@ def send_raw_email_sync(subject, text_body, html_body, recipient_list, reserva=N
         return True
     except Exception as e:
         err = traceback.format_exc()
-        try:
-            from reservas.models import EmailLog
-            EmailLog.objects.create(
-                reserva=reserva if hasattr(reserva, 'pk') else None,
-                channel='EMAIL',
-                to_email=(','.join(to_addrs) if to_addrs else None),
-                subject=subject,
-                body_text=text_body,
-                body_html=html_body,
-                success=False,
-                error=err,
-            )
-        except Exception:
-            pass
+            try:
+                from reservas.models import EmailLog
+                to_email_val = None
+                try:
+                    if 'to_addrs' in locals() and to_addrs:
+                        to_email_val = ','.join(to_addrs)
+                except Exception:
+                    to_email_val = None
+
+                EmailLog.objects.create(
+                    reserva=reserva if hasattr(reserva, 'pk') else None,
+                    channel='EMAIL',
+                    to_email=to_email_val,
+                    subject=subject,
+                    body_text=text_body,
+                    body_html=html_body,
+                    success=False,
+                    error=err,
+                )
+            except Exception:
+                pass
         return False
