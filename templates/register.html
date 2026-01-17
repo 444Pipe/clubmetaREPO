@@ -280,7 +280,7 @@
                             data-price-particular-8h="{{ r.price_particular_8h }}"
                             data-price-socio-4h="{{ r.price_socio_4h }}"
                             data-price-socio-8h="{{ r.price_socio_8h }}">
-                      {{ r.name }} ({{ r.desc }}) — {{ r.price }}
+                      {{ r.name }} ({{ r.desc }})
                     </option>
                   {% endfor %}
                 </select>
@@ -632,11 +632,8 @@
         var textMatch = option.textContent.match(/\((.*?)\)/);
         var desc = textMatch ? textMatch[1] : '';
         
-        if (isSocio) {
-          option.textContent = name + ' (' + desc + ') — ' + formatPrice(priceSocio);
-        } else {
-          option.textContent = name + ' (' + desc + ') — ' + formatPrice(priceParticular);
-        }
+        // Keep option label without price (prices come from data-attributes)
+        option.textContent = name + ' (' + desc + ')';
       });
       
       // Actualizar display de precio
