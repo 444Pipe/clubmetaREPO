@@ -164,7 +164,39 @@
                   <p class="text-muted small mb-0" style="line-height: 1.4;">{{ r.desc }}</p>
                   {% endif %}
                 </div>
-                
+                {% comment %} Medidas y características dinámicas si están disponibles {% endcomment %}
+                {% if r.medidas_salon or r.medidas_tarima or r.caracteristicas %}
+                <div class="mb-3">
+                  <h6 class="text-primary fw-bold mb-2" style="font-size: 0.95rem;">Medidas</h6>
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="p-2 bg-white rounded border">
+                        <strong>Salón</strong>
+                        <div class="small text-muted">
+                          {% if r.medidas_salon.ancho %}<div>Ancho: {{ r.medidas_salon.ancho }} m</div>{% endif %}
+                          {% if r.medidas_salon.largo %}<div>Largo: {{ r.medidas_salon.largo }} m</div>{% endif %}
+                          {% if r.medidas_salon.altura %}<div>Altura: {{ r.medidas_salon.altura }} m</div>{% endif %}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="p-2 bg-white rounded border">
+                        <strong>Tarima</strong>
+                        <div class="small text-muted">
+                          {% if r.medidas_tarima.ancho %}<div>Ancho: {{ r.medidas_tarima.ancho }} m</div>{% endif %}
+                          {% if r.medidas_tarima.largo %}<div>Largo: {{ r.medidas_tarima.largo }} m</div>{% endif %}
+                          {% if r.medidas_tarima.altura %}<div>Altura: {{ r.medidas_tarima.altura }} m</div>{% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <h6 class="text-primary fw-bold mb-2" style="font-size: 0.95rem;">Características</h6>
+                  <p class="text-muted small mb-0">{{ r.caracteristicas|default:'' }}</p>
+                </div>
+                {% else %}
                 <div class="mb-3">
                   <h6 class="text-primary fw-bold mb-2" style="font-size: 0.95rem;">Características</h6>
                   <div class="row g-2">
@@ -190,6 +222,7 @@
                     </div>
                   </div>
                 </div>
+                {% endif %}
 
                 <div class="capacity-box-compact mb-3 p-2 bg-light rounded">
                   <div class="d-flex justify-content-between align-items-center">

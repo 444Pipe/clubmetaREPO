@@ -161,7 +161,18 @@ def espacios(request):
                 'capacity': primera_config.capacidad,
                 'type': 'social',
                 'images': get_salon_images(salon),
-                'configuraciones': list(configuraciones)  # Lista de todas las configuraciones
+                'configuraciones': list(configuraciones),  # Lista de todas las configuraciones
+                'medidas_salon': {
+                    'ancho': getattr(primera_config, 'salon_ancho', None),
+                    'largo': getattr(primera_config, 'salon_largo', None),
+                    'altura': getattr(primera_config, 'salon_altura', None),
+                },
+                'medidas_tarima': {
+                    'ancho': getattr(primera_config, 'tarima_ancho', None),
+                    'largo': getattr(primera_config, 'tarima_largo', None),
+                    'altura': getattr(primera_config, 'tarima_altura', None),
+                },
+                'caracteristicas': getattr(primera_config, 'caracteristicas', None),
             })
     
     return render(request, 'espacios.html', {'rooms': rooms})
@@ -209,7 +220,19 @@ def register(request):
             'capacity': config.capacidad,
             'type': 'social',
             'images': get_salon_images(config.salon)
-        })
+            ,
+            'medidas_salon': {
+                'ancho': getattr(config, 'salon_ancho', None),
+                'largo': getattr(config, 'salon_largo', None),
+                'altura': getattr(config, 'salon_altura', None),
+            },
+            'medidas_tarima': {
+                'ancho': getattr(config, 'tarima_ancho', None),
+                'largo': getattr(config, 'tarima_largo', None),
+                'altura': getattr(config, 'tarima_altura', None),
+            },
+            'caracteristicas': getattr(config, 'caracteristicas', None),
+        
 
         # si no hay default aún y el parámetro GET vino, usar la primera configuración como seleccionada
         if selected_salon and default_config_id is None:
