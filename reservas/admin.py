@@ -617,6 +617,21 @@ try:
             return obj.to_email or 'sin destino'
         get_target.short_description = 'Destino'
 
+        def changelist_view(self, request, extra_context=None):
+            """Wrap the changelist view to log unexpected exceptions and show a friendly admin message instead of a raw 500."""
+            import logging
+            import traceback as _traceback
+            from django.http import HttpResponse
+            try:
+                return super().changelist_view(request, extra_context=extra_context)
+            except Exception as e:
+                logging.getLogger(__name__).error('Error mostrando EmailLog changelist: %s\n%s', str(e), _traceback.format_exc())
+                try:
+                    self.message_user(request, 'Error mostrando registros de EmailLog. Revise los logs del servidor.', level=messages.ERROR)
+                except Exception:
+                    pass
+                return HttpResponse('Error interno procesando la vista. Revise los logs.', status=500)
+
         def reenviar_seleccionados(self, request, queryset):
             """Reenviar los logs seleccionados que fallaron (o todos si se desea)."""
             import logging
