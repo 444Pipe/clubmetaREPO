@@ -122,7 +122,13 @@ class SalonAdmin(admin.ModelAdmin):
 class ConfiguracionSalonInline(admin.TabularInline):
     model = ConfiguracionSalon
     extra = 1
-    fields = ('tipo_configuracion', 'capacidad', 'precio_socio_4h', 'precio_particular_4h', 'precio_socio_8h', 'precio_particular_8h')
+    fields = (
+        'tipo_configuracion', 'capacidad',
+        'precio_socio_4h', 'precio_particular_4h', 'precio_socio_8h', 'precio_particular_8h',
+        'salon_ancho', 'salon_largo', 'salon_altura',
+        'tarima_ancho', 'tarima_largo', 'tarima_altura',
+        'caracteristicas'
+    )
 
 
 @admin.register(ConfiguracionSalon)
@@ -132,7 +138,7 @@ class ConfiguracionSalonAdmin(admin.ModelAdmin):
     search_fields = ('salon__nombre',)
     fieldsets = (
         ('Información General', {
-            'fields': ('salon', 'tipo_configuracion', 'capacidad')
+            'fields': ('salon', 'tipo_configuracion', 'capacidad', 'salon_ancho', 'salon_largo', 'salon_altura', 'tarima_ancho', 'tarima_largo', 'tarima_altura', 'caracteristicas')
         }),
         ('Precios para Socios', {
             'fields': ('precio_socio_4h', 'precio_socio_8h')
