@@ -48,17 +48,6 @@ class ConfiguracionSalon(models.Model):
     precio_particular_4h = models.DecimalField(max_digits=10, decimal_places=2, help_text="Precio para particulares (4 horas)")
     precio_particular_8h = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, help_text="Precio para particulares (8 horas)")
     
-    # Medidas y características (opcionales)
-    salon_ancho = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, help_text='Ancho del salón en metros')
-    salon_largo = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, help_text='Largo del salón en metros')
-    salon_altura = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, help_text='Altura del salón en metros')
-
-    tarima_ancho = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, help_text='Ancho de la tarima en metros')
-    tarima_largo = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, help_text='Largo de la tarima en metros')
-    tarima_altura = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, help_text='Altura de la tarima en metros')
-
-    caracteristicas = models.TextField(blank=True, null=True, help_text='Características y servicios incluidos para esta configuración')
-    
     class Meta:
         verbose_name = "Configuración de Salón"
         verbose_name_plural = "Configuraciones de Salones"
