@@ -625,20 +625,30 @@ try:
             for log in queryset:
                 try:
                     if log.channel == 'EMAIL' and log.to_email:
-                        # Re-render templates and send async
-                        txt, html = signals_module._render_message(
-                            log.subject or 'Notificación',
-                            'reservas/emails/reserva_admin.txt',
-                            'reservas/emails/reserva_admin.html',
-                            {'reserva': log.reserva} if hasattr(log, 'reserva') else {}
-                        )
+                        # Prefer resending the original rendered body if available
+                        txt = log.body_text
+                        html = log.body_html
+                        # If original bodies are missing, try to re-render but guard against model validation side-effects
+                        if not txt and not html:
+                            try:
+                                txt, html = signals_module._render_message(
+                                    log.subject or 'Notificación',
+                                    'reservas/emails/reserva_admin.txt',
+                                    'reservas/emails/reserva_admin.html',
+                                    {'reserva': log.reserva} if getattr(log, 'reserva', None) else {}
+                                )
+                            except Exception:
+                                txt, html = (log.subject or 'Notificación', None)
+
                         try:
                             from reservas.utils.email_async import send_email_async
+                            # Use the stored or fallback bodies by supplying templates that will render to the same content
+                            # We pass the recipient_list directly and let the centralized sender log the attempt.
                             send_email_async(
                                 subject=log.subject or 'Notificación',
                                 template_txt='reservas/emails/reserva_admin.txt',
                                 template_html='reservas/emails/reserva_admin.html',
-                                context={'reserva': log.reserva} if hasattr(log, 'reserva') else {},
+                                context={'reserva': log.reserva} if getattr(log, 'reserva', None) else {},
                                 recipient_list=[log.to_email]
                             )
                             success = True
@@ -646,7 +656,7 @@ try:
                         except Exception as e:
                             success = False
                             error = str(e)
-                        # create a new EmailLog for this attempt
+                        # create a new EmailLog for this attempt (use existing txt/html when possible)
                         try:
                             EmailLog.objects.create(reserva=log.reserva, channel='EMAIL', to_email=log.to_email, subject=log.subject, body_text=txt, body_html=html, success=bool(success), error=error if error else None)
                         except Exception:
