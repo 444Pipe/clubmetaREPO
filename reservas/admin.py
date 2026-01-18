@@ -673,9 +673,6 @@ try:
                 logging.getLogger(__name__).error('Error reenviando EmailLog selection: %s\n%s', str(e), _traceback.format_exc())
                 self.message_user(request, f'Error al procesar la acción: {str(e)[:200]}', level=messages.ERROR)
                 return None
-                    # only EMAIL re-send is supported
-                except Exception as e:
-                    failed.append((log.id, str(e)[:200]))
 
             if sent_count:
                 self.message_user(request, _('%d notificaciones reenviadas correctamente.') % sent_count, level=messages.SUCCESS)
