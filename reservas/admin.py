@@ -611,7 +611,7 @@ try:
         search_fields = ('to_email', 'subject', 'error')
         readonly_fields = ('reserva', 'channel', 'to_email', 'subject', 'body_text', 'body_html', 'success', 'error', 'created_at')
         ordering = ('-created_at',)
-        actions = ['reenviar_seleccionados']
+        actions = []
 
         def get_target(self, obj):
             return obj.to_email or 'sin destino'
@@ -632,67 +632,7 @@ try:
                     pass
                 return HttpResponse('Error interno procesando la vista. Revise los logs.', status=500)
 
-        def reenviar_seleccionados(self, request, queryset):
-            """Reenviar los logs seleccionados que fallaron (o todos si se desea)."""
-            import logging
-            import traceback as _traceback
-            from . import signals as signals_module
-            sent_count = 0
-            failed = []
-            try:
-                for log in queryset:
-                    try:
-                        if log.channel == 'EMAIL' and log.to_email:
-                            # Prefer resending the original rendered body if available
-                            txt = log.body_text
-                            html = log.body_html
-                            # If original bodies are missing, try to re-render but guard against model validation side-effects
-                            if not txt and not html:
-                                try:
-                                    txt, html = signals_module._render_message(
-                                        log.subject or 'Notificación',
-                                        'reservas/emails/reserva_admin.txt',
-                                        'reservas/emails/reserva_admin.html',
-                                        {'reserva': log.reserva} if getattr(log, 'reserva', None) else {}
-                                    )
-                                except Exception:
-                                    txt, html = (log.subject or 'Notificación', None)
-
-                            try:
-                                from reservas.utils.email_async import send_email_async
-                                send_email_async(
-                                    subject=log.subject or 'Notificación',
-                                    template_txt='reservas/emails/reserva_admin.txt',
-                                    template_html='reservas/emails/reserva_admin.html',
-                                    context={'reserva': log.reserva} if getattr(log, 'reserva', None) else {},
-                                    recipient_list=[log.to_email]
-                                )
-                                success = True
-                                error = None
-                            except Exception as e:
-                                success = False
-                                error = str(e)
-                            # create a new EmailLog for this attempt (use existing txt/html when possible)
-                            try:
-                                EmailLog.objects.create(reserva=log.reserva, channel='EMAIL', to_email=log.to_email, subject=log.subject, body_text=txt, body_html=html, success=bool(success), error=error if error else None)
-                            except Exception:
-                                pass
-                            if success:
-                                sent_count += 1
-                            else:
-                                failed.append((log.id, str(error)[:200]))
-                    except Exception as e:
-                        failed.append((getattr(log, 'id', 'n/a'), str(e)[:200]))
-            except Exception as e:
-                # Log unexpected error and show friendly message instead of allowing 500
-                logging.getLogger(__name__).error('Error reenviando EmailLog selection: %s\n%s', str(e), _traceback.format_exc())
-                self.message_user(request, f'Error al procesar la acción: {str(e)[:200]}', level=messages.ERROR)
-                return None
-
-            if sent_count:
-                self.message_user(request, _('%d notificaciones reenviadas correctamente.') % sent_count, level=messages.SUCCESS)
-            if failed:
-                self.message_user(request, _('Fallaron %d reenvíos. Ejemplo: %s') % (len(failed), failed[:1]), level=messages.WARNING)
+        # The 'reenviar_seleccionados' action was intentionally removed to prevent accidental re-sends from admin.
 except Exception:
     # EmailLog model may not be available during some import sequences; skip admin registration if so
     pass
