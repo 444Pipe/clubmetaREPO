@@ -214,12 +214,12 @@
 
                 <div class="montajes-box mb-3">
                   <h6 class="text-primary fw-bold mb-2" style="font-size: 0.95rem;"><i class="bi bi-grid-3x3-gap-fill"></i> Montajes</h6>
-                  <div class="d-flex gap-2 flex-wrap">
+                  <div class="montaje-grid">
                     {% for m in r.configuraciones %}
                       {% if m.montaje_image %}
                         <img src="{% static 'img/' %}{{ m.montaje_image }}" alt="{{ m.tipo }}" class="montaje-thumb" data-full="{% static 'img/' %}{{ m.montaje_image }}" title="{{ m.tipo }}">
                       {% else %}
-                        <div class="montaje-placeholder p-2 bg-light rounded text-muted">{{ m.tipo }}</div>
+                        <div class="montaje-placeholder">{{ m.tipo }}</div>
                       {% endif %}
                     {% endfor %}
                   </div>
@@ -396,6 +396,57 @@
   .btn-sm {
     padding: 6px 12px;
     font-size: 0.85rem;
+  }
+
+  /* Montaje thumbnails grid */
+  .montaje-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    gap: 8px;
+    align-items: start;
+  }
+
+  .montaje-thumb {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    display: block;
+  }
+
+  .montaje-thumb:hover {
+    transform: scale(1.06);
+    box-shadow: 0 12px 26px rgba(0,0,0,0.12);
+  }
+
+  .montaje-placeholder {
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.72rem;
+    color: #6c757d;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    padding: 6px;
+  }
+
+  @media (max-width: 576px) {
+    .montaje-grid {
+      grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+      gap: 6px;
+    }
+    .montaje-thumb, .montaje-placeholder {
+      width: 56px;
+      height: 56px;
+      border-radius: 6px;
+    }
   }
 
   .space-card {
