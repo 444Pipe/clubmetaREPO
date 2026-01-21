@@ -169,6 +169,8 @@ def espacios(request):
                         'montaje_image': c.imagen_montaje
                     } for c in configuraciones
                 ]
+                ,
+                'medidas': salon.medidas_dict()
             })
     
     return render(request, 'espacios.html', {'rooms': rooms})

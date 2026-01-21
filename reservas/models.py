@@ -11,6 +11,16 @@ class Salon(models.Model):
     descripcion = models.TextField(blank=True, help_text="Descripción del salón")
     imagen = models.CharField(max_length=200, blank=True, help_text="Ruta de la imagen del salón")
     disponible = models.BooleanField(default=True)
+    # Medidas del salón (metros)
+    largo_m = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, help_text="Largo en metros (opcional)")
+    ancho_m = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, help_text="Ancho en metros (opcional)")
+    alto_m = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, help_text="Alto en metros (opcional)")
+    # Para espacios circulares o que usen diámetro
+    diametro_m = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, help_text="Diámetro en metros (opcional)")
+    # Medidas de tarima (si aplica)
+    tarima_largo_m = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, help_text="Largo de la tarima en metros (opcional)")
+    tarima_ancho_m = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, help_text="Ancho de la tarima en metros (opcional)")
+    tarima_alto_m = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, help_text="Alto de la tarima en metros (opcional)")
     
     class Meta:
         verbose_name = "Salón"
@@ -19,6 +29,18 @@ class Salon(models.Model):
     
     def __str__(self):
         return self.nombre
+
+    def medidas_dict(self):
+        """Devuelve un diccionario con las medidas formateadas (None si no aplican)."""
+        return {
+            'largo_m': self.largo_m,
+            'ancho_m': self.ancho_m,
+            'alto_m': self.alto_m,
+            'diametro_m': self.diametro_m,
+            'tarima_largo_m': self.tarima_largo_m,
+            'tarima_ancho_m': self.tarima_ancho_m,
+            'tarima_alto_m': self.tarima_alto_m,
+        }
 
 
 class ConfiguracionSalon(models.Model):

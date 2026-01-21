@@ -212,6 +212,34 @@
                   </small>
                 </div>
 
+                <div class="measures-box mb-3">
+                  <h6 class="text-primary fw-bold mb-2" style="font-size: 0.95rem;"><i class="bi bi-rulers"></i> Medidas</h6>
+                  <div class="measures-grid">
+                    {% with m=r.medidas %}
+                      {% if m.largo_m %}
+                        <div class="measure-card"><strong>{{ m.largo_m }}</strong><div class="muted small">Largo (m)</div></div>
+                      {% endif %}
+                      {% if m.ancho_m %}
+                        <div class="measure-card"><strong>{{ m.ancho_m }}</strong><div class="muted small">Ancho (m)</div></div>
+                      {% endif %}
+                      {% if m.alto_m %}
+                        <div class="measure-card"><strong>{{ m.alto_m }}</strong><div class="muted small">Alto (m)</div></div>
+                      {% endif %}
+                      {% if m.diametro_m %}
+                        <div class="measure-card"><strong>{{ m.diametro_m }}</strong><div class="muted small">Diámetro (m)</div></div>
+                      {% endif %}
+                      {% if m.tarima_largo_m or m.tarima_ancho_m or m.tarima_alto_m %}
+                        <div class="measure-card tarima-card">
+                          <strong class="d-block">Tarima</strong>
+                          {% if m.tarima_largo_m %}<div class="muted small">L: {{ m.tarima_largo_m }} m</div>{% endif %}
+                          {% if m.tarima_ancho_m %}<div class="muted small">A: {{ m.tarima_ancho_m }} m</div>{% endif %}
+                          {% if m.tarima_alto_m %}<div class="muted small">H: {{ m.tarima_alto_m }} m</div>{% endif %}
+                        </div>
+                      {% endif %}
+                    {% endwith %}
+                  </div>
+                </div>
+
                 <div class="montajes-box mb-3">
                   <h6 class="text-primary fw-bold mb-2" style="font-size: 0.95rem;"><i class="bi bi-grid-3x3-gap-fill"></i> Montajes</h6>
                   <div class="montaje-grid">
@@ -479,6 +507,28 @@
       font-size: 0.65rem;
     }
   }
+
+  /* Measures display */
+  .measures-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 8px;
+    align-items: start;
+  }
+
+  .measure-card {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    padding: 8px 10px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.04);
+  }
+
+  .measure-card strong { font-size: 1.05rem; display:block; }
+  .measure-card .muted { color: #6c757d; }
+
+  .tarima-card { text-align: left; }
 
   .space-card {
     margin-bottom: 1.5rem !important;

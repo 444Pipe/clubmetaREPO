@@ -117,6 +117,15 @@ class SalonAdmin(admin.ModelAdmin):
     list_filter = ('disponible',)
     search_fields = ('nombre', 'descripcion')
     list_editable = ('disponible',)
+    fieldsets = (
+        (None, {'fields': ('nombre', 'descripcion', 'imagen', 'disponible')}),
+        ('Medidas (metros)', {
+            'fields': ('largo_m', 'ancho_m', 'alto_m', 'diametro_m')
+        }),
+        ('Tarima (opcional, metros)', {
+            'fields': ('tarima_largo_m', 'tarima_ancho_m', 'tarima_alto_m')
+        }),
+    )
 
 
 class ConfiguracionSalonInline(admin.TabularInline):
