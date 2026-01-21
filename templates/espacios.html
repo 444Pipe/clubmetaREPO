@@ -22,6 +22,17 @@
   </div>
 </section>
 
+<!-- Lightbox modal for montage images -->
+<div class="modal fade" id="montajeLightbox" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-transparent border-0">
+      <div class="modal-body p-0 text-center">
+        <img id="montajeLightboxImg" src="" alt="Montaje" style="max-width:100%; height:auto; border-radius:6px; box-shadow:0 10px 30px rgba(0,0,0,0.4);">
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Filtros removed as per request -->
 
 <!-- Lista de Espacios con Carrusel -->
@@ -199,6 +210,19 @@
                   <small class="text-muted d-block mt-1" style="font-size: 0.7rem; font-style: italic;">
                     <i class="bi bi-info-circle"></i> Varía según tipo de montaje
                   </small>
+                </div>
+
+                <div class="montajes-box mb-3">
+                  <h6 class="text-primary fw-bold mb-2" style="font-size: 0.95rem;"><i class="bi bi-grid-3x3-gap-fill"></i> Montajes</h6>
+                  <div class="d-flex gap-2 flex-wrap">
+                    {% for m in r.configuraciones %}
+                      {% if m.montaje_image %}
+                        <img src="{% static 'img/' %}{{ m.montaje_image }}" alt="{{ m.tipo }}" class="montaje-thumb" data-full="{% static 'img/' %}{{ m.montaje_image }}" title="{{ m.tipo }}">
+                      {% else %}
+                        <div class="montaje-placeholder p-2 bg-light rounded text-muted">{{ m.tipo }}</div>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
                 </div>
 
                 <div class="price-box-compact mb-3 p-3 rounded" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border: 1px solid #dee2e6; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
@@ -556,6 +580,18 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function(){
+    // Montage thumbnails lightbox handler
+    document.querySelectorAll('.montaje-thumb').forEach(function(el){
+      el.addEventListener('click', function(){
+        var src = this.dataset.full;
+        var img = document.getElementById('montajeLightboxImg');
+        if (!img) return;
+        img.src = src;
+        var modalEl = document.getElementById('montajeLightbox');
+        var bsModal = new bootstrap.Modal(modalEl);
+        bsModal.show();
+      });
+    });
     const cta = document.querySelector('.whatsapp-btn');
     if (!cta) return;
 

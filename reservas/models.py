@@ -47,6 +47,8 @@ class ConfiguracionSalon(models.Model):
     # Precios para particulares
     precio_particular_4h = models.DecimalField(max_digits=10, decimal_places=2, help_text="Precio para particulares (4 horas)")
     precio_particular_8h = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, help_text="Precio para particulares (8 horas)")
+    # Ruta relativa a la imagen del montaje dentro de `static/img/` (ej: "montajes/mi_llanura/auditorio.jpg")
+    imagen_montaje = models.CharField(max_length=300, blank=True, help_text="Ruta relativa en static/img/ para la imagen de este montaje")
     
     class Meta:
         verbose_name = "Configuración de Salón"

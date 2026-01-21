@@ -161,7 +161,14 @@ def espacios(request):
                 'capacity': primera_config.capacidad,
                 'type': 'social',
                 'images': get_salon_images(salon),
-                'configuraciones': list(configuraciones)  # Lista de todas las configuraciones
+                'configuraciones': [
+                    {
+                        'id': c.id,
+                        'tipo': c.get_tipo_configuracion_display(),
+                        'capacidad': c.capacidad,
+                        'montaje_image': c.imagen_montaje
+                    } for c in configuraciones
+                ]
             })
     
     return render(request, 'espacios.html', {'rooms': rooms})
@@ -208,7 +215,8 @@ def register(request):
             'price_socio_8h': int(config.precio_socio_8h or config.precio_socio_4h),
             'capacity': config.capacidad,
             'type': 'social',
-            'images': get_salon_images(config.salon)
+            'images': get_salon_images(config.salon),
+            'montaje_image': config.imagen_montaje
         })
 
         # si no hay default aún y el parámetro GET vino, usar la primera configuración como seleccionada
