@@ -26,6 +26,10 @@ urlpatterns = [
     # Páginas estáticas sencillas: preguntas frecuentes y políticas
     path('preguntas-frecuentes/', TemplateView.as_view(template_name='preguntas_frecuentes.html'), name='preguntas_frecuentes'),
     path('politicas/', TemplateView.as_view(template_name='politicas.html'), name='politicas'),
+    # Información institucional: Visión / Misión / Instalaciones
+    path('bienvenidos/vision/', TemplateView.as_view(template_name='vision.html'), name='vision'),
+    path('bienvenidos/mision/', TemplateView.as_view(template_name='mision.html'), name='mision'),
+    path('bienvenidos/instalaciones/', TemplateView.as_view(template_name='instalaciones.html'), name='instalaciones'),
 ]
 
 # Servir archivos estáticos en desarrollo
