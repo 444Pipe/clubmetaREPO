@@ -6,38 +6,38 @@
 <!-- Index-only informational bar (dismissible) -->
 <div id="indexInfoBar" class="index-info-bar" role="region" aria-label="Información principal">
   <div class="container d-flex align-items-center justify-content-between">
-    <nav class="info-pills d-flex flex-wrap" aria-label="Información rápida">
-      <div class="pill" data-dropdown>
-        <a href="#">Bienvenidos</a>
-        <ul class="info-dropdown">
-          <li><a href="#">Visión</a></li>
-          <li><a href="#">Misión</a></li>
-          <li><a href="#">Instalaciones</a></li>
+    <nav class="info-pills d-flex flex-wrap" aria-label="Información rápida" role="menubar">
+      <div class="pill" data-dropdown role="none">
+        <a href="#" role="menuitem" aria-haspopup="true" aria-expanded="false">Bienvenidos</a>
+        <ul class="info-dropdown" role="menu">
+          <li role="none"><a role="menuitem" href="#">Visión</a></li>
+          <li role="none"><a role="menuitem" href="#">Misión</a></li>
+          <li role="none"><a role="menuitem" href="#">Instalaciones</a></li>
         </ul>
       </div>
-      <div class="pill"><a href="#">Comunicados de Gerencia</a></div>
-      <div class="pill"><a href="#">Junta Directiva</a></div>
-      <div class="pill" data-dropdown>
-        <a href="#">Deportes</a>
-        <ul class="info-dropdown">
-          <li><a href="#">Tenis</a></li>
-          <li><a href="#">Natación</a></li>
-          <li><a href="#">Fútbol</a></li>
-          <li><a href="#">Gimnasio</a></li>
+      <div class="pill" role="none"><a role="menuitem" href="#">Comunicados de Gerencia</a></div>
+      <div class="pill" role="none"><a role="menuitem" href="#">Junta Directiva</a></div>
+      <div class="pill" data-dropdown role="none">
+        <a href="#" role="menuitem" aria-haspopup="true" aria-expanded="false">Deportes</a>
+        <ul class="info-dropdown" role="menu">
+          <li role="none"><a role="menuitem" href="#">Tenis</a></li>
+          <li role="none"><a role="menuitem" href="#">Natación</a></li>
+          <li role="none"><a role="menuitem" href="#">Fútbol</a></li>
+          <li role="none"><a role="menuitem" href="#">Gimnasio</a></li>
         </ul>
       </div>
-      <div class="pill"><a href="#">Actividades</a></div>
-      <div class="pill" data-dropdown>
-        <a href="#">Gastronomía</a>
-        <ul class="info-dropdown">
-          <li><a href="#">Salones de eventos</a></li>
-          <li><a href="#">Menú Refrigerios Empresariales</a></li>
-          <li><a href="#">Menú Eventos Sociales</a></li>
-          <li><a href="#">Menú Infantil y Juvenil</a></li>
-          <li><a href="#">Pasabocas / Cóctel</a></li>
+      <div class="pill" role="none"><a role="menuitem" href="#">Actividades</a></div>
+      <div class="pill" data-dropdown role="none">
+        <a href="#" role="menuitem" aria-haspopup="true" aria-expanded="false">Gastronomía</a>
+        <ul class="info-dropdown" role="menu">
+          <li role="none"><a role="menuitem" href="#">Salones de eventos</a></li>
+          <li role="none"><a role="menuitem" href="#">Menú Refrigerios Empresariales</a></li>
+          <li role="none"><a role="menuitem" href="#">Menú Eventos Sociales</a></li>
+          <li role="none"><a role="menuitem" href="#">Menú Infantil y Juvenil</a></li>
+          <li role="none"><a role="menuitem" href="#">Pasabocas / Cóctel</a></li>
         </ul>
       </div>
-      <div class="pill"><a href="#">Administración</a></div>
+      <div class="pill" role="none"><a role="menuitem" href="#">Administración</a></div>
     </nav>
   </div>
 </div>
@@ -52,7 +52,10 @@
     display: inline-block; padding: 0.45rem 0.6rem; background: transparent; color: #fff; border-radius: 0; text-decoration: none; font-weight: 700; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.6px;
   }
   .index-info-bar .pill + .pill > a { margin-left: 0.9rem; }
-  .index-info-bar .pill:hover > a, .index-info-bar .pill:focus-within > a { color: rgba(255,255,255,0.9); text-decoration: underline; }
+  .index-info-bar .pill:hover > a, .index-info-bar .pill:focus-within > a { color: rgba(255,255,255,0.95); text-decoration: none; border-bottom: 2px solid rgba(255,255,255,0.12); padding-bottom: 2px; }
+
+  /* Active state for first item to mimic example */
+  .index-info-bar .pill:first-child > a { font-weight: 800; }
   .index-info-bar .info-dropdown {
     display: none; position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); min-width: 220px; background: rgba(255,255,255,0.09); color: #07203a; padding: 0.65rem 0.35rem; border-radius: 12px; list-style: none; 
   }
@@ -62,8 +65,9 @@
   /* close button removed: bar is persistent */
 
   @media (max-width: 992px) {
-    .index-info-bar .info-pills { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 0.25rem; gap: 0.5rem; }
+    .index-info-bar .info-pills { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 0.25rem; gap: 0.75rem; }
     .index-info-bar .info-dropdown { position: static; transform: none; margin-top: 0.35rem; left: auto; }
+    .index-info-bar .pill > a { padding: 0.6rem 0.75rem; font-size: 1rem; }
   }
 </style>
 
@@ -74,11 +78,48 @@
       document.addEventListener('click', function(e){
         var clickedPill = e.target.closest('.pill[data-dropdown]');
         var anyPill = document.querySelectorAll('.pill[data-dropdown]');
-        anyPill.forEach(function(p){ if (p !== clickedPill) p.classList.remove('open'); });
-        if (clickedPill) clickedPill.classList.toggle('open');
+        anyPill.forEach(function(p){ if (p !== clickedPill) { p.classList.remove('open'); p.querySelector('a[aria-expanded]') && p.querySelector('a[aria-expanded]').setAttribute('aria-expanded','false'); } });
+        if (clickedPill) {
+          var btn = clickedPill.querySelector('a[aria-expanded]');
+          var willOpen = !clickedPill.classList.contains('open');
+          clickedPill.classList.toggle('open');
+          if (btn) btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        }
       });
+
       // Close open dropdowns on ESC
-      document.addEventListener('keydown', function(e){ if (e.key === 'Escape') document.querySelectorAll('.pill[data-dropdown].open').forEach(function(p){ p.classList.remove('open'); }); });
+      document.addEventListener('keydown', function(e){ if (e.key === 'Escape') document.querySelectorAll('.pill[data-dropdown].open').forEach(function(p){ p.classList.remove('open'); p.querySelector('a[aria-expanded]') && p.querySelector('a[aria-expanded]').setAttribute('aria-expanded','false'); }); });
+
+      // Keyboard navigation: Left/Right to move, Enter/Space to open
+      document.querySelectorAll('.info-pills [role="menuitem"]').forEach(function(item){
+        item.addEventListener('keydown', function(e){
+          var key = e.key;
+          if (key === 'ArrowRight' || key === 'Right') { e.preventDefault(); var next = item.closest('.pill').nextElementSibling; if (next) next.querySelector('[role="menuitem"]').focus(); }
+          if (key === 'ArrowLeft' || key === 'Left') { e.preventDefault(); var prev = item.closest('.pill').previousElementSibling; if (prev) prev.querySelector('[role="menuitem"]').focus(); }
+          if (key === 'Enter' || key === ' ') { var parent = item.closest('.pill'); if (parent && parent.matches('[data-dropdown]')) { e.preventDefault(); item.click(); } }
+        });
+      });
+
+      // Touch: ensure tap opens dropdowns reliably on mobile
+      document.querySelectorAll('.pill[data-dropdown] > a').forEach(function(btn){
+        btn.addEventListener('touchstart', function(ev){
+          var p = btn.closest('.pill');
+          var opened = p.classList.contains('open');
+          document.querySelectorAll('.pill[data-dropdown]').forEach(function(x){ if (x !== p) { x.classList.remove('open'); x.querySelector('a[aria-expanded]') && x.querySelector('a[aria-expanded]').setAttribute('aria-expanded','false'); } });
+          p.classList.toggle('open');
+          btn.setAttribute('aria-expanded', opened ? 'false' : 'true');
+          // prevent the first tap from following the link
+          ev.preventDefault();
+        }, {passive:false});
+      });
+
+      // Close dropdowns when clicking outside
+      document.addEventListener('click', function(e){
+        if (!e.target.closest('.index-info-bar')) {
+          document.querySelectorAll('.pill[data-dropdown].open').forEach(function(p){ p.classList.remove('open'); p.querySelector('a[aria-expanded]') && p.querySelector('a[aria-expanded]').setAttribute('aria-expanded','false'); });
+        }
+      });
+
     }catch(err){ console.warn(err); }
   })();
 </script>
