@@ -39,8 +39,45 @@
       </div>
       <div class="pill" role="none"><a role="menuitem" href="#">Administración</a></div>
     </nav>
+    <!-- Mobile menu toggle (visible only on small screens) -->
+    <button id="mobileMenuToggle" class="mobile-menu-btn" aria-controls="mobileMenu" aria-expanded="false" aria-label="Abrir menú">Menú <span class="mobile-menu-icon">⋮</span></button>
   </div>
 </div>
+
+<!-- Mobile full-width slide-down menu -->
+<div id="mobileMenuOverlay" class="mobile-menu-overlay" hidden></div>
+<aside id="mobileMenu" class="mobile-menu" role="dialog" aria-label="Menú principal" aria-hidden="true">
+  <div class="mobile-menu-inner">
+    <nav class="mobile-nav" role="navigation">
+      <ul>
+        <li><a href="#">Bienvenidos</a></li>
+        <li><a href="#">Comunicados de Gerencia</a></li>
+        <li><a href="#">Junta Directiva</a></li>
+        <li class="has-children">
+          <button class="mobile-acc-btn" aria-expanded="false">Deportes</button>
+          <ul class="mobile-acc-panel">
+            <li><a href="#">Tenis</a></li>
+            <li><a href="#">Natación</a></li>
+            <li><a href="#">Fútbol</a></li>
+            <li><a href="#">Gimnasio</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Actividades</a></li>
+        <li class="has-children">
+          <button class="mobile-acc-btn" aria-expanded="false">Gastronomía</button>
+          <ul class="mobile-acc-panel">
+            <li><a href="#">Salones de eventos</a></li>
+            <li><a href="#">Menú Refrigerios Empresariales</a></li>
+            <li><a href="#">Menú Eventos Sociales</a></li>
+            <li><a href="#">Menú Infantil y Juvenil</a></li>
+            <li><a href="#">Pasabocas / Cóctel</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Administración</a></li>
+      </ul>
+    </nav>
+  </div>
+</aside>
 
 <style>
   /* More serious, compact visual: no margins between pills */
@@ -86,6 +123,26 @@
     /* Ensure bar stays above hero but doesn't overlap status bar on iOS */
     .index-info-bar { z-index: 2000; }
   }
+
+  /* Mobile menu button and panel */
+  .mobile-menu-btn { display: none; position: absolute; right: 0.6rem; top: calc(env(safe-area-inset-top, 0) + 6px); background: transparent; color: #fff; border: none; font-weight: 700; padding: 0.45rem 0.6rem; font-size: 1rem; }
+  .mobile-menu-icon { display:inline-block; margin-left:6px; font-size:1.08rem; }
+  .mobile-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 1999; display:block; }
+  .mobile-menu { position: fixed; inset: 0 0 auto 0; background: linear-gradient(180deg,#15306f,#1e3a8a); transform: translateY(-110%); transition: transform .28s cubic-bezier(.2,.9,.3,1); z-index: 2000; }
+  .mobile-menu.open { transform: translateY(0); }
+  .mobile-menu-inner { padding: calc(env(safe-area-inset-top, 0) + 1rem) 1rem 1rem; }
+  .mobile-nav ul { list-style: none; margin: 0; padding: 0; }
+  .mobile-nav a, .mobile-acc-btn { display:block; color:#fff; text-decoration:none; padding: 0.9rem 0; font-weight:700; border-bottom:1px solid rgba(255,255,255,0.04); text-transform:uppercase; }
+  .mobile-acc-btn { background: transparent; border: none; width:100%; text-align:left; }
+  .mobile-acc-panel { display:none; padding-left: 0.6rem; }
+  .mobile-acc-panel li a { padding: 0.7rem 0; font-weight:600; text-transform:none; }
+  .mobile-acc-btn[aria-expanded='true'] + .mobile-acc-panel { display:block; }
+
+  @media (max-width: 768px) {
+    .mobile-menu-btn { display: inline-block; }
+    /* hide the inline pills on small screens in favor of mobile menu button */
+    .index-info-bar .info-pills { display: none; }
+  }
 </style>
 
 <script>
@@ -117,25 +174,78 @@
         });
       });
 
-      // Touch: ensure tap opens dropdowns reliably on mobile
+      // Touch handling: distinguish scroll vs tap to avoid opening on swipe
       document.querySelectorAll('.pill[data-dropdown] > a').forEach(function(btn){
+        var startX=0, startY=0, moved=false;
         btn.addEventListener('touchstart', function(ev){
+          moved = false;
+          var t = ev.touches && ev.touches[0];
+          if (t) { startX = t.clientX; startY = t.clientY; }
+        }, {passive:true});
+
+        btn.addEventListener('touchmove', function(ev){
+          var t = ev.touches && ev.touches[0];
+          if (!t) return;
+          var dx = Math.abs(t.clientX - startX);
+          var dy = Math.abs(t.clientY - startY);
+          // if vertical movement dominates (user is scrolling), mark moved
+          if (dy > 10 && dy > dx) moved = true;
+        }, {passive:true});
+
+        btn.addEventListener('touchend', function(ev){
+          // if user scrolled, don't toggle dropdown; allow native scroll
+          if (moved) return;
           var p = btn.closest('.pill');
           var opened = p.classList.contains('open');
           document.querySelectorAll('.pill[data-dropdown]').forEach(function(x){ if (x !== p) { x.classList.remove('open'); x.querySelector('a[aria-expanded]') && x.querySelector('a[aria-expanded]').setAttribute('aria-expanded','false'); } });
           p.classList.toggle('open');
           btn.setAttribute('aria-expanded', opened ? 'false' : 'true');
-          // prevent the first tap from following the link
+          // prevent following link on tap that toggles
           ev.preventDefault();
         }, {passive:false});
       });
 
-      // Close dropdowns when clicking outside
-      document.addEventListener('click', function(e){
-        if (!e.target.closest('.index-info-bar')) {
-          document.querySelectorAll('.pill[data-dropdown].open').forEach(function(p){ p.classList.remove('open'); p.querySelector('a[aria-expanded]') && p.querySelector('a[aria-expanded]').setAttribute('aria-expanded','false'); });
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e){
+          if (!e.target.closest('.index-info-bar')) {
+            document.querySelectorAll('.pill[data-dropdown].open').forEach(function(p){ p.classList.remove('open'); p.querySelector('a[aria-expanded]') && p.querySelector('a[aria-expanded]').setAttribute('aria-expanded','false'); });
+          }
+        });
+
+        // Mobile menu toggle behavior
+        var mobileToggle = document.getElementById('mobileMenuToggle');
+        var mobileMenu = document.getElementById('mobileMenu');
+        var mobileOverlay = document.getElementById('mobileMenuOverlay');
+        function openMobileMenu(){
+          if (!mobileMenu) return;
+          mobileMenu.classList.add('open');
+          mobileMenu.setAttribute('aria-hidden','false');
+          mobileOverlay.hidden = false;
+          mobileToggle.setAttribute('aria-expanded','true');
+          // focus first link
+          var first = mobileMenu.querySelector('a, button'); if (first) first.focus();
         }
-      });
+        function closeMobileMenu(){
+          if (!mobileMenu) return;
+          mobileMenu.classList.remove('open');
+          mobileMenu.setAttribute('aria-hidden','true');
+          mobileOverlay.hidden = true;
+          mobileToggle.setAttribute('aria-expanded','false');
+          mobileToggle.focus();
+        }
+        if (mobileToggle){
+          mobileToggle.addEventListener('click', function(e){ if (mobileMenu && mobileMenu.classList.contains('open')) closeMobileMenu(); else openMobileMenu(); });
+        }
+        if (mobileOverlay){ mobileOverlay.addEventListener('click', closeMobileMenu); }
+        document.addEventListener('keydown', function(e){ if (e.key === 'Escape') { closeMobileMenu(); } });
+
+        // Mobile accordion buttons inside mobile menu
+        document.querySelectorAll('.mobile-acc-btn').forEach(function(b){
+          b.addEventListener('click', function(){
+            var expanded = b.getAttribute('aria-expanded') === 'true';
+            b.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+          });
+        });
 
     }catch(err){ console.warn(err); }
   })();
