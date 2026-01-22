@@ -150,6 +150,14 @@
     /* hide the inline pills on small screens in favor of mobile menu button */
     .index-info-bar .info-pills { display: none; }
   }
+
+  /* Ensure the mobile menu and its toggle are hidden on larger screens (desktop/tablet wide)
+     so the menu appears only on small/mobile viewports. */
+  @media (min-width: 769px) {
+    .mobile-menu-btn { display: none !important; }
+    #mobileMenu { display: none !important; pointer-events: none !important; }
+    #mobileMenuOverlay { display: none !important; pointer-events: none !important; }
+  }
 </style>
 
 <script>
