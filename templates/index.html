@@ -15,8 +15,8 @@
           <li role="none"><a role="menuitem" href="{% url 'instalaciones' %}">Instalaciones</a></li>
         </ul>
       </div>
-      <div class="pill" role="none"><a role="menuitem" href="#">Comunicados de Gerencia</a></div>
-      <div class="pill" role="none"><a role="menuitem" href="#">Junta Directiva</a></div>
+      <div class="pill" role="none"><a role="menuitem" href="{% url 'comunicados' %}">Comunicados de Gerencia</a></div>
+      <div class="pill" role="none"><a role="menuitem" href="{% url 'junta_directiva' %}">Junta Directiva</a></div>
       <div class="pill" data-dropdown role="none">
         <a href="#" role="menuitem" aria-haspopup="true" aria-expanded="false">Deportes</a>
         <ul class="info-dropdown" role="menu">
@@ -26,7 +26,7 @@
           <li role="none"><a role="menuitem" href="#">Gimnasio</a></li>
         </ul>
       </div>
-      <div class="pill" role="none"><a role="menuitem" href="#">Actividades</a></div>
+      <div class="pill" role="none"><a role="menuitem" href="{% url 'actividades' %}">Actividades</a></div>
       <div class="pill" data-dropdown role="none">
         <a href="#" role="menuitem" aria-haspopup="true" aria-expanded="false">Gastronomía</a>
         <ul class="info-dropdown" role="menu">
@@ -37,7 +37,7 @@
           <li role="none"><a role="menuitem" href="#">Pasabocas / Cóctel</a></li>
         </ul>
       </div>
-      <div class="pill" role="none"><a role="menuitem" href="#">Administración</a></div>
+      <div class="pill" role="none"><a role="menuitem" href="{% url 'administracion' %}">Administración</a></div>
     </nav>
   </div>
 </div>
@@ -52,8 +52,8 @@
     <nav class="mobile-nav" role="navigation">
       <ul>
         <li><a href="#">Bienvenidos</a></li>
-        <li><a href="#">Comunicados de Gerencia</a></li>
-        <li><a href="#">Junta Directiva</a></li>
+        <li><a href="{% url 'comunicados' %}">Comunicados de Gerencia</a></li>
+        <li><a href="{% url 'junta_directiva' %}">Junta Directiva</a></li>
         <li class="has-children">
           <button class="mobile-acc-btn" aria-expanded="false">Deportes</button>
           <ul class="mobile-acc-panel">
@@ -63,7 +63,7 @@
             <li><a href="#">Gimnasio</a></li>
           </ul>
         </li>
-        <li><a href="#">Actividades</a></li>
+        <li><a href="{% url 'actividades' %}">Actividades</a></li>
         <li class="has-children">
           <button class="mobile-acc-btn" aria-expanded="false">Gastronomía</button>
           <ul class="mobile-acc-panel">
@@ -74,7 +74,7 @@
             <li><a href="#">Pasabocas / Cóctel</a></li>
           </ul>
         </li>
-        <li><a href="#">Administración</a></li>
+        <li><a href="{% url 'administracion' %}">Administración</a></li>
       </ul>
     </nav>
   </div>
