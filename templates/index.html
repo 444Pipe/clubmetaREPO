@@ -51,27 +51,34 @@
   <div class="mobile-menu-inner">
     <nav class="mobile-nav" role="navigation">
       <ul>
-        <li><a href="#">Bienvenidos</a></li>
+        <li class="has-children">
+          <button class="mobile-acc-btn" aria-expanded="false">Bienvenidos</button>
+          <ul class="mobile-acc-panel">
+            <li><a href="{% url 'vision' %}">Visión</a></li>
+            <li><a href="{% url 'mision' %}">Misión</a></li>
+            <li><a href="{% url 'instalaciones' %}">Instalaciones</a></li>
+          </ul>
+        </li>
         <li><a href="{% url 'comunicados' %}">Comunicados de Gerencia</a></li>
         <li><a href="{% url 'junta_directiva' %}">Junta Directiva</a></li>
         <li class="has-children">
           <button class="mobile-acc-btn" aria-expanded="false">Deportes</button>
           <ul class="mobile-acc-panel">
-            <li><a href="#">Tenis</a></li>
-            <li><a href="#">Natación</a></li>
-            <li><a href="#">Fútbol</a></li>
-            <li><a href="#">Gimnasio</a></li>
+            <li><a href="{% url 'deportes_tenis' %}">Tenis</a></li>
+            <li><a href="{% url 'deportes_natacion' %}">Natación</a></li>
+            <li><a href="{% url 'deportes_futbol' %}">Fútbol</a></li>
+            <li><a href="{% url 'deportes_gimnasio' %}">Gimnasio</a></li>
           </ul>
         </li>
         <li><a href="{% url 'actividades' %}">Actividades</a></li>
         <li class="has-children">
           <button class="mobile-acc-btn" aria-expanded="false">Gastronomía</button>
           <ul class="mobile-acc-panel">
-            <li><a href="#">Salones de eventos</a></li>
-            <li><a href="#">Menú Refrigerios Empresariales</a></li>
-            <li><a href="#">Menú Eventos Sociales</a></li>
-            <li><a href="#">Menú Infantil y Juvenil</a></li>
-            <li><a href="#">Pasabocas / Cóctel</a></li>
+            <li><a href="{% url 'gastronomia_salones' %}">Salones de eventos</a></li>
+            <li><a href="{% url 'gastronomia_refrigerios' %}">Menú Refrigerios Empresariales</a></li>
+            <li><a href="{% url 'gastronomia_eventos' %}">Menú Eventos Sociales</a></li>
+            <li><a href="{% url 'gastronomia_infantil' %}">Menú Infantil y Juvenil</a></li>
+            <li><a href="{% url 'gastronomia_pasabocas' %}">Pasabocas / Cóctel</a></li>
           </ul>
         </li>
         <li><a href="{% url 'administracion' %}">Administración</a></li>
