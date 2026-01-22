@@ -2,6 +2,85 @@
 {% load static %}
 {% block title %}Inicio - CLUB EL META{% endblock %}
 {% block content %}
+
+<!-- Index-only informational bar (dismissible) -->
+<div id="indexInfoBar" class="index-info-bar" role="region" aria-label="Información principal">
+  <div class="container d-flex align-items-center justify-content-between">
+    <nav class="info-pills d-flex flex-wrap" aria-label="Información rápida">
+      <div class="pill" data-dropdown>
+        <a href="#">Bienvenidos</a>
+        <ul class="info-dropdown">
+          <li><a href="#">Visión</a></li>
+          <li><a href="#">Misión</a></li>
+          <li><a href="#">Instalaciones</a></li>
+        </ul>
+      </div>
+      <div class="pill"><a href="#">Comunicados de Gerencia</a></div>
+      <div class="pill"><a href="#">Junta Directiva</a></div>
+      <div class="pill" data-dropdown>
+        <a href="#">Deportes</a>
+        <ul class="info-dropdown">
+          <li><a href="#">Tenis</a></li>
+          <li><a href="#">Natación</a></li>
+          <li><a href="#">Fútbol</a></li>
+          <li><a href="#">Gimnasio</a></li>
+        </ul>
+      </div>
+      <div class="pill"><a href="#">Actividades</a></div>
+      <div class="pill" data-dropdown>
+        <a href="#">Gastronomía</a>
+        <ul class="info-dropdown">
+          <li><a href="#">Salones de eventos</a></li>
+          <li><a href="#">Menú Refrigerios Empresariales</a></li>
+          <li><a href="#">Menú Eventos Sociales</a></li>
+          <li><a href="#">Menú Infantil y Juvenil</a></li>
+          <li><a href="#">Pasabocas / Cóctel</a></li>
+        </ul>
+      </div>
+      <div class="pill"><a href="#">Administración</a></div>
+    </nav>
+
+    <button id="closeInfoBar" class="btn btn-sm btn-outline-light">Cerrar</button>
+  </div>
+</div>
+
+<style>
+  .index-info-bar { background: #1e3a8a; color: #fff; padding: 0.45rem 0; box-shadow: 0 6px 18px rgba(0,0,0,0.16); position: relative; z-index: 1100; }
+  .index-info-bar .info-pills { gap: 0.5rem; }
+  .index-info-bar .pill { position: relative; margin-right: 0.5rem; }
+  .index-info-bar .pill > a { display: inline-block; padding: 0.45rem 0.9rem; background: rgba(255,255,255,0.08); color: #fff; border-radius: 999px; text-decoration: none; font-weight: 600; box-shadow: 0 6px 0 rgba(0,0,0,0.06) inset; }
+  .index-info-bar .pill:hover > a, .index-info-bar .pill:focus-within > a { background: rgba(255,255,255,0.14); }
+  .index-info-bar .info-dropdown { display: none; position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%); min-width: 190px; background: rgba(255,255,255,0.12); color: #fff; padding: 0.6rem 0.35rem; border-radius: 10px; list-style: none; box-shadow: 0 12px 28px rgba(0,0,0,0.18); }
+  .index-info-bar .info-dropdown li { text-align: center; padding: 0.25rem 0; }
+  .index-info-bar .info-dropdown li a { color: #fff; text-decoration: none; display: block; padding: 0.15rem 0.6rem; }
+  .index-info-bar .pill[data-dropdown]:hover .info-dropdown, .index-info-bar .pill[data-dropdown].open .info-dropdown { display: block; }
+  @media (max-width: 768px) {
+    .index-info-bar .container { gap:0.5rem; }
+    .index-info-bar .info-pills { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 0.25rem; }
+    .index-info-bar .info-dropdown { position: static; transform: none; margin-top: 0.4rem; }
+  }
+</style>
+
+<script>
+  (function(){
+    try{
+      if (localStorage.getItem('indexInfoBarHidden') === '1') {
+        var el = document.getElementById('indexInfoBar'); if (el) el.style.display = 'none';
+      }
+      document.addEventListener('click', function(e){
+        var p = e.target.closest('.pill[data-dropdown]');
+        document.querySelectorAll('.pill[data-dropdown]').forEach(function(x){ if (x !== p) x.classList.remove('open'); });
+        if (p) p.classList.toggle('open');
+      });
+      var closeBtn = document.getElementById('closeInfoBar');
+      if (closeBtn) closeBtn.addEventListener('click', function(){
+        document.getElementById('indexInfoBar').style.display = 'none';
+        localStorage.setItem('indexInfoBarHidden','1');
+      });
+    }catch(err){ console.warn(err); }
+  })();
+</script>
+
 <section class="hero text-center text-white" id="heroSection" style="background-image: linear-gradient(rgba(30,58,138,0.55), rgba(30,58,138,0.55)), url({% static 'img/fondin.jpeg' %}); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 75vh; display: flex; align-items: center;">
   <div class="container py-5">
     <h2 class="display-5 hero-title fade-up">Bienvenido a  CLUB EL META</h2>
