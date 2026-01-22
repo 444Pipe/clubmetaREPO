@@ -17,7 +17,13 @@
   {% block header %}
   <header class="site-header">
     <div class="container d-flex align-items-center justify-content-between">
-      <div class="d-flex align-items-center" style="gap: 15px;">
+      <div class="d-flex align-items-center" style="gap: 12px;">
+        <!-- Hamburger: 3 rayitas a la izquierda para abrir panel info -->
+        <button class="hamburger-btn btn btn-outline-light p-2 me-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#infoOffcanvas" aria-controls="infoOffcanvas" aria-label="Abrir opciones">
+          <span class="hamb-line"></span>
+          <span class="hamb-line"></span>
+          <span class="hamb-line"></span>
+        </button>
         <div style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); padding: 8px; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(30,58,138,0.3);">
           <img src="{% static 'img/logo.png' %}" alt="CLUB EL META Logo" class="logo-img" style="height: 60px; width: 60px; object-fit: contain;">
         <div style="line-height: 1;">
@@ -60,6 +66,27 @@
     </div>
   </header>
   {% endblock %}
+
+  <!-- Offcanvas panel for left hamburger -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="infoOffcanvas" aria-labelledby="infoOffcanvasLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="infoOffcanvasLabel">Opciones</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+    </div>
+    <div class="offcanvas-body">
+      <p class="small text-muted">Aquí puedes colocar información adicional y accesos rápidos.</p>
+      <div class="list-group list-group-flush">
+        <a href="{% url 'reservas:espacios' %}" class="list-group-item list-group-item-action">Espacios</a>
+        <a href="{% url 'reservas:register' %}" class="list-group-item list-group-item-action">Reservar</a>
+        <a href="{% url 'preguntas_frecuentes' %}" class="list-group-item list-group-item-action">Preguntas Frecuentes</a>
+        <a href="{% url 'politicas' %}" class="list-group-item list-group-item-action">Políticas</a>
+      </div>
+      <hr>
+      <h6 class="small">Contacto rápido</h6>
+      <p class="small mb-1"><i class="bi bi-telephone-fill"></i> 350 701 6630</p>
+      <p class="small"><i class="bi bi-envelope-fill"></i> gerencia@clubelmeta.com</p>
+    </div>
+  </div>
 
   <!-- Mensajes flotantes (sin afectar el layout) -->
   {% if messages %}
@@ -215,6 +242,30 @@
     
     footer a:hover {
       text-decoration: underline !important;
+    }
+    /* Hamburger button styles */
+    .hamburger-btn {
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .hamb-line {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: white;
+      margin: 2px 0;
+      border-radius: 2px;
+      opacity: 0.95;
+    }
+    @media (max-width: 768px) {
+      .hamburger-btn { width: 40px; height: 40px; }
+      .hamb-line { width: 14px; }
     }
   </style>
 
