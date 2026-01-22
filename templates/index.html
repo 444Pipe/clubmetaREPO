@@ -43,7 +43,7 @@
 </div>
 
 <!-- Mobile menu toggle (visible only on small screens) -->
-<button id="mobileMenuToggle" class="mobile-menu-btn" aria-controls="mobileMenu" aria-expanded="false" aria-label="Abrir menú">Menú <span class="mobile-menu-icon">⋮</span></button>
+<button id="mobileMenuToggle" class="mobile-menu-btn" aria-controls="mobileMenu" aria-expanded="false" aria-label="Abrir menú">Menú <span class="mobile-menu-icon">☰</span></button>
 
 <!-- Mobile full-width slide-down menu -->
 <div id="mobileMenuOverlay" class="mobile-menu-overlay" hidden></div>
@@ -128,8 +128,8 @@
   }
 
   /* Mobile menu button and panel */
-  .mobile-menu-btn { display: none; position: absolute; right: 0.6rem; top: calc(env(safe-area-inset-top, 0) + 6px); background: transparent; color: #fff; border: none; font-weight: 700; padding: 0.45rem 0.6rem; font-size: 1rem; }
-  .mobile-menu-icon { display:inline-block; margin-left:6px; font-size:1.08rem; }
+  .mobile-menu-btn { display: none; position: absolute; right: 1rem; top: calc(env(safe-area-inset-top, 0) + 16px); background: transparent; color: #fff; border: none; font-weight: 700; padding: 0.4rem 0.6rem; font-size: 1rem; display:flex; align-items:center; gap:8px; }
+  .mobile-menu-icon { display:inline-block; margin-left:4px; font-size:1.15rem; line-height:1; }
   .mobile-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 1999; display:block; }
   .mobile-menu { position: fixed; inset: 0 0 auto 0; background: linear-gradient(180deg,#15306f,#1e3a8a); transform: translateY(-110%); transition: transform .28s cubic-bezier(.2,.9,.3,1); z-index: 2000; }
   .mobile-menu.open { transform: translateY(0); }
