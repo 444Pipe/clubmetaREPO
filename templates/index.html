@@ -20,21 +20,21 @@
       <div class="pill" data-dropdown role="none">
         <a href="#" role="menuitem" aria-haspopup="true" aria-expanded="false">Deportes</a>
         <ul class="info-dropdown" role="menu">
-          <li role="none"><a role="menuitem" href="#">Tenis</a></li>
-          <li role="none"><a role="menuitem" href="#">Natación</a></li>
-          <li role="none"><a role="menuitem" href="#">Fútbol</a></li>
-          <li role="none"><a role="menuitem" href="#">Gimnasio</a></li>
+          <li role="none"><a role="menuitem" href="{% url 'deportes_tenis' %}">Tenis</a></li>
+          <li role="none"><a role="menuitem" href="{% url 'deportes_natacion' %}">Natación</a></li>
+          <li role="none"><a role="menuitem" href="{% url 'deportes_futbol' %}">Fútbol</a></li>
+          <li role="none"><a role="menuitem" href="{% url 'deportes_gimnasio' %}">Gimnasio</a></li>
         </ul>
       </div>
       <div class="pill" role="none"><a role="menuitem" href="{% url 'actividades' %}">Actividades</a></div>
       <div class="pill" data-dropdown role="none">
         <a href="#" role="menuitem" aria-haspopup="true" aria-expanded="false">Gastronomía</a>
         <ul class="info-dropdown" role="menu">
-          <li role="none"><a role="menuitem" href="#">Salones de eventos</a></li>
-          <li role="none"><a role="menuitem" href="#">Menú Refrigerios Empresariales</a></li>
-          <li role="none"><a role="menuitem" href="#">Menú Eventos Sociales</a></li>
-          <li role="none"><a role="menuitem" href="#">Menú Infantil y Juvenil</a></li>
-          <li role="none"><a role="menuitem" href="#">Pasabocas / Cóctel</a></li>
+          <li role="none"><a role="menuitem" href="{% url 'gastronomia_salones' %}">Salones de eventos</a></li>
+          <li role="none"><a role="menuitem" href="{% url 'gastronomia_refrigerios' %}">Menú Refrigerios Empresariales</a></li>
+          <li role="none"><a role="menuitem" href="{% url 'gastronomia_eventos' %}">Menú Eventos Sociales</a></li>
+          <li role="none"><a role="menuitem" href="{% url 'gastronomia_infantil' %}">Menú Infantil y Juvenil</a></li>
+          <li role="none"><a role="menuitem" href="{% url 'gastronomia_pasabocas' %}">Pasabocas / Cóctel</a></li>
         </ul>
       </div>
       <div class="pill" role="none"><a role="menuitem" href="{% url 'administracion' %}">Administración</a></div>
