@@ -47,11 +47,12 @@
   .index-info-bar { background: linear-gradient(180deg,#15306f,#1e3a8a); color: #fff; padding: 0.35rem 0; box-shadow: 0 6px 18px rgba(0,0,0,0.14); position: relative; z-index: 1100; }
   .index-info-bar .info-pills { gap: 0.25rem; display: flex; align-items: center; }
   .index-info-bar .pill { position: relative; margin: 0; }
+  /* Plain, borderless nav-style links (example look) */
   .index-info-bar .pill > a {
-    display: inline-block; padding: 0.38rem 0.8rem; background: rgba(255,255,255,0.06); color: #fff; border-radius: 14px; text-decoration: none; font-weight: 600; font-size: 0.92rem;
+    display: inline-block; padding: 0.45rem 0.6rem; background: transparent; color: #fff; border-radius: 0; text-decoration: none; font-weight: 700; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.6px;
   }
-  .index-info-bar .pill + .pill > a { margin-left: 0.1rem; }
-  .index-info-bar .pill:hover > a, .index-info-bar .pill:focus-within > a { background: rgba(255,255,255,0.11); }
+  .index-info-bar .pill + .pill > a { margin-left: 0.9rem; }
+  .index-info-bar .pill:hover > a, .index-info-bar .pill:focus-within > a { color: rgba(255,255,255,0.9); text-decoration: underline; }
   .index-info-bar .info-dropdown {
     display: none; position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); min-width: 220px; background: rgba(255,255,255,0.09); color: #07203a; padding: 0.65rem 0.35rem; border-radius: 12px; list-style: none; 
   }
