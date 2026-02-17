@@ -312,9 +312,9 @@
                 </div>
                 <div class="col-md-4 mb-3">
                   <label class="form-label fw-bold">Hora de Inicio</label>
-                  <input type="time" name="hora_inicio" class="form-control form-control-lg" required min="08:30">
+                  <input type="time" name="hora_inicio" class="form-control form-control-lg" required>
                   <small class="text-muted">¿A qué hora inicia tu evento?</small>
-                  <div id="horaMensaje" class="text-danger small" style="display:none; margin-top:4px;"></div>
+                  <div class="small text-muted mt-1">Horario a convenir.</div>
                 </div>
                 <div class="col-md-4 mb-3">
                   <label class="form-label fw-bold">Duración</label>
@@ -552,22 +552,12 @@
   // Mostrar/ocultar campo de código de socio
   document.addEventListener('DOMContentLoaded', function() {
     // Event listeners para cálculo de horarios y validación
-    const horaInput = document.querySelector('input[name="hora_inicio"]');
-    horaInput.addEventListener('change', function(e) {
-      const v = horaInput.value;
-      const msgEl = document.getElementById('horaMensaje');
-      if (!isHoraValida(v)) {
-        msgEl.style.display = 'block';
-        msgEl.textContent = 'Horario no permitido. Horarios válidos: 08:30 a.m. a 02:00 a.m. (siguiente día).';
-        horaInput.value = '';
-        document.getElementById('horaFin').textContent = '--:--';
-      } else {
-        msgEl.style.display = 'none';
-        calcularHorarios();
-      }
-    });
-    document.querySelector('select[name="duracion_horas"]').addEventListener('change', function() {
-      calcularHorarios();
+        const horaInput = document.querySelector('input[name="hora_inicio"]');
+        horaInput.addEventListener('change', function(e) {
+          calcularHorarios();
+        });
+        document.querySelector('select[name="duracion_horas"]').addEventListener('change', function() {
+          calcularHorarios();
       updatePrices(); // Actualizar precios cuando cambia la duración
     });
     document.querySelector('select[name="tiempo_decoracion"]').addEventListener('change', calcularHorarios);
