@@ -118,8 +118,40 @@
   text-shadow: 0 1px 6px rgba(30,58,138,0.04);
 }
 @media (max-width: 600px) {
-  .vision-card { padding: 18px 2px; }
-  .vision-title { font-size: 1.5rem; }
-  .vision-img { width: 100%; }
-  .vision-ribbon { font-size: 0.95rem; padding: 7px 18px 7px 32px; }
+  .vision-section-bg {
+    padding: 16px 0 8px 0;
+    min-height: 100vh;
+  }
+  .vision-card {
+    padding: 10px 2px 18px 2px;
+    border-radius: 16px;
+    max-width: 98vw;
+    margin: 0 1vw;
+  }
+  .vision-title {
+    font-size: 1.25rem;
+    margin-bottom: 12px;
+  }
+  .vision-img {
+    width: 100%;
+    max-width: 98vw;
+    border-radius: 10px;
+    margin-bottom: 14px;
+  }
+  .vision-text {
+    font-size: 1.01rem;
+    padding: 0 2vw;
+    line-height: 1.45;
+  }
+  .vision-ribbon {
+    font-size: 0.89rem;
+    padding: 6px 10px 6px 28px;
+    border-radius: 12px 12px 12px 0;
+    top: -22px;
+  }
+  .vision-ribbon img {
+    height: 20px;
+    width: 20px;
+    margin-left: -10px;
+  }
 }
