@@ -1,10 +1,20 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Visión - CLUB EL META{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/vision.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/vision.js' %}"></script>
+{% endblock %}
+
 {% block content %}
-<div class="container py-5">
-  <h1 class="mb-3">Visión</h1>
-  <img src="{% static 'img/fondin.jpeg' %}" alt="Visión" style="width: 220px; max-width: 100%; border-radius: 12px; margin-bottom: 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.08);">
-  <p>En el 2026 El Club Meta estará consolidado como empresa líder en calidad de la prestación de servicios de recreación y esparcimiento a la familia llanera; igualmente como centro de negocios para empresarios nacionales y extranjeras.</p>
+<div class="vision-section-bg">
+  <div class="vision-card">
+    <div class="vision-title">Visión</div>
+    <img src="{% static 'img/fondin.jpeg' %}" alt="Visión" class="vision-img">
+    <p class="vision-text">En el 2026 El Club Meta estará consolidado como empresa líder en calidad de la prestación de servicios de recreación y esparcimiento a la familia llanera; igualmente como centro de negocios para empresarios nacionales y extranjeras.</p>
+  </div>
 </div>
 {% endblock %}

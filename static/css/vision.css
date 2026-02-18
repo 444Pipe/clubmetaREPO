@@ -1,0 +1,59 @@
+/* Diseño atractivo para la sección Visión */
+.vision-section-bg {
+  background: linear-gradient(135deg, #e0e7ff 0%, #f8fafc 100%);
+  min-height: 100vh;
+  padding: 60px 0 40px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.vision-card {
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 8px 32px rgba(30,58,138,0.10), 0 1.5px 8px rgba(30,58,138,0.08);
+  padding: 40px 32px 32px 32px;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.7s cubic-bezier(.23,1.01,.32,1);
+}
+.vision-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.vision-title {
+  font-size: 2.3rem;
+  font-weight: 800;
+  color: #1e3a8a;
+  margin-bottom: 18px;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(30,58,138,0.08);
+}
+.vision-img {
+  width: 240px;
+  max-width: 100%;
+  border-radius: 16px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 24px rgba(30,58,138,0.13);
+  transition: transform 0.4s cubic-bezier(.23,1.01,.32,1), box-shadow 0.4s;
+}
+.vision-img:hover {
+  transform: scale(1.06) rotate(-1deg);
+  box-shadow: 0 8px 32px rgba(30,58,138,0.18);
+}
+.vision-text {
+  font-size: 1.15rem;
+  color: #22223b;
+  font-weight: 500;
+  margin-bottom: 0;
+  line-height: 1.6;
+  letter-spacing: 0.1px;
+}
+@media (max-width: 600px) {
+  .vision-card { padding: 24px 8px; }
+  .vision-title { font-size: 1.5rem; }
+  .vision-img { width: 100%; }
+}
