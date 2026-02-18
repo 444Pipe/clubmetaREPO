@@ -1,8 +1,22 @@
 {% extends 'base.html' %}
-{% block title %}Misión - CLUB EL META{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/vision.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/vision.js' %}"></script>
+{% endblock %}
+
 {% block content %}
-<div class="container py-5">
-  <h1 class="mb-3">Misión</h1>
-  <p>Nuestra misión es ofrecer servicios y espacios de alta calidad para el esparcimiento, la práctica deportiva y la realización de eventos, fomentando la integración y el compromiso con la comunidad.</p>
+<div class="vision-section-bg">
+  <div class="vision-card">
+    <div class="vision-ribbon">
+      <img src="{% static 'img/logo.png' %}" alt="Logo Club El Meta">
+      CLUB EL META
+    </div>
+    <div class="vision-title">Misión</div>
+    <img src="{% static 'img/carru4.png' %}" alt="Misión" class="vision-img">
+    <p class="vision-text">Brindar a propios y visitantes un exclusivo ambiente atendido por personal idóneo y calificado, en cómodas y bellas instalaciones, ofreciendo productos de primera línea, satisfaciendo plenamente las expectativas de excelencia, descanso y esparcimiento.</p>
+  </div>
 </div>
 {% endblock %}
