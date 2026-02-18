@@ -32,6 +32,7 @@ urlpatterns = [
     path('bienvenidos/mision/', TemplateView.as_view(template_name='mision.html'), name='mision'),
     path('bienvenidos/instalaciones/', TemplateView.as_view(template_name='instalaciones.html'), name='instalaciones'),
     # Comunicados y administración
+    path('estatutos/', TemplateView.as_view(template_name='estatutos.html'), name='estatutos'),
     path('comunicados/', TemplateView.as_view(template_name='comunicados.html'), name='comunicados'),
     path('junta-directiva/', TemplateView.as_view(template_name='junta_directiva.html'), name='junta_directiva'),
     path('actividades/', TemplateView.as_view(template_name='actividades.html'), name='actividades'),
