@@ -10,7 +10,12 @@
       <div class="pill" data-dropdown role="none">
         <a href="#" role="menuitem" aria-haspopup="true" aria-expanded="false">Bienvenidos</a>
         <ul class="info-dropdown" role="menu">
-          <li role="none"><a role="menuitem" href="{% url 'vision' %}">Visión</a></li>
+          <li role="none">
+            <a role="menuitem" href="{% url 'vision' %}">
+              <img src="{% static 'img/salon mi llanura/yotas4.jpeg' %}" alt="Visión" style="width: 32px; height: 32px; object-fit: cover; border-radius: 6px; margin-right: 8px; vertical-align: middle;">
+              Visión
+            </a>
+          </li>
           <li role="none"><a role="menuitem" href="{% url 'mision' %}">Misión</a></li>
           <li role="none"><a role="menuitem" href="{% url 'instalaciones' %}">Instalaciones</a></li>
         </ul>
