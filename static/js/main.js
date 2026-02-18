@@ -2,6 +2,24 @@
 // Smooth scroll for internal links, reveal-on-scroll, and simple button effects
 
 document.addEventListener('DOMContentLoaded', function () {
+  // --- Menú móvil: ocultar/mostrar usando atributo hidden para evitar FOUC ---
+  var mobileMenu = document.getElementById('mobileMenu');
+  var mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+  var mobileMenuToggle = document.getElementById('mobileMenuToggle');
+  if (mobileMenu && mobileMenuOverlay && mobileMenuToggle) {
+    // Mostrar menú
+    mobileMenuToggle.addEventListener('click', function () {
+      mobileMenu.removeAttribute('hidden');
+      mobileMenuOverlay.removeAttribute('hidden');
+      mobileMenu.setAttribute('aria-hidden', 'false');
+    });
+    // Ocultar menú al hacer click en overlay
+    mobileMenuOverlay.addEventListener('click', function () {
+      mobileMenu.setAttribute('hidden', '');
+      mobileMenuOverlay.setAttribute('hidden', '');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+    });
+  }
   // Smooth scroll for links with href starting with # or data-scroll-target
   function smoothScrollTo(targetEl) {
     if (!targetEl) return;
