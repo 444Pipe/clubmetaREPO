@@ -1,59 +1,125 @@
 /* Diseño atractivo para la sección Visión */
+/* Diseño avanzado para la sección Visión */
 .vision-section-bg {
-  background: linear-gradient(135deg, #e0e7ff 0%, #f8fafc 100%);
+  background: linear-gradient(120deg, #e0e7ff 0%, #c7d2fe 100%);
   min-height: 100vh;
   padding: 60px 0 40px 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.vision-section-bg::before {
+  content: '';
+  position: absolute;
+  top: -120px; left: -120px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, #1e3a8a33 0%, transparent 70%);
+  z-index: 0;
+  animation: float1 8s ease-in-out infinite alternate;
+}
+.vision-section-bg::after {
+  content: '';
+  position: absolute;
+  bottom: -100px; right: -100px;
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, #2563eb22 0%, transparent 70%);
+  z-index: 0;
+  animation: float2 10s ease-in-out infinite alternate;
+}
+@keyframes float1 {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(40px) scale(1.08); }
+}
+@keyframes float2 {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-30px) scale(1.05); }
 }
 .vision-card {
-  background: #fff;
-  border-radius: 22px;
-  box-shadow: 0 8px 32px rgba(30,58,138,0.10), 0 1.5px 8px rgba(30,58,138,0.08);
-  padding: 40px 32px 32px 32px;
-  max-width: 520px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 32px;
+  box-shadow: 0 12px 48px rgba(30,58,138,0.13), 0 2px 12px rgba(30,58,138,0.10);
+  padding: 48px 36px 36px 36px;
+  max-width: 540px;
   width: 100%;
   text-align: center;
   position: relative;
   opacity: 0;
-  transform: translateY(40px);
-  transition: all 0.7s cubic-bezier(.23,1.01,.32,1);
+  transform: translateY(40px) scale(0.98);
+  transition: all 0.8s cubic-bezier(.23,1.01,.32,1);
+  z-index: 2;
+  border: 2.5px solid transparent;
+  background-clip: padding-box;
 }
 .vision-card.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+  border-image: linear-gradient(120deg, #1e3a8a 0%, #2563eb 100%) 1;
+}
+.vision-ribbon {
+  position: absolute;
+  top: -32px; left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, #1e3a8a 0%, #2563eb 100%);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 8px 32px 8px 44px;
+  border-radius: 18px 18px 18px 0;
+  box-shadow: 0 2px 12px rgba(30,58,138,0.13);
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.vision-ribbon img {
+  height: 28px;
+  width: 28px;
+  object-fit: contain;
+  margin-left: -18px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(30,58,138,0.10);
+  padding: 2px;
 }
 .vision-title {
-  font-size: 2.3rem;
-  font-weight: 800;
-  color: #1e3a8a;
-  margin-bottom: 18px;
-  letter-spacing: 1px;
-  text-shadow: 0 2px 8px rgba(30,58,138,0.08);
+  font-size: 2.7rem;
+  font-weight: 900;
+  background: linear-gradient(90deg, #1e3a8a 0%, #2563eb 100%);
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  margin-bottom: 22px;
+  letter-spacing: 1.5px;
+  text-shadow: 0 2px 12px rgba(30,58,138,0.10);
 }
 .vision-img {
-  width: 240px;
+  width: 260px;
   max-width: 100%;
-  border-radius: 16px;
-  margin-bottom: 18px;
-  box-shadow: 0 4px 24px rgba(30,58,138,0.13);
-  transition: transform 0.4s cubic-bezier(.23,1.01,.32,1), box-shadow 0.4s;
+  border-radius: 18px;
+  margin-bottom: 22px;
+  box-shadow: 0 8px 32px rgba(30,58,138,0.15);
+  transition: transform 0.5s cubic-bezier(.23,1.01,.32,1), box-shadow 0.5s;
+  border: 2.5px solid #e0e7ff;
 }
 .vision-img:hover {
-  transform: scale(1.06) rotate(-1deg);
-  box-shadow: 0 8px 32px rgba(30,58,138,0.18);
+  transform: scale(1.08) rotate(-2deg);
+  box-shadow: 0 16px 48px rgba(30,58,138,0.22);
+  border-color: #2563eb;
 }
 .vision-text {
-  font-size: 1.15rem;
-  color: #22223b;
-  font-weight: 500;
+  font-size: 1.22rem;
+  color: #1e293b;
+  font-weight: 600;
   margin-bottom: 0;
-  line-height: 1.6;
-  letter-spacing: 0.1px;
+  line-height: 1.7;
+  letter-spacing: 0.2px;
+  text-shadow: 0 1px 6px rgba(30,58,138,0.04);
 }
 @media (max-width: 600px) {
-  .vision-card { padding: 24px 8px; }
+  .vision-card { padding: 18px 2px; }
   .vision-title { font-size: 1.5rem; }
   .vision-img { width: 100%; }
+  .vision-ribbon { font-size: 0.95rem; padding: 7px 18px 7px 32px; }
 }
