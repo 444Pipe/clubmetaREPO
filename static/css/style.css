@@ -1,3 +1,6 @@
+body.no-js #mobileMenuToggle {
+  display: none !important;
+}
 body.no-js nav,
 body.no-js .site-header nav {
   display: none !important;
