@@ -1,14 +1,3 @@
-/* Oculta el menú móvil por defecto para evitar parpadeo */
-#mobileMenu,
-#mobileMenuOverlay {
-  display: none;
-}
-
-/* Cuando el menú está activo, se muestra */
-#mobileMenu.menu-visible,
-#mobileMenuOverlay.menu-visible {
-  display: block;
-}
 :root{
   --primary:#1e3a8a;
   --accent:#d97706;
