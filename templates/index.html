@@ -16,7 +16,13 @@
         </ul>
       </div>
       <div class="pill" role="none"><a role="menuitem" href="{% url 'comunicados' %}">Comunicados de Gerencia</a></div>
-      <div class="pill" role="none"><a role="menuitem" href="{% url 'junta_directiva' %}">Junta Directiva</a></div>
+      <div class="pill" data-dropdown role="none">
+        <a href="#" role="menuitem" aria-haspopup="true" aria-expanded="false">Nosotros</a>
+        <ul class="info-dropdown" role="menu">
+          <li role="none"><a role="menuitem" href="{% url 'junta_directiva' %}">Junta</a></li>
+          <li role="none"><a role="menuitem" href="{% url 'estatutos' %}">Estatutos</a></li>
+        </ul>
+      </div>
       <div class="pill" data-dropdown role="none">
         <a href="#" role="menuitem" aria-haspopup="true" aria-expanded="false">Deportes</a>
         <ul class="info-dropdown" role="menu">
@@ -60,7 +66,13 @@
           </ul>
         </li>
         <li><a href="{% url 'comunicados' %}">Comunicados de Gerencia</a></li>
-        <li><a href="{% url 'junta_directiva' %}">Junta Directiva</a></li>
+        <li class="has-children">
+          <button class="mobile-acc-btn" aria-expanded="false">Nosotros</button>
+          <ul class="mobile-acc-panel">
+            <li><a href="{% url 'junta_directiva' %}">Junta</a></li>
+            <li><a href="{% url 'estatutos' %}">Estatutos</a></li>
+          </ul>
+        </li>
         <li class="has-children">
           <button class="mobile-acc-btn" aria-expanded="false">Deportes</button>
           <ul class="mobile-acc-panel">
