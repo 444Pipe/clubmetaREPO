@@ -1,3 +1,7 @@
+body.no-js nav,
+body.no-js .site-header nav {
+  display: none !important;
+}
 :root{
   --primary:#1e3a8a;
   --accent:#d97706;

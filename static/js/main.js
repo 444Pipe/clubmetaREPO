@@ -2,6 +2,8 @@
 // Smooth scroll for internal links, reveal-on-scroll, and simple button effects
 
 document.addEventListener('DOMContentLoaded', function () {
+  // Eliminar la clase no-js del body para mostrar el menú de escritorio solo cuando el JS y CSS están listos
+  document.body.classList.remove('no-js');
   // --- Menú móvil: ocultar/mostrar usando atributo hidden para evitar FOUC ---
   var mobileMenu = document.getElementById('mobileMenu');
   var mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
