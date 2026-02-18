@@ -121,6 +121,18 @@
   .index-info-bar .info-dropdown li a:hover, .index-info-bar .info-dropdown li a:focus { background: rgba(6, 54, 120, 0.06); color: #07203a; outline: none; }
   .index-info-bar .info-dropdown li a.selected { background: rgba(6, 54, 120, 0.12); color: #07203a; }
   .index-info-bar .pill[data-dropdown]:hover .info-dropdown, .index-info-bar .pill[data-dropdown].open .info-dropdown { display: block; }
+    .index-info-bar .pill[data-dropdown]:hover .info-dropdown,
+    .index-info-bar .pill[data-dropdown]:focus-within .info-dropdown,
+    .index-info-bar .pill[data-dropdown].open .info-dropdown,
+    .index-info-bar .pill[data-dropdown]:hover .info-dropdown:hover {
+      display: block;
+    }
+
+    /* Mantener dropdown abierto si el mouse está sobre el dropdown */
+    .index-info-bar .pill[data-dropdown]:hover,
+    .index-info-bar .pill[data-dropdown]:focus-within {
+      z-index: 1200;
+    }
   /* close button removed: bar is persistent */
 
   @media (max-width: 992px) {
@@ -240,8 +252,11 @@
       });
 
         // Close dropdowns when clicking outside
+        // Close dropdowns when clicking outside, but NOT if mouse is over dropdown
         document.addEventListener('click', function(e){
-          if (!e.target.closest('.index-info-bar')) {
+          var dropdown = e.target.closest('.info-dropdown');
+          var pill = e.target.closest('.pill[data-dropdown]');
+          if (!pill && !dropdown) {
             document.querySelectorAll('.pill[data-dropdown].open').forEach(function(p){ p.classList.remove('open'); p.querySelector('a[aria-expanded]') && p.querySelector('a[aria-expanded]').setAttribute('aria-expanded','false'); });
           }
         });
