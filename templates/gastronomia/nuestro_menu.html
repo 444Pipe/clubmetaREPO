@@ -8,16 +8,16 @@
   <p class="mt-3"><a href="{% url 'gastronomia_salones' %}" class="btn btn-primary">Ver Salones de eventos</a></p>
 
   <h2 class="mt-4">Galería del Menú</h2>
-  <div class="row mt-3">
-    <div class="col-6 col-md-4 menu-card"><div class="menu-gallery"><img src="{% static 'img/menu/menu1.jpeg' %}" alt="Menú 1"></div></div>
-    <div class="col-6 col-md-4 menu-card"><div class="menu-gallery"><img src="{% static 'img/menu/menu2.jpeg' %}" alt="Menú 2"></div></div>
-    <div class="col-6 col-md-4 menu-card"><div class="menu-gallery"><img src="{% static 'img/menu/menu3.jpeg' %}" alt="Menú 3"></div></div>
-    <div class="col-6 col-md-4 menu-card"><div class="menu-gallery"><img src="{% static 'img/menu/menu4.jpeg' %}" alt="Menú 4"></div></div>
-    <div class="col-6 col-md-4 menu-card"><div class="menu-gallery"><img src="{% static 'img/menu/menu5.jpeg' %}" alt="Menú 5"></div></div>
-    <div class="col-6 col-md-4 menu-card"><div class="menu-gallery"><img src="{% static 'img/menu/menu6.jpeg' %}" alt="Menú 6"></div></div>
-    <div class="col-6 col-md-4 menu-card"><div class="menu-gallery"><img src="{% static 'img/menu/menu7.jpeg' %}" alt="Menú 7"></div></div>
-    <div class="col-6 col-md-4 menu-card"><div class="menu-gallery"><img src="{% static 'img/menu/menu8.jpeg' %}" alt="Menú 8"></div></div>
-    <div class="col-6 col-md-4 menu-card"><div class="menu-gallery"><img src="{% static 'img/menu/menu9.jpeg' %}" alt="Menú 9"></div></div>
+  <div class="menu-stack mt-3">
+    <div class="menu-page"><img src="{% static 'img/menu/menu1.jpeg' %}" alt="Menú 1"></div>
+    <div class="menu-page"><img src="{% static 'img/menu/menu2.jpeg' %}" alt="Menú 2"></div>
+    <div class="menu-page"><img src="{% static 'img/menu/menu3.jpeg' %}" alt="Menú 3"></div>
+    <div class="menu-page"><img src="{% static 'img/menu/menu4.jpeg' %}" alt="Menú 4"></div>
+    <div class="menu-page"><img src="{% static 'img/menu/menu5.jpeg' %}" alt="Menú 5"></div>
+    <div class="menu-page"><img src="{% static 'img/menu/menu6.jpeg' %}" alt="Menú 6"></div>
+    <div class="menu-page"><img src="{% static 'img/menu/menu7.jpeg' %}" alt="Menú 7"></div>
+    <div class="menu-page"><img src="{% static 'img/menu/menu8.jpeg' %}" alt="Menú 8"></div>
+    <div class="menu-page"><img src="{% static 'img/menu/menu9.jpeg' %}" alt="Menú 9"></div>
   </div>
 
 </div>
@@ -25,8 +25,13 @@
 
 {% block extra_css %}
 <style>
-  .menu-gallery img { width: 100%; height: 220px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(0,0,0,0.06); }
-  .menu-card { padding: 0.5rem; }
+  /* Stacked pages so user can scroll top-to-bottom like a PDF */
+  .menu-stack { display: flex; flex-direction: column; gap: 1rem; align-items: center; }
+  .menu-page { width: 100%; max-width: 980px; box-shadow: 0 6px 24px rgba(10,10,10,0.06); border-radius: 8px; overflow: hidden; background: #fff; }
+  .menu-page img { width: 100%; height: auto; display: block; }
+  @media (max-width: 576px) {
+    .menu-page { max-width: 100%; }
+  }
 </style>
 {% endblock %}
 
