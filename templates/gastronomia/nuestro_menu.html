@@ -29,34 +29,65 @@
     <div class="menu-page" data-page="8"><img src="{% static 'img/menu/menu8.jpeg' %}" alt="Menú 8"><div class="page-label">Página 8</div></div>
     <div class="menu-page" data-page="9"><img src="{% static 'img/menu/menu9.jpeg' %}" alt="Menú 9"><div class="page-label">Página 9</div></div>
   </div>
+</div>
 
+<!-- Lightbox modal -->
+<div id="menuModal" class="menu-modal" hidden>
+  <div class="menu-modal-backdrop"></div>
+  <div class="menu-modal-inner">
+    <button id="modalClose" class="btn-close-modal" aria-label="Cerrar">×</button>
+    <div class="menu-modal-content">
+      <img id="modalImg" src="" alt="Menú ampliado">
+    </div>
+    <div class="menu-modal-controls">
+      <button id="zoomIn" class="btn btn-sm btn-outline-secondary">+</button>
+      <button id="zoomOut" class="btn btn-sm btn-outline-secondary">−</button>
+      <a id="downloadBtn" class="btn btn-sm btn-primary" download>Descargar</a>
+    </div>
+  </div>
+</div>
 </div>
 {% endblock %}
 
 {% block extra_css %}
 <style>
-  /* Stacked pages so user can scroll top-to-bottom like a PDF */
-  .menu-stack { display: flex; flex-direction: column; gap: 1rem; align-items: center; }
-  .menu-page { width: 100%; max-width: 980px; box-shadow: 0 6px 24px rgba(10,10,10,0.06); border-radius: 8px; overflow: hidden; background: #fff; }
+  /* Layout */
+  body { background: #f3f4f6; }
+  .container.py-5 { max-width: 1100px; }
+
+  /* Stacked pages: scrollable area with snap for PDF-like feel */
+  .menu-stack { display: block; width: 100%; max-width: 100%; max-height: calc(100vh - 220px); overflow-y: auto; padding: 1rem; box-sizing: border-box; scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+  .menu-page { scroll-snap-align: start; width: 100%; max-width: 980px; margin: 0 auto; box-shadow: 0 12px 40px rgba(2,6,23,0.08); border-radius: 10px; overflow: hidden; background: #fff; position: relative; transition: transform 0.25s ease; }
+  .menu-page:hover { transform: translateY(-6px); }
   .menu-page img { width: 100%; height: auto; display: block; }
-  @media (max-width: 576px) {
-    .menu-page { max-width: 100%; }
-  }
-  /* Toolbar */
-  .menu-toolbar { position: sticky; top: 88px; z-index: 40; background: rgba(255,255,255,0.85); padding: 0.4rem; border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
-  .menu-toolbar .btn { min-width: 110px; }
+  @media (max-width: 576px) { .menu-page { max-width: 100%; border-radius: 6px; } }
+
+  /* Toolbar (more visible) */
+  .menu-toolbar { position: sticky; top: 72px; z-index: 60; background: rgba(255,255,255,0.95); padding: 0.6rem; border-radius: 12px; box-shadow: 0 8px 30px rgba(2,6,23,0.08); align-items: center; }
+  .menu-toolbar .btn { min-width: 125px; }
 
   /* Page label */
   .page-label { position: absolute; right: 12px; bottom: 12px; background: rgba(0,0,0,0.6); color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 0.9rem; }
 
   /* Fit width mode */
   .fit-width .menu-page { max-width: 100% !important; border-radius: 0; }
+
+  /* Modal / Lightbox */
+  .menu-modal { position: fixed; inset: 0; display: grid; place-items: center; z-index: 2000; }
+  .menu-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.75); }
+  .menu-modal-inner { position: relative; width: min(1200px, 95%); max-height: 95vh; background: transparent; display:flex; flex-direction:column; gap:8px; }
+  .menu-modal-content { flex: 1 1 auto; display:flex; align-items:center; justify-content:center; overflow:auto; }
+  .menu-modal-content img { max-width: 100%; max-height: 88vh; border-radius: 6px; box-shadow: 0 20px 60px rgba(2,6,23,0.6); transform-origin: center center; transition: transform 0.18s ease; }
+  .btn-close-modal { position: absolute; right: 8px; top: 8px; z-index: 2010; background: rgba(255,255,255,0.9); border: none; width: 40px; height: 40px; border-radius: 8px; font-size: 20px; }
+  .menu-modal-controls { display:flex; gap:8px; justify-content:flex-end; }
+  .menu-modal-controls .btn { min-width: 46px; }
 </style>
 {% endblock %}
 {% block extra_js %}
 <script>
   (function(){
     const pages = Array.from(document.querySelectorAll('.menu-page'));
+    const stack = document.getElementById('menuStack');
     let idx = 0;
     function scrollToIndex(i){
       i = Math.max(0, Math.min(pages.length-1, i));
@@ -70,24 +101,58 @@
     document.getElementById('btn-fit').addEventListener('click', ()=> document.body.classList.toggle('fit-width'));
     document.getElementById('btn-print').addEventListener('click', ()=> window.print());
 
-    // Keyboard navigation
+    // Lightbox modal elements
+    const modal = document.getElementById('menuModal');
+    const modalImg = document.getElementById('modalImg');
+    const modalClose = document.getElementById('modalClose');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const zoomIn = document.getElementById('zoomIn');
+    const zoomOut = document.getElementById('zoomOut');
+    let scale = 1;
+
+    // Open modal on image click
+    pages.forEach(p=>{
+      const img = p.querySelector('img');
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', ()=>{
+        modalImg.src = img.src;
+        downloadBtn.href = img.src;
+        scale = 1; modalImg.style.transform = 'scale(1)';
+        modal.removeAttribute('hidden');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    function closeModal(){ modal.setAttribute('hidden',''); document.body.style.overflow = ''; }
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e)=>{ if(e.target===modal || e.target.classList.contains('menu-modal-backdrop')) closeModal(); });
+
+    zoomIn.addEventListener('click', ()=>{ scale = Math.min(3, scale + 0.25); modalImg.style.transform = `scale(${scale})`; });
+    zoomOut.addEventListener('click', ()=>{ scale = Math.max(0.5, scale - 0.25); modalImg.style.transform = `scale(${scale})`; });
+
+    // Keyboard navigation and modal close
     window.addEventListener('keydown', (e)=>{
+      if(modal && !modal.hasAttribute('hidden')){
+        if(e.key==='Escape'){ closeModal(); }
+        if(e.key==='+'||e.key==='=') { e.preventDefault(); scale = Math.min(3, scale + 0.25); modalImg.style.transform = `scale(${scale})`; }
+        if(e.key==='-') { e.preventDefault(); scale = Math.max(0.5, scale - 0.25); modalImg.style.transform = `scale(${scale})`; }
+        return;
+      }
       if(['ArrowDown','PageDown'].includes(e.key)) { e.preventDefault(); scrollToIndex(idx+1); }
       if(['ArrowUp','PageUp'].includes(e.key)) { e.preventDefault(); scrollToIndex(idx-1); }
       if(e.key==='Home'){ e.preventDefault(); scrollToIndex(0); }
       if(e.key==='End'){ e.preventDefault(); scrollToIndex(pages.length-1); }
     });
 
-    // Update idx while scrolling (approximate)
+    // Update idx while scrolling inside stack
     let ticking=false;
-    window.addEventListener('scroll', ()=>{
+    stack.addEventListener('scroll', ()=>{
       if(ticking) return; ticking=true;
       requestAnimationFrame(()=>{
-        const mid = window.innerHeight/4 + window.scrollY;
+        const mid = stack.scrollTop + stack.clientHeight/8;
         let nearest = 0; let minDist = Infinity;
         pages.forEach((p,i)=>{
-          const rect = p.getBoundingClientRect();
-          const top = rect.top + window.scrollY;
+          const top = p.offsetTop;
           const dist = Math.abs(top - mid);
           if(dist < minDist){ minDist = dist; nearest = i; }
         });
