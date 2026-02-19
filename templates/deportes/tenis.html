@@ -3,31 +3,46 @@
 {% block title %}Tenis - CLUB EL META{% endblock %}
 {% block content %}
 <div class="container py-5">
-  <h1 class="mb-3">Tenis</h1>
-  <div id="carouselTenis" class="carousel slide mb-4" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="{% static 'img/tenis/tenis1.avif' %}" class="d-block w-100 rounded" alt="Tenis 1">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="text-center mb-4">
+        <h1 class="display-5 fw-bold" style="color:#1761c1; letter-spacing:1px;">Tenis</h1>
+        <div class="mx-auto mb-3" style="width:60px; height:4px; background:linear-gradient(90deg,#1761c1,#4fc3f7); border-radius:2px;"></div>
       </div>
-      <div class="carousel-item">
-        <img src="{% static 'img/tenis/tenis2.avif' %}" class="d-block w-100 rounded" alt="Tenis 2">
+      <div class="card shadow-lg border-0 mb-4" style="overflow:hidden;">
+        <div class="card-body p-0">
+          <div id="carouselTenis" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="{% static 'img/tenis/tenis1.avif' %}" class="d-block w-100" alt="Tenis 1" style="object-fit:cover; max-height:400px;">
+              </div>
+              <div class="carousel-item">
+                <img src="{% static 'img/tenis/tenis2.avif' %}" class="d-block w-100" alt="Tenis 2" style="object-fit:cover; max-height:400px;">
+              </div>
+              <div class="carousel-item">
+                <img src="{% static 'img/tenis/tenis3.avif' %}" class="d-block w-100" alt="Tenis 3" style="object-fit:cover; max-height:400px;">
+              </div>
+              <div class="carousel-item">
+                <img src="{% static 'img/tenis/tenis4.avif' %}" class="d-block w-100" alt="Tenis 4" style="object-fit:cover; max-height:400px;">
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselTenis" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselTenis" data-bs-slide="next">
+              <span class="carousel-control-next-icon"></span>
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="carousel-item">
-        <img src="{% static 'img/tenis/tenis3.avif' %}" class="d-block w-100 rounded" alt="Tenis 3">
-      </div>
-      <div class="carousel-item">
-        <img src="{% static 'img/tenis/tenis4.avif' %}" class="d-block w-100 rounded" alt="Tenis 4">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <p class="fs-5 mb-0" style="color:#333;">
+            La Corporación Club El Meta, tiene cuatro canchas de polvo de ladrillo reglamentarias y un muro de entrenamiento. Le ofrece la oportunidad de inscribirse en clases personalizadas con instructores especializados dispuestos a desarrollar un programa de formación deportiva de acuerdo al nivel, aptitudes y expectativas de cada persona, además se pueden realizar prácticas de juego libre con su familia e invitados.
+          </p>
+        </div>
       </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselTenis" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselTenis" data-bs-slide="next">
-      <span class="carousel-control-next-icon"></span>
-    </button>
   </div>
-  <p>
-    La Corporación Club El Meta, tiene cuatro canchas de polvo de ladrillo reglamentarias y un muro de entrenamiento. Le ofrece la oportunidad de inscribirse en clases personalizadas con instructores especializados dispuestos a desarrollar un programa de formación deportiva de acuerdo al nivel, aptitudes y expectativas de cada persona, además se pueden realizar prácticas de juego libre con su familia e invitados.
-  </p>
 </div>
 {% endblock %}
