@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Nuestro Menú - CLUB EL META{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h1 class="mb-3">Nuestro Menú</h1>
+  <p class="fs-5">Presentamos una selección representativa de opciones gastronómicas disponibles para eventos y consumo en el club. Para consultar el menú completo y solicitar cotización, por favor contacta al restaurante: <a href="tel:+573108824473">310 882 4473</a>.</p>
+  <p class="mt-3"><a href="{% url 'gastronomia_salones' %}" class="btn btn-primary">Ver Salones de eventos</a></p>
+</div>
+{% endblock %}

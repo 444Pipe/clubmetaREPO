@@ -47,6 +47,7 @@ urlpatterns = [
     path('gastronomia/', TemplateView.as_view(template_name='gastronomia.html'), name='gastronomia'),
     # Redirect 'Salones de eventos' to the reservas 'espacios' page
     path('gastronomia/salones-eventos/', RedirectView.as_view(pattern_name='reservas:espacios', permanent=False), name='gastronomia_salones'),
+    path('gastronomia/nuestro-menu/', TemplateView.as_view(template_name='gastronomia/nuestro_menu.html'), name='gastronomia_menu'),
 ]
 
 # Servir archivos estáticos en desarrollo
