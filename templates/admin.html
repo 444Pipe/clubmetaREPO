@@ -181,6 +181,7 @@
               <th>Total</th>
               <th>Estado</th>
               <th>Fecha Reserva</th>
+              <th>Observaciones</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -231,6 +232,13 @@
               <td>
                 <small>{{ reserva.fecha_creacion|date:"d/m/Y H:i" }}</small>
               </td>
+              <td style="max-width:220px; white-space:pre-wrap; word-break:break-word;">
+                {% if reserva.observaciones %}
+                  <small class="text-muted" title="{{ reserva.observaciones }}">{{ reserva.observaciones|truncatechars:80 }}</small>
+                {% else %}
+                  <small class="text-muted">-</small>
+                {% endif %}
+              </td>
               <td>
                 <div class="d-flex gap-1 align-items-center">
                   <form method="post" action="" style="display:inline-block;">
@@ -253,7 +261,7 @@
             </tr>
             {% empty %}
             <tr>
-              <td colspan="10" class="text-center text-muted py-4">
+              <td colspan="12" class="text-center text-muted py-4">
                 No hay reservas registradas
               </td>
             </tr>
