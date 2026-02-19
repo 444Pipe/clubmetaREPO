@@ -3,42 +3,105 @@
 {% block title %}Natación - CLUB EL META{% endblock %}
 {% block content %}
 <div class="container py-5">
-  <h1 class="mb-3">Natación</h1>
-  <div id="natacionCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="{% static 'img/natacion/nata1.avif' %}" class="d-block w-100" alt="Natación 1">
-      </div>
-      <div class="carousel-item">
-        <img src="{% static 'img/natacion/nata2.avif' %}" class="d-block w-100" alt="Natación 2">
-      </div>
-      <div class="carousel-item">
-        <img src="{% static 'img/natacion/nata3.avif' %}" class="d-block w-100" alt="Natación 3">
-      </div>
-      <div class="carousel-item">
-        <img src="{% static 'img/natacion/nata4.avif' %}" class="d-block w-100" alt="Natación 4">
-      </div>
-      <div class="carousel-item">
-        <img src="{% static 'img/natacion/nata5.avif' %}" class="d-block w-100" alt="Natación 5">
-      </div>
-      <div class="carousel-item">
-        <img src="{% static 'img/natacion/nata6.avif' %}" class="d-block w-100" alt="Natación 6">
-      </div>
-      <div class="carousel-item">
-        <img src="{% static 'img/natacion/nata7.avif' %}" class="d-block w-100" alt="Natación 7">
+  <div class="deporte-card shadow-lg rounded-4 overflow-hidden mb-5 animate__animated animate__fadeIn">
+    <div class="deporte-carousel-wrapper position-relative">
+      <div id="natacionCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="{% static 'img/natacion/nata1.avif' %}" class="deporte-img" alt="Natación 1">
+          </div>
+          <div class="carousel-item">
+            <img src="{% static 'img/natacion/nata2.avif' %}" class="deporte-img" alt="Natación 2">
+          </div>
+          <div class="carousel-item">
+            <img src="{% static 'img/natacion/nata3.avif' %}" class="deporte-img" alt="Natación 3">
+          </div>
+          <div class="carousel-item">
+            <img src="{% static 'img/natacion/nata4.avif' %}" class="deporte-img" alt="Natación 4">
+          </div>
+          <div class="carousel-item">
+            <img src="{% static 'img/natacion/nata5.avif' %}" class="deporte-img" alt="Natación 5">
+          </div>
+          <div class="carousel-item">
+            <img src="{% static 'img/natacion/nata6.avif' %}" class="deporte-img" alt="Natación 6">
+          </div>
+          <div class="carousel-item">
+            <img src="{% static 'img/natacion/nata7.avif' %}" class="deporte-img" alt="Natación 7">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#natacionCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#natacionCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Siguiente</span>
+        </button>
+        <div class="deporte-overlay">
+          <h1 class="deporte-title">Natación</h1>
+        </div>
       </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#natacionCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Anterior</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#natacionCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Siguiente</span>
-    </button>
+    <div class="deporte-desc p-4">
+      <p class="fs-5 text-dark">
+        Vive una experiencia única en nuestra moderna instalación de natación, diseñada para el bienestar, la recreación y el deporte de toda la familia. Contamos con un espacio cómodo, seguro y agradable, ideal tanto para quienes desean relajarse como para quienes buscan mantenerse activos.
+      </p>
+    </div>
   </div>
-  <p>
-    Vive una experiencia única en nuestra moderna instalación de natación, diseñada para el bienestar, la recreación y el deporte de toda la familia. Contamos con un espacio cómodo, seguro y agradable, ideal tanto para quienes desean relajarse como para quienes buscan mantenerse activos.
-  </p>
 </div>
+<style>
+  .deporte-card {
+    background: linear-gradient(135deg, #e3f0ff 0%, #f9f9f9 100%);
+    border-radius: 2rem;
+    box-shadow: 0 8px 32px rgba(30,58,138,0.12);
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  .deporte-carousel-wrapper {
+    position: relative;
+    min-height: 350px;
+    background: #0c4a6e;
+  }
+  .deporte-img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    filter: brightness(0.95);
+    transition: transform 0.4s;
+    border-bottom: 4px solid #0ea5e9;
+  }
+  .deporte-card:hover .deporte-img {
+    transform: scale(1.04);
+    filter: brightness(1);
+  }
+  .deporte-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    pointer-events: none;
+    background: linear-gradient(0deg, rgba(14,165,233,0.22) 60%, transparent 100%);
+  }
+  .deporte-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 0 2rem 2rem;
+    text-shadow: 0 4px 24px rgba(14,165,233,0.35);
+    letter-spacing: 1px;
+    background: linear-gradient(90deg, #0ea5e9 0%, #38bdf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .deporte-desc {
+    background: #fff;
+    border-radius: 0 0 2rem 2rem;
+    box-shadow: 0 2px 8px rgba(14,165,233,0.08);
+  }
+</style>
 {% endblock %}
