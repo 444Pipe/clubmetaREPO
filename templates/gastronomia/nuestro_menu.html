@@ -6,5 +6,26 @@
   <h1 class="mb-3">Nuestro Menú</h1>
   <p class="fs-5">Presentamos una selección representativa de opciones gastronómicas disponibles para eventos y consumo en el club. Para consultar el menú completo y solicitar cotización, por favor contacta al restaurante: <a href="tel:+573108824473">310 882 4473</a>.</p>
   <p class="mt-3"><a href="{% url 'gastronomia_salones' %}" class="btn btn-primary">Ver Salones de eventos</a></p>
+
+  <h2 class="mt-4">Galería del Menú</h2>
+  <div class="row mt-3">
+    <div class="col-6 col-md-4 menu-card"><div class="menu-gallery"><img src="{% static 'img/menu/menu1.jpeg' %}" alt="Menú 1"></div></div>
+    <div class="col-6 col-md-4 menu-card"><div class="menu-gallery"><img src="{% static 'img/menu/menu2.jpeg' %}" alt="Menú 2"></div></div>
+    <div class="col-6 col-md-4 menu-card"><div class="menu-gallery"><img src="{% static 'img/menu/menu3.jpeg' %}" alt="Menú 3"></div></div>
+    <div class="col-6 col-md-4 menu-card"><div class="menu-gallery"><img src="{% static 'img/menu/menu4.jpeg' %}" alt="Menú 4"></div></div>
+    <div class="col-6 col-md-4 menu-card"><div class="menu-gallery"><img src="{% static 'img/menu/menu5.jpeg' %}" alt="Menú 5"></div></div>
+    <div class="col-6 col-md-4 menu-card"><div class="menu-gallery"><img src="{% static 'img/menu/menu6.jpeg' %}" alt="Menú 6"></div></div>
+    <div class="col-6 col-md-4 menu-card"><div class="menu-gallery"><img src="{% static 'img/menu/menu7.jpeg' %}" alt="Menú 7"></div></div>
+    <div class="col-6 col-md-4 menu-card"><div class="menu-gallery"><img src="{% static 'img/menu/menu8.jpeg' %}" alt="Menú 8"></div></div>
+    <div class="col-6 col-md-4 menu-card"><div class="menu-gallery"><img src="{% static 'img/menu/menu9.jpeg' %}" alt="Menú 9"></div></div>
+  </div>
 </div>
 {% endblock %}
+
+{% endblock %}
+
+<style>
+  .menu-gallery img { width: 100%; height: 220px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(0,0,0,0.06); }
+  .menu-card { padding: 0.5rem; }
+</style>
+
