@@ -19,13 +19,14 @@
     <div class="col-6 col-md-4 menu-card"><div class="menu-gallery"><img src="{% static 'img/menu/menu8.jpeg' %}" alt="Menú 8"></div></div>
     <div class="col-6 col-md-4 menu-card"><div class="menu-gallery"><img src="{% static 'img/menu/menu9.jpeg' %}" alt="Menú 9"></div></div>
   </div>
+
 </div>
 {% endblock %}
 
-{% endblock %}
-
+{% block extra_css %}
 <style>
   .menu-gallery img { width: 100%; height: 220px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(0,0,0,0.06); }
   .menu-card { padding: 0.5rem; }
 </style>
+{% endblock %}
 
