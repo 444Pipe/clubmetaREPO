@@ -26,12 +26,36 @@
         </div>
         </div>
       </div>
-      <nav class="d-flex justify-content-center align-items-center flex-wrap" style="gap: 18px; width:100%;">
-        <a href="{% url 'reservas:index' %}" class="nav-link-custom">BIENVENIDOS</a>
-        <a href="{% url 'comunicados' %}" class="nav-link-custom">COMUNICADOS DE GERENCIA</a>
-        <a href="{% url 'nosotros' %}" class="nav-link-custom">NOSOTROS</a>
-        <a href="{% url 'deportes' %}" class="nav-link-custom">DEPORTES</a>
-        <a href="{% url 'gastronomia' %}" class="nav-link-custom">GASTRONOMÍA</a>
+      <nav class="d-flex align-items-center" style="gap: 10px;">
+        <a href="{% url 'reservas:index' %}" class="nav-link-custom">
+          <i class="bi bi-house-door"></i> Inicio
+        </a>
+        <a href="{% url 'reservas:register' %}" class="nav-link-custom">
+          <i class="bi bi-calendar-check"></i> Reservar
+        </a>
+          {% if user.is_authenticated %}
+          {% if user.is_staff %}
+            <a href="{% url 'reservas:calendario' %}" class="nav-link-custom">
+              <i class="bi bi-calendar3"></i> Calendario
+            </a>
+            <a href="{% url 'reservas:reportes' %}" class="nav-link-custom">
+              <i class="bi bi-bar-chart-line"></i> Reportes
+            </a>
+            <a href="{% url 'reservas:panel' %}" class="nav-link-custom nav-link-admin">
+              <i class="bi bi-shield-lock"></i> Panel Admin
+            </a>
+          {% endif %}
+          <form method="post" action="{% url 'reservas:logout' %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="nav-link-custom nav-link-logout">
+              <i class="bi bi-box-arrow-right"></i> Salir <span style="font-size: 11px; opacity: 0.8;">({{ user.username }})</span>
+            </button>
+          </form>
+        {% else %}
+          <a href="{% url 'reservas:login' %}" class="nav-link-custom">
+            <i class="bi bi-person-circle"></i> Acceder
+          </a>
+        {% endif %}
       </nav>
     </div>
   </header>
