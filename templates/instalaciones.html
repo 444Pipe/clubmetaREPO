@@ -10,75 +10,103 @@
 {% endblock %}
 
 {% block content %}
-<div class="vision-section-bg">
-  <div class="vision-card">
-    <div class="vision-ribbon">
-      <img src="{% static 'img/logo.png' %}" alt="Logo Club El Meta">
-      CLUB EL META
-    </div>
-    <div class="vision-title">Instalaciones</div>
-    <img src="{% static 'img/fondin.jpeg' %}" alt="Instalaciones" class="vision-img">
-    <div class="vision-text" style="text-align:left;">
-      <strong>La Corporación Club El Meta cuenta con las más exclusivas y atractivas instalaciones de la región</strong><br><br>
 
-      <strong>Jardines</strong><br>
-      <div id="carouselJardines" class="carousel slide mb-3" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active"><img src="{% static 'img/jardines/jardin1.avif' %}" class="d-block w-100 rounded" alt="Jardín 1"></div>
-          <div class="carousel-item"><img src="{% static 'img/jardines/jardin2.avif' %}" class="d-block w-100 rounded" alt="Jardín 2"></div>
-          <div class="carousel-item"><img src="{% static 'img/jardines/jardin3.avif' %}" class="d-block w-100 rounded" alt="Jardín 3"></div>
-          <div class="carousel-item"><img src="{% static 'img/jardines/jardin4.avif' %}" class="d-block w-100 rounded" alt="Jardín 4"></div>
-          <div class="carousel-item"><img src="{% static 'img/jardines/jardin5.avif' %}" class="d-block w-100 rounded" alt="Jardín 5"></div>
-          <div class="carousel-item"><img src="{% static 'img/jardines/jardin6.avif' %}" class="d-block w-100 rounded" alt="Jardín 6"></div>
-          <div class="carousel-item"><img src="{% static 'img/jardines/jardin7.avif' %}" class="d-block w-100 rounded" alt="Jardín 7"></div>
-          <div class="carousel-item"><img src="{% static 'img/jardines/jardin8.avif' %}" class="d-block w-100 rounded" alt="Jardín 8"></div>
-          <div class="carousel-item"><img src="{% static 'img/jardines/jardin9.avif' %}" class="d-block w-100 rounded" alt="Jardín 9"></div>
-          <div class="carousel-item"><img src="{% static 'img/jardines/jardin10.avif' %}" class="d-block w-100 rounded" alt="Jardín 10"></div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselJardines" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselJardines" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+<section class="instalaciones-hero py-5" style="background: linear-gradient(135deg, #e3f0ff 0%, #f9f9f9 100%);">
+  <div class="container text-center">
+    <h1 class="display-4 fw-bold mb-3" style="color:#2563eb; letter-spacing:1px;">Instalaciones</h1>
+    <p class="lead mb-4">La Corporación Club El Meta cuenta con las más exclusivas y atractivas instalaciones de la región.</p>
+    <div class="row justify-content-center mb-4">
+      <div class="col-4 col-md-2">
+        <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f33f.svg" alt="Jardines" width="48" height="48">
+        <div class="small">Jardines</div>
       </div>
-      El entorno paisajistico es uno de los principales atractivos del Club El Meta.<br><br>
-      Gracias al decidido cuidado que día a día se le proporciona a la vegetación circundante, podemos gozar de unos espacios idelaes para el descanso, la meditación y el relax.<br><br>
-
-      <strong>Áreas Sociales</strong><br>
-      <div id="carouselSociales" class="carousel slide mb-3" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active"><img src="{% static 'img/areas_sociales/uno1.avif' %}" class="d-block w-100 rounded" alt="Social 1"></div>
-          <div class="carousel-item"><img src="{% static 'img/areas_sociales/dos2.avif' %}" class="d-block w-100 rounded" alt="Social 2"></div>
-          <div class="carousel-item"><img src="{% static 'img/areas_sociales/tres3.avif' %}" class="d-block w-100 rounded" alt="Social 3"></div>
-          <div class="carousel-item"><img src="{% static 'img/areas_sociales/cuatro4.avif' %}" class="d-block w-100 rounded" alt="Social 4"></div>
-          <div class="carousel-item"><img src="{% static 'img/areas_sociales/cinco5.avif' %}" class="d-block w-100 rounded" alt="Social 5"></div>
-          <div class="carousel-item"><img src="{% static 'img/areas_sociales/seis6.avif' %}" class="d-block w-100 rounded" alt="Social 6"></div>
-          <div class="carousel-item"><img src="{% static 'img/areas_sociales/siete7.avif' %}" class="d-block w-100 rounded" alt="Social 7"></div>
-          <div class="carousel-item"><img src="{% static 'img/areas_sociales/ocho8.avif' %}" class="d-block w-100 rounded" alt="Social 8"></div>
-          <div class="carousel-item"><img src="{% static 'img/areas_sociales/nueve9.avif' %}" class="d-block w-100 rounded" alt="Social 9"></div>
-          <div class="carousel-item"><img src="{% static 'img/areas_sociales/diez10.avif' %}" class="d-block w-100 rounded" alt="Social 10"></div>
-          <div class="carousel-item"><img src="{% static 'img/areas_sociales/once11.avif' %}" class="d-block w-100 rounded" alt="Social 11"></div>
-          <div class="carousel-item"><img src="{% static 'img/areas_sociales/doce12.avif' %}" class="d-block w-100 rounded" alt="Social 12"></div>
-          <div class="carousel-item"><img src="{% static 'img/areas_sociales/trece13.avif' %}" class="d-block w-100 rounded" alt="Social 13"></div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselSociales" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselSociales" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+      <div class="col-4 col-md-2">
+        <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f3e2.svg" alt="Áreas Sociales" width="48" height="48">
+        <div class="small">Áreas Sociales</div>
       </div>
-      Un espacio campestre dentro de la ciudad con instalaciones ideales para eventos corporativos, reuniones familiares y con amigos. Diversidad de montajes acordes a cualquier necesidad.<br><br>
-      Exclusivas instalaciones deportivas y de recreación para el entrenamiento y el descanso de niños, jóvenes y adultos.<br><br>
-      Exclusivos espacios de Restaurante, Bar y Cafetería con una variada oferta gastronómica internacional. Donde usted encontrará además un excelente servicio de nuestro personal especializado, el cual le brindará toda la asesoría necesaria para garantizar el éxito de sus eventos.<br><br>
-
-      <strong>Áreas Deportivas</strong><br>
-      <div id="carouselDeportivas" class="carousel slide mb-3" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active"><img src="{% static 'img/areas_deportivas/depor1.avif' %}" class="d-block w-100 rounded" alt="Deportiva 1"></div>
-          <div class="carousel-item"><img src="{% static 'img/areas_deportivas/depor2.avif' %}" class="d-block w-100 rounded" alt="Deportiva 2"></div>
-          <div class="carousel-item"><img src="{% static 'img/areas_deportivas/depor3.avif' %}" class="d-block w-100 rounded" alt="Deportiva 3"></div>
-          <div class="carousel-item"><img src="{% static 'img/areas_deportivas/depor4.avif' %}" class="d-block w-100 rounded" alt="Deportiva 4"></div>
-          <div class="carousel-item"><img src="{% static 'img/areas_deportivas/depor5.avif' %}" class="d-block w-100 rounded" alt="Deportiva 5"></div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselDeportivas" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselDeportivas" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+      <div class="col-4 col-md-2">
+        <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/26bd.svg" alt="Áreas Deportivas" width="48" height="48">
+        <div class="small">Áreas Deportivas</div>
       </div>
-      Con un clima especial y rodeado de hermosas montañas y la gran llanura, se encuentran las instalaciones deportivas del Club, tales como canchas de tenis, de fútbol, de vóley playa, basquetbol, piscinas, y un moderno gimnasio, todas ellas con programación para toda la familia<br><br>
     </div>
   </div>
-</div>
+</section>
+
+<section class="container py-4">
+  <div class="row g-4">
+    <!-- Jardines Card -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title text-primary fw-bold mb-3"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f33f.svg" width="28" class="me-2">Jardines</h5>
+          <div id="carouselJardines" class="carousel slide mb-3" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active"><img src="{% static 'img/jardines/jardin1.avif' %}" class="d-block w-100 rounded" alt="Jardín 1"></div>
+              <div class="carousel-item"><img src="{% static 'img/jardines/jardin2.avif' %}" class="d-block w-100 rounded" alt="Jardín 2"></div>
+              <div class="carousel-item"><img src="{% static 'img/jardines/jardin3.avif' %}" class="d-block w-100 rounded" alt="Jardín 3"></div>
+              <div class="carousel-item"><img src="{% static 'img/jardines/jardin4.avif' %}" class="d-block w-100 rounded" alt="Jardín 4"></div>
+              <div class="carousel-item"><img src="{% static 'img/jardines/jardin5.avif' %}" class="d-block w-100 rounded" alt="Jardín 5"></div>
+              <div class="carousel-item"><img src="{% static 'img/jardines/jardin6.avif' %}" class="d-block w-100 rounded" alt="Jardín 6"></div>
+              <div class="carousel-item"><img src="{% static 'img/jardines/jardin7.avif' %}" class="d-block w-100 rounded" alt="Jardín 7"></div>
+              <div class="carousel-item"><img src="{% static 'img/jardines/jardin8.avif' %}" class="d-block w-100 rounded" alt="Jardín 8"></div>
+              <div class="carousel-item"><img src="{% static 'img/jardines/jardin9.avif' %}" class="d-block w-100 rounded" alt="Jardín 9"></div>
+              <div class="carousel-item"><img src="{% static 'img/jardines/jardin10.avif' %}" class="d-block w-100 rounded" alt="Jardín 10"></div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselJardines" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselJardines" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+          </div>
+          <p class="card-text">El entorno paisajístico es uno de los principales atractivos del Club El Meta. Espacios ideales para el descanso, la meditación y el relax, rodeados de vegetación cuidadosamente mantenida.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Áreas Sociales Card -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title text-primary fw-bold mb-3"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f3e2.svg" width="28" class="me-2">Áreas Sociales</h5>
+          <div id="carouselSociales" class="carousel slide mb-3" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active"><img src="{% static 'img/areas_sociales/uno1.avif' %}" class="d-block w-100 rounded" alt="Social 1"></div>
+              <div class="carousel-item"><img src="{% static 'img/areas_sociales/dos2.avif' %}" class="d-block w-100 rounded" alt="Social 2"></div>
+              <div class="carousel-item"><img src="{% static 'img/areas_sociales/tres3.avif' %}" class="d-block w-100 rounded" alt="Social 3"></div>
+              <div class="carousel-item"><img src="{% static 'img/areas_sociales/cuatro4.avif' %}" class="d-block w-100 rounded" alt="Social 4"></div>
+              <div class="carousel-item"><img src="{% static 'img/areas_sociales/cinco5.avif' %}" class="d-block w-100 rounded" alt="Social 5"></div>
+              <div class="carousel-item"><img src="{% static 'img/areas_sociales/seis6.avif' %}" class="d-block w-100 rounded" alt="Social 6"></div>
+              <div class="carousel-item"><img src="{% static 'img/areas_sociales/siete7.avif' %}" class="d-block w-100 rounded" alt="Social 7"></div>
+              <div class="carousel-item"><img src="{% static 'img/areas_sociales/ocho8.avif' %}" class="d-block w-100 rounded" alt="Social 8"></div>
+              <div class="carousel-item"><img src="{% static 'img/areas_sociales/nueve9.avif' %}" class="d-block w-100 rounded" alt="Social 9"></div>
+              <div class="carousel-item"><img src="{% static 'img/areas_sociales/diez10.avif' %}" class="d-block w-100 rounded" alt="Social 10"></div>
+              <div class="carousel-item"><img src="{% static 'img/areas_sociales/once11.avif' %}" class="d-block w-100 rounded" alt="Social 11"></div>
+              <div class="carousel-item"><img src="{% static 'img/areas_sociales/doce12.avif' %}" class="d-block w-100 rounded" alt="Social 12"></div>
+              <div class="carousel-item"><img src="{% static 'img/areas_sociales/trece13.avif' %}" class="d-block w-100 rounded" alt="Social 13"></div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselSociales" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselSociales" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+          </div>
+          <p class="card-text">Un espacio campestre dentro de la ciudad, ideal para eventos corporativos, reuniones familiares y con amigos. Restaurante, Bar y Cafetería con una variada oferta gastronómica y excelente servicio.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Áreas Deportivas Card -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title text-primary fw-bold mb-3"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/26bd.svg" width="28" class="me-2">Áreas Deportivas</h5>
+          <div id="carouselDeportivas" class="carousel slide mb-3" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active"><img src="{% static 'img/areas_deportivas/depor1.avif' %}" class="d-block w-100 rounded" alt="Deportiva 1"></div>
+              <div class="carousel-item"><img src="{% static 'img/areas_deportivas/depor2.avif' %}" class="d-block w-100 rounded" alt="Deportiva 2"></div>
+              <div class="carousel-item"><img src="{% static 'img/areas_deportivas/depor3.avif' %}" class="d-block w-100 rounded" alt="Deportiva 3"></div>
+              <div class="carousel-item"><img src="{% static 'img/areas_deportivas/depor4.avif' %}" class="d-block w-100 rounded" alt="Deportiva 4"></div>
+              <div class="carousel-item"><img src="{% static 'img/areas_deportivas/depor5.avif' %}" class="d-block w-100 rounded" alt="Deportiva 5"></div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselDeportivas" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselDeportivas" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+          </div>
+          <p class="card-text">Instalaciones deportivas rodeadas de montañas y llanura: canchas de tenis, fútbol, vóley playa, basquetbol, piscinas y gimnasio moderno, con programación para toda la familia.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 {% endblock %}
