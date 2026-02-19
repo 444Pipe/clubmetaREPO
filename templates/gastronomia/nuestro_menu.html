@@ -10,6 +10,8 @@
   <h2 class="mt-4">Galería del Menú</h2>
 
   <div class="menu-toolbar d-flex gap-2 align-items-center mt-3">
+    <button id="btn-print" class="btn btn-outline-primary btn-sm">Imprimir menú</button>
+    <a id="btn-download" href="{% static 'pdf/MENU_CLUB_META_2026.pdf' %}" download class="btn btn-outline-success btn-sm">Descargar PDF</a>
     <button id="btn-fit" class="btn btn-outline-secondary btn-sm">Ajustar ancho</button>
     <button id="btn-first" class="btn btn-outline-secondary btn-sm">Primera página</button>
     <button id="btn-prev" class="btn btn-outline-secondary btn-sm">Anterior</button>
@@ -98,6 +100,8 @@
     document.getElementById('btn-prev').addEventListener('click', ()=> scrollToIndex(idx-1));
     document.getElementById('btn-first').addEventListener('click', ()=> scrollToIndex(0));
     document.getElementById('btn-fit').addEventListener('click', ()=> document.body.classList.toggle('fit-width'));
+    const btnPrint = document.getElementById('btn-print');
+    if(btnPrint) btnPrint.addEventListener('click', ()=> window.print());
 
     // Lightbox modal elements
     const modal = document.getElementById('menuModal');
