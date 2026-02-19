@@ -47,10 +47,6 @@ urlpatterns = [
     path('gastronomia/', TemplateView.as_view(template_name='gastronomia.html'), name='gastronomia'),
     # Redirect 'Salones de eventos' to the reservas 'espacios' page
     path('gastronomia/salones-eventos/', RedirectView.as_view(pattern_name='reservas:espacios', permanent=False), name='gastronomia_salones'),
-    path('gastronomia/refrigerios-empresariales/', TemplateView.as_view(template_name='gastronomia/refrigerios_empresariales.html'), name='gastronomia_refrigerios'),
-    path('gastronomia/eventos-sociales/', TemplateView.as_view(template_name='gastronomia/eventos_sociales.html'), name='gastronomia_eventos'),
-    path('gastronomia/infantil-juvenil/', TemplateView.as_view(template_name='gastronomia/infantil_juvenil.html'), name='gastronomia_infantil'),
-    path('gastronomia/pasabocas-cocktail/', TemplateView.as_view(template_name='gastronomia/pasabocas_cocktail.html'), name='gastronomia_pasabocas'),
 ]
 
 # Servir archivos estáticos en desarrollo
