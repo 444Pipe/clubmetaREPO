@@ -8,22 +8,22 @@
       <div id="gymCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <img src="{% static 'img/gym/gym1.avif' %}" class="deporte-img" alt="Gimnasio 1">
+            <img loading="lazy" src="{% static 'img/gym/gym1.avif' %}" class="deporte-img" alt="Gimnasio 1">
           </div>
           <div class="carousel-item">
-            <img src="{% static 'img/gym/gym2.avif' %}" class="deporte-img" alt="Gimnasio 2">
+            <img loading="lazy" src="{% static 'img/gym/gym2.avif' %}" class="deporte-img" alt="Gimnasio 2">
           </div>
           <div class="carousel-item">
-            <img src="{% static 'img/gym/gym3.avif' %}" class="deporte-img" alt="Gimnasio 3">
+            <img loading="lazy" src="{% static 'img/gym/gym3.avif' %}" class="deporte-img" alt="Gimnasio 3">
           </div>
           <div class="carousel-item">
-            <img src="{% static 'img/gym/gym4.avif' %}" class="deporte-img" alt="Gimnasio 4">
+            <img loading="lazy" src="{% static 'img/gym/gym4.avif' %}" class="deporte-img" alt="Gimnasio 4">
           </div>
           <div class="carousel-item">
-            <img src="{% static 'img/gym/gym5.avif' %}" class="deporte-img" alt="Gimnasio 5">
+            <img loading="lazy" src="{% static 'img/gym/gym5.avif' %}" class="deporte-img" alt="Gimnasio 5">
           </div>
           <div class="carousel-item">
-            <img src="{% static 'img/gym/gym6.avif' %}" class="deporte-img" alt="Gimnasio 6">
+            <img loading="lazy" src="{% static 'img/gym/gym6.avif' %}" class="deporte-img" alt="Gimnasio 6">
           </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#gymCarousel" data-bs-slide="prev">
@@ -100,6 +100,17 @@
     background: #fff;
     border-radius: 0 0 2rem 2rem;
     box-shadow: 0 2px 8px rgba(30,58,138,0.06);
+  }
+
+  /* Mobile tweaks */
+  @media (max-width: 767px) {
+    .deporte-carousel-wrapper { min-height: 220px; }
+    .deporte-img { height: 220px; object-fit: cover; }
+    .deporte-title { font-size: 1.8rem; margin-bottom: 1rem; margin-left: 1rem; }
+    .deporte-card { border-radius: 1rem; }
+    .deporte-desc { padding: 1rem; }
+    .deporte-card:hover .deporte-img { transform: none; }
+    .deporte-desc .fs-5 { font-size: 1rem; line-height:1.45; }
   }
 </style>
 {% endblock %}
