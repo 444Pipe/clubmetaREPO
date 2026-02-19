@@ -9,10 +9,17 @@
       <p class="fs-5 mb-0">Presentamos una selección representativa de opciones gastronómicas disponibles para eventos y consumo en el club. Para consultar el menú completo y solicitar cotización, por favor contacta al restaurante: <a href="tel:+573108824473">310 882 4473</a>.</p>
     </div>
     <div class="ms-3">
-      <a id="btn-download-top" href="{% static 'pdf/MENU_CLUB_META_2026.pdf' %}" download class="btn btn-lg btn-primary">
+      <a id="btn-download-top" href="{% static 'pdf/MENU_CLUB_META_2026.pdf' %}" download class="btn btn-lg btn-primary d-none d-md-inline-flex">
         <i class="bi bi-download me-2"></i> Descargar Menú (PDF)
       </a>
     </div>
+  </div>
+
+  <!-- Floating download button for mobile (small and unobtrusive) -->
+  <div class="floating-download d-md-none">
+    <a href="{% static 'pdf/MENU_CLUB_META_2026.pdf' %}" download class="btn btn-primary btn-lg" aria-label="Descargar menú">
+      <i class="bi bi-download"></i>
+    </a>
   </div>
 
   <h2 class="mt-4">Galería del Menú</h2>
@@ -20,15 +27,15 @@
   <!-- Toolbar removed per user request -->
 
   <div class="menu-stack mt-3" id="menuStack">
-    <div class="menu-page" data-page="1"><img src="{% static 'img/menu/menu1.jpeg' %}" alt="Menú 1"><div class="page-label">Página 1</div></div>
-    <div class="menu-page" data-page="2"><img src="{% static 'img/menu/menu2.jpeg' %}" alt="Menú 2"><div class="page-label">Página 2</div></div>
-    <div class="menu-page" data-page="3"><img src="{% static 'img/menu/menu3.jpeg' %}" alt="Menú 3"><div class="page-label">Página 3</div></div>
-    <div class="menu-page" data-page="4"><img src="{% static 'img/menu/menu4.jpeg' %}" alt="Menú 4"><div class="page-label">Página 4</div></div>
-    <div class="menu-page" data-page="5"><img src="{% static 'img/menu/menu5.jpeg' %}" alt="Menú 5"><div class="page-label">Página 5</div></div>
-    <div class="menu-page" data-page="6"><img src="{% static 'img/menu/menu6.jpeg' %}" alt="Menú 6"><div class="page-label">Página 6</div></div>
-    <div class="menu-page" data-page="7"><img src="{% static 'img/menu/menu7.jpeg' %}" alt="Menú 7"><div class="page-label">Página 7</div></div>
-    <div class="menu-page" data-page="8"><img src="{% static 'img/menu/menu8.jpeg' %}" alt="Menú 8"><div class="page-label">Página 8</div></div>
-    <div class="menu-page" data-page="9"><img src="{% static 'img/menu/menu9.jpeg' %}" alt="Menú 9"><div class="page-label">Página 9</div></div>
+    <div class="menu-page" data-page="1"><img loading="lazy" src="{% static 'img/menu/menu1.jpeg' %}" alt="Menú 1"><div class="page-label">Página 1</div></div>
+    <div class="menu-page" data-page="2"><img loading="lazy" src="{% static 'img/menu/menu2.jpeg' %}" alt="Menú 2"><div class="page-label">Página 2</div></div>
+    <div class="menu-page" data-page="3"><img loading="lazy" src="{% static 'img/menu/menu3.jpeg' %}" alt="Menú 3"><div class="page-label">Página 3</div></div>
+    <div class="menu-page" data-page="4"><img loading="lazy" src="{% static 'img/menu/menu4.jpeg' %}" alt="Menú 4"><div class="page-label">Página 4</div></div>
+    <div class="menu-page" data-page="5"><img loading="lazy" src="{% static 'img/menu/menu5.jpeg' %}" alt="Menú 5"><div class="page-label">Página 5</div></div>
+    <div class="menu-page" data-page="6"><img loading="lazy" src="{% static 'img/menu/menu6.jpeg' %}" alt="Menú 6"><div class="page-label">Página 6</div></div>
+    <div class="menu-page" data-page="7"><img loading="lazy" src="{% static 'img/menu/menu7.jpeg' %}" alt="Menú 7"><div class="page-label">Página 7</div></div>
+    <div class="menu-page" data-page="8"><img loading="lazy" src="{% static 'img/menu/menu8.jpeg' %}" alt="Menú 8"><div class="page-label">Página 8</div></div>
+    <div class="menu-page" data-page="9"><img loading="lazy" src="{% static 'img/menu/menu9.jpeg' %}" alt="Menú 9"><div class="page-label">Página 9</div></div>
   </div>
 </div>
 
@@ -80,6 +87,21 @@
   .btn-close-modal { position: absolute; right: 8px; top: 8px; z-index: 2010; background: rgba(255,255,255,0.9); border: none; width: 40px; height: 40px; border-radius: 8px; font-size: 20px; }
   .menu-modal-controls { display:flex; gap:8px; justify-content:flex-end; }
   .menu-modal-controls .btn { min-width: 46px; }
+
+  /* Floating download for mobile */
+  .floating-download { position: fixed; right: 14px; bottom: 16px; z-index: 2200; }
+  .floating-download .btn { border-radius: 999px; padding: 10px 12px; box-shadow: 0 8px 26px rgba(2,6,23,0.16); }
+
+  @media (max-width: 768px) {
+    .container.py-5 { padding-left: 0.75rem; padding-right: 0.75rem; }
+    .menu-stack { max-height: calc(100vh - 160px); padding: 0.5rem; }
+    .menu-page { margin-bottom: 1rem; box-shadow: 0 8px 22px rgba(2,6,23,0.06); }
+    .menu-page:hover { transform: none; }
+    .page-label { display: none; }
+    .menu-modal-content img { max-height: 80vh; }
+    .menu-modal-controls .btn { min-width: 56px; height: 46px; font-size: 1.05rem; }
+    .btn-close-modal { width: 48px; height: 48px; font-size: 20px; }
+  }
 </style>
 {% endblock %}
 {% block extra_js %}
@@ -155,6 +177,26 @@
         ticking=false;
       });
     });
+
+    // Lightweight touch swipe: quick vertical swipe to jump pages on mobile
+    let touchStartY = null, touchStartTime = null;
+    stack.addEventListener('touchstart', (ev)=>{
+      if(!ev.touches || !ev.touches[0]) return;
+      touchStartY = ev.touches[0].clientY;
+      touchStartTime = Date.now();
+    }, {passive:true});
+    stack.addEventListener('touchend', (ev)=>{
+      if(touchStartY === null) return;
+      const endY = (ev.changedTouches && ev.changedTouches[0]) ? ev.changedTouches[0].clientY : null;
+      const dt = Date.now() - (touchStartTime || Date.now());
+      if(endY === null) { touchStartY = null; touchStartTime = null; return; }
+      const dy = endY - touchStartY;
+      // quick vertical swipe (short time, significant distance)
+      if(Math.abs(dy) > 80 && dt < 500){
+        if(dy < 0) { scrollToIndex(idx+1); } else { scrollToIndex(idx-1); }
+      }
+      touchStartY = null; touchStartTime = null;
+    }, {passive:true});
   })();
 </script>
 {% endblock %}
