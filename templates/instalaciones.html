@@ -1,8 +1,37 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Instalaciones - CLUB EL META{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/vision.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/vision.js' %}"></script>
+{% endblock %}
+
 {% block content %}
-<div class="container py-5">
-  <h1 class="mb-3">Instalaciones</h1>
-  <p>Contamos con salones de eventos, canchas deportivas, piscinas y áreas sociales diseñadas para satisfacer las necesidades de nuestros asociados y visitantes.</p>
+<div class="vision-section-bg">
+  <div class="vision-card">
+    <div class="vision-ribbon">
+      <img src="{% static 'img/logo.png' %}" alt="Logo Club El Meta">
+      CLUB EL META
+    </div>
+    <div class="vision-title">Instalaciones</div>
+    <img src="{% static 'img/fondin.jpeg' %}" alt="Instalaciones" class="vision-img">
+    <div class="vision-text" style="text-align:left;">
+      <strong>La Corporación Club El Meta cuenta con las más exclusivas y atractivas instalaciones de la región</strong><br><br>
+      <strong>Jardines</strong><br>
+      El entorno paisajistico es uno de los principales atractivos del Club El Meta.<br><br>
+      Gracias al decidido cuidado que día a día se le proporciona a la vegetación circundante, podemos gozar de unos espacios idelaes para el descanso, la meditación y el relax.<br><br>
+      <strong>Áreas Sociales</strong><br>
+      Un espacio campestre dentro de la ciudad con instalaciones ideales para eventos corporativos, reuniones familiares y con amigos. Diversidad de montajes acordes a cualquier necesidad.<br><br>
+      Exclusivas instalaciones deportivas y de recreación para el entrenamiento y el descanso de niños, jóvenes y adultos.<br><br>
+      Exclusivos espacios de Restaurante, Bar y Cafetería con una variada oferta gastronómica internacional. Donde usted encontrará además un excelente servicio de nuestro personal especializado, el cual le brindará toda la asesoría necesaria para garantizar el éxito de sus eventos.<br><br>
+      <strong>Áreas Deportivas</strong><br>
+      Con un clima especial y rodeado de hermosas montañas y la gran llanura, se encuentran las instalaciones deportivas del Club, tales como canchas de tenis, de fútbol, de vóley playa, basquetbol, piscinas, y un moderno gimnasio, todas ellas con programación para toda la familia<br><br>
+      <strong>Áreas Infantiles</strong><br>
+      Para que las niñas y niños tengan un lugar para divertirse y pasar un buen rato, tenemos 3 zonas de juegos con culumpios, pasamanos, tabla para escalar, rodadero, casita de muñecas, piscina de pelotas y muchas cosas más.
+    </div>
+  </div>
 </div>
 {% endblock %}
