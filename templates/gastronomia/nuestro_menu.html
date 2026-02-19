@@ -17,13 +17,7 @@
 
   <h2 class="mt-4">Galería del Menú</h2>
 
-  <div class="menu-toolbar d-flex gap-2 align-items-center mt-3">
-    <button id="btn-fit" class="btn btn-outline-secondary btn-sm">Ajustar ancho</button>
-    <button id="btn-first" class="btn btn-outline-secondary btn-sm">Primera página</button>
-    <button id="btn-prev" class="btn btn-outline-secondary btn-sm">Anterior</button>
-    <button id="btn-next" class="btn btn-outline-secondary btn-sm">Siguiente</button>
-    <div class="ms-auto text-muted small">Usa flecha arriba/abajo o PageUp/PageDown</div>
-  </div>
+  <!-- Toolbar removed per user request -->
 
   <div class="menu-stack mt-3" id="menuStack">
     <div class="menu-page" data-page="1"><img src="{% static 'img/menu/menu1.jpeg' %}" alt="Menú 1"><div class="page-label">Página 1</div></div>
@@ -69,9 +63,7 @@
   .menu-page img { width: 100%; height: auto; display: block; }
   @media (max-width: 576px) { .menu-page { max-width: 100%; border-radius: 6px; } }
 
-  /* Toolbar (more visible) */
-  .menu-toolbar { position: sticky; top: 72px; z-index: 60; background: rgba(255,255,255,0.95); padding: 0.6rem; border-radius: 12px; box-shadow: 0 8px 30px rgba(2,6,23,0.08); align-items: center; }
-  .menu-toolbar .btn { min-width: 125px; }
+  /* Toolbar removed */
 
   /* Page label */
   .page-label { position: absolute; right: 12px; bottom: 12px; background: rgba(0,0,0,0.6); color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 0.9rem; }
@@ -102,10 +94,7 @@
       pages[idx].scrollIntoView({behavior:'smooth', block:'start'});
     }
 
-    document.getElementById('btn-next').addEventListener('click', ()=> scrollToIndex(idx+1));
-    document.getElementById('btn-prev').addEventListener('click', ()=> scrollToIndex(idx-1));
-    document.getElementById('btn-first').addEventListener('click', ()=> scrollToIndex(0));
-    document.getElementById('btn-fit').addEventListener('click', ()=> document.body.classList.toggle('fit-width'));
+    // Toolbar buttons removed — navigation still available via keyboard and scroll
 
     // Lightbox modal elements
     const modal = document.getElementById('menuModal');
