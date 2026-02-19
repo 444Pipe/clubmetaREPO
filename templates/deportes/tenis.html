@@ -1,8 +1,35 @@
+{% load static %}
 {% extends 'base.html' %}
 {% block title %}Tenis - CLUB EL META{% endblock %}
 {% block content %}
 <div class="container py-5">
   <h1 class="mb-3">Tenis</h1>
-  <p>Información sobre canchas, entrenamientos y torneos de tenis.</p>
+  <div id="tenisCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="{% static 'img/tenis/tenis1.avif' %}" class="d-block w-100" alt="Tenis 1">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'img/tenis/tenis2.avif' %}" class="d-block w-100" alt="Tenis 2">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'img/tenis/tenis3.avif' %}" class="d-block w-100" alt="Tenis 3">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'img/tenis/tenis4.avif' %}" class="d-block w-100" alt="Tenis 4">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#tenisCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#tenisCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Siguiente</span>
+    </button>
+  </div>
+  <p>
+    La Corporación Club El Meta, tiene cuatro canchas de polvo de ladrillo reglamentarias y un muro de entrenamiento. Le ofrece la oportunidad de inscribirse en clases personalizadas con instructores especializados dispuestos a desarrollar un programa de formación deportiva de acuerdo al nivel, aptitudes y expectativas de cada persona, además se pueden realizar prácticas de juego libre con su familia e invitados.
+  </p>
 </div>
 {% endblock %}

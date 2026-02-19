@@ -1,8 +1,44 @@
+{% load static %}
 {% extends 'base.html' %}
 {% block title %}Natación - CLUB EL META{% endblock %}
 {% block content %}
 <div class="container py-5">
   <h1 class="mb-3">Natación</h1>
-  <p>Programas de nado, clases y horarios de la piscina.</p>
+  <div id="natacionCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="{% static 'img/natacion/nata1.avif' %}" class="d-block w-100" alt="Natación 1">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'img/natacion/nata2.avif' %}" class="d-block w-100" alt="Natación 2">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'img/natacion/nata3.avif' %}" class="d-block w-100" alt="Natación 3">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'img/natacion/nata4.avif' %}" class="d-block w-100" alt="Natación 4">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'img/natacion/nata5.avif' %}" class="d-block w-100" alt="Natación 5">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'img/natacion/nata6.avif' %}" class="d-block w-100" alt="Natación 6">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'img/natacion/nata7.avif' %}" class="d-block w-100" alt="Natación 7">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#natacionCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#natacionCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Siguiente</span>
+    </button>
+  </div>
+  <p>
+    Vive una experiencia única en nuestra moderna instalación de natación, diseñada para el bienestar, la recreación y el deporte de toda la familia. Contamos con un espacio cómodo, seguro y agradable, ideal tanto para quienes desean relajarse como para quienes buscan mantenerse activos.
+  </p>
 </div>
 {% endblock %}

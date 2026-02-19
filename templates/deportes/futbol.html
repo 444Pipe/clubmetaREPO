@@ -1,8 +1,38 @@
+{% load static %}
 {% extends 'base.html' %}
 {% block title %}Fútbol - CLUB EL META{% endblock %}
 {% block content %}
 <div class="container py-5">
   <h1 class="mb-3">Fútbol</h1>
-  <p>Cancha, ligas internas y entrenamiento.</p>
+  <div id="futbolCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="{% static 'img/futbol/fut1.avif' %}" class="d-block w-100" alt="Fútbol 1">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'img/futbol/fut2.avif' %}" class="d-block w-100" alt="Fútbol 2">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'img/futbol/fut3.avif' %}" class="d-block w-100" alt="Fútbol 3">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'img/futbol/fut4.avif' %}" class="d-block w-100" alt="Fútbol 4">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#futbolCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#futbolCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Siguiente</span>
+    </button>
+  </div>
+  <p>
+    <strong>Práctica recreativa de Fútbol</strong><br><br>
+    La cancha de fútbol de la Corporación Club El Meta es un amplio y agradable espacio destinado al desarrollo de la actividad deportiva a nivel recreativo, ideal para quienes desean compartir, ejercitarse y disfrutar del deporte en un ambiente seguro y organizado.<br><br>
+    Este escenario se caracteriza por ofrecer un entorno cómodo y adecuado para la práctica del fútbol, promoviendo hábitos de vida saludable y el aprovechamiento positivo del tiempo libre. Además, es un lugar de encuentro que fortalece la integración social, el compañerismo y la sana convivencia entre los usuarios, convirtiéndose en un punto de unión para la comunidad.<br><br>
+    La cancha de fútbol del Club El Meta es un espacio pensado para el disfrute, la recreación y el bienestar, donde el deporte se vive como una experiencia de integración, respeto y esparcimiento.
+  </p>
 </div>
 {% endblock %}
