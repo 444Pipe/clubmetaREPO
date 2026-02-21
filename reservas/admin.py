@@ -1,7 +1,17 @@
 from django import forms
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Salon, ConfiguracionSalon, Reserva, CodigoSocio, BloqueoEspacio, ServicioAdicional, ReservaServicioAdicional
+from .models import (
+    Salon,
+    ConfiguracionSalon,
+    Reserva,
+    CodigoSocio,
+    BloqueoEspacio,
+    ServicioAdicional,
+    ReservaServicioAdicional,
+    Comunicado,
+    ComunicadoImagen,
+)
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 import re
 from django.shortcuts import render
@@ -25,6 +35,20 @@ try:
     admin.site.unregister(Group)
 except Exception:
     pass
+
+
+class ComunicadoImagenInline(admin.TabularInline):
+    model = ComunicadoImagen
+    extra = 1
+    readonly_fields = ()
+
+
+@admin.register(Comunicado)
+class ComunicadoAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'publicado', 'activo')
+    list_filter = ('activo',)
+    search_fields = ('titulo', 'cuerpo')
+    inlines = [ComunicadoImagenInline]
 
 
 class CustomGroupAdmin(DjangoGroupAdmin):

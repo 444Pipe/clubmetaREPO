@@ -126,6 +126,13 @@ def index(request):
     return render(request, 'index.html')
 
 
+def comunicados(request):
+    """Vista pública que muestra comunicados con sus imágenes."""
+    from .models import Comunicado
+    comunicados_qs = Comunicado.objects.filter(activo=True).prefetch_related('images').order_by('-publicado')
+    return render(request, 'comunicados.html', {'comunicados': comunicados_qs})
+
+
 def preguntas_frecuentes(request):
     return render(request, 'preguntas_frecuentes.html')
 

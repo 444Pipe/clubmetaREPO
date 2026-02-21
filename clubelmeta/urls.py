@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
+from reservas import views as reservas_views
 from django.views.generic.base import RedirectView
 
 urlpatterns = [
@@ -33,7 +34,7 @@ urlpatterns = [
     path('bienvenidos/instalaciones/', TemplateView.as_view(template_name='instalaciones.html'), name='instalaciones'),
     # Comunicados y administración
     path('estatutos/', TemplateView.as_view(template_name='estatutos.html'), name='estatutos'),
-    path('comunicados/', TemplateView.as_view(template_name='comunicados.html'), name='comunicados'),
+    path('comunicados/', reservas_views.comunicados, name='comunicados'),
     path('junta-directiva/', TemplateView.as_view(template_name='junta_directiva.html'), name='junta_directiva'),
     path('actividades/', TemplateView.as_view(template_name='actividades.html'), name='actividades'),
     path('administracion/', TemplateView.as_view(template_name='administracion.html'), name='administracion'),

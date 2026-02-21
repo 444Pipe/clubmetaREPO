@@ -304,3 +304,33 @@ class ReservaServicioAdicional(models.Model):
         super().save(*args, **kwargs)
 
 
+class Comunicado(models.Model):
+    """Comunicados de Gerencia (para la sección pública)."""
+    titulo = models.CharField(max_length=255)
+    cuerpo = models.TextField(blank=True)
+    publicado = models.DateTimeField(null=True, blank=True)
+    activo = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = 'Comunicado'
+        verbose_name_plural = 'Comunicados'
+        ordering = ['-publicado']
+
+    def __str__(self):
+        return self.titulo
+
+
+class ComunicadoImagen(models.Model):
+    comunicado = models.ForeignKey(Comunicado, on_delete=models.CASCADE, related_name='images')
+    imagen = models.ImageField(upload_to='comunicados/%Y/%m/%d/')
+    orden = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        verbose_name = 'Imagen de Comunicado'
+        verbose_name_plural = 'Imágenes de Comunicados'
+        ordering = ['orden', 'id']
+
+    def __str__(self):
+        return f"Imagen {self.id} - {self.comunicado.titulo[:30]}"
+
+
