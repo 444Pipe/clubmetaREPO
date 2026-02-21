@@ -1,4 +1,5 @@
 from django.db import models
+from cloudinary.models import CloudinaryField
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
 
@@ -340,7 +341,7 @@ class ImagenComunicado(models.Model):
     Este modelo no referencia a ningun comunicado; sirve solo para almacenar
     archivos en MEDIA_ROOT/comunicados/ subidos desde el admin.
     """
-    imagen = models.ImageField(upload_to='comunicados/')
+    imagen = CloudinaryField('imagen')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
