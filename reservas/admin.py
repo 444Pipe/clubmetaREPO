@@ -10,7 +10,6 @@ from .models import (
     ServicioAdicional,
     ReservaServicioAdicional,
     Comunicado,
-    ComunicadoImagen,
     ImagenComunicado,
 )
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
@@ -38,21 +37,15 @@ except Exception:
     pass
 
 
-class ComunicadoImagenInline(admin.TabularInline):
-    model = ComunicadoImagen
-    extra = 1
-    readonly_fields = ()
-
-
 @admin.register(Comunicado)
 class ComunicadoAdmin(admin.ModelAdmin):
     list_display = ('titulo', 'publicado', 'activo')
     list_filter = ('activo',)
     search_fields = ('titulo', 'cuerpo')
-    inlines = [ComunicadoImagenInline]
+    # Comunicado es solo texto; no se usan inlines de imagen aquí.
 
 
-# Registro mínimo para que el administrador pueda subir imágenes generales
+# Mantener admin para `ImagenComunicado` como servicio exclusivo de imágenes
 @admin.register(ImagenComunicado)
 class ImagenComunicadoAdmin(admin.ModelAdmin):
     list_display = ('id', 'imagen', 'uploaded_at')

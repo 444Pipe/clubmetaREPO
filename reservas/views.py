@@ -132,10 +132,10 @@ def comunicados(request):
     También pasa el queryset de `ImagenComunicado` para que el template
     muestre las imágenes subidas desde el admin.
     """
-    from .models import Comunicado, ImagenComunicado
-    comunicados_qs = Comunicado.objects.filter(activo=True).prefetch_related('images').order_by('-publicado')
-    imagenes_qs = ImagenComunicado.objects.all().order_by('-uploaded_at')
-    return render(request, 'comunicados.html', {'comunicados': comunicados_qs, 'imagenes': imagenes_qs})
+    from .models import Comunicado
+    # Comunicados son texto solamente; las imágenes se gestionan por separado
+    comunicados_qs = Comunicado.objects.filter(activo=True).order_by('-publicado')
+    return render(request, 'comunicados.html', {'comunicados': comunicados_qs})
 
 
 def preguntas_frecuentes(request):
