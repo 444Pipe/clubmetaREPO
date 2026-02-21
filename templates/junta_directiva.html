@@ -2,7 +2,6 @@
 {% load static %}
 {% block title %}Junta Directiva - CLUB EL META{% endblock %}
 {% block content %}
-{% load static %}
 <div class="container py-5">
   <h1 class="mb-3">Junta Directiva</h1>
 
@@ -25,18 +24,61 @@
       </div>
     {% empty %}
       {# Fallback estático si no hay contexto: muestra roles demo (sin nombres) #}
-      {% for role in "Presidente,Vicepresidente,Intendente,Secretario,Vocal"|split:"," %}
-        <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-          <div class="card text-center p-3" style="background:#f4cfae; border: none;">
-            <div class="d-flex justify-content-center mb-2">
-              <img src="{% static 'img/escudo.png' %}" alt="" style="width:100px;height:100px;object-fit:contain;">
-            </div>
-            <div class="card-body p-2">
-              <p class="mb-0 small text-muted">{{ role }}</p>
-            </div>
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="card text-center p-3" style="background:#f4cfae; border: none;">
+          <div class="d-flex justify-content-center mb-2">
+            <img src="{% static 'img/escudo.png' %}" alt="" style="width:100px;height:100px;object-fit:contain;">
+          </div>
+          <div class="card-body p-2">
+            <p class="mb-0 small text-muted">Presidente</p>
           </div>
         </div>
-      {% endfor %}
+      </div>
+
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="card text-center p-3" style="background:#f4cfae; border: none;">
+          <div class="d-flex justify-content-center mb-2">
+            <img src="{% static 'img/escudo.png' %}" alt="" style="width:100px;height:100px;object-fit:contain;">
+          </div>
+          <div class="card-body p-2">
+            <p class="mb-0 small text-muted">Vicepresidente</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="card text-center p-3" style="background:#f4cfae; border: none;">
+          <div class="d-flex justify-content-center mb-2">
+            <img src="{% static 'img/escudo.png' %}" alt="" style="width:100px;height:100px;object-fit:contain;">
+          </div>
+          <div class="card-body p-2">
+            <p class="mb-0 small text-muted">Intendente</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="card text-center p-3" style="background:#f4cfae; border: none;">
+          <div class="d-flex justify-content-center mb-2">
+            <img src="{% static 'img/escudo.png' %}" alt="" style="width:100px;height:100px;object-fit:contain;">
+          </div>
+          <div class="card-body p-2">
+            <p class="mb-0 small text-muted">Secretario</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="card text-center p-3" style="background:#f4cfae; border: none;">
+          <div class="d-flex justify-content-center mb-2">
+            <img src="{% static 'img/escudo.png' %}" alt="" style="width:100px;height:100px;object-fit:contain;">
+          </div>
+          <div class="card-body p-2">
+            <p class="mb-0 small text-muted">Vocal</p>
+          </div>
+        </div>
+      </div>
+
     {% endfor %}
   </div>
 
