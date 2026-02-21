@@ -1,0 +1,6 @@
+Este es un marcador de posición.
+
+Para habilitar la descarga de los estatutos en la web, reemplaza este archivo con tu documento PDF y/o DOCX renombrado a ESTATUTOS.pdf dentro de la carpeta static/ del proyecto.
+
+Nombre final recomendado: ESTATUTOS.pdf
+Ruta: static/ESTATUTOS.pdf
