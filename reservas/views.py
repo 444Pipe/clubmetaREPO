@@ -127,10 +127,15 @@ def index(request):
 
 
 def comunicados(request):
-    """Vista pública que muestra comunicados con sus imágenes."""
-    from .models import Comunicado
+    """Vista pública que muestra comunicados con sus imágenes.
+
+    También pasa el queryset de `ImagenComunicado` para que el template
+    muestre las imágenes subidas desde el admin.
+    """
+    from .models import Comunicado, ImagenComunicado
     comunicados_qs = Comunicado.objects.filter(activo=True).prefetch_related('images').order_by('-publicado')
-    return render(request, 'comunicados.html', {'comunicados': comunicados_qs})
+    imagenes_qs = ImagenComunicado.objects.all().order_by('-uploaded_at')
+    return render(request, 'comunicados.html', {'comunicados': comunicados_qs, 'imagenes': imagenes_qs})
 
 
 def preguntas_frecuentes(request):

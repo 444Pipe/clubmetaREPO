@@ -334,3 +334,21 @@ class ComunicadoImagen(models.Model):
         return f"Imagen {self.id} - {self.comunicado.titulo[:30]}"
 
 
+class ImagenComunicado(models.Model):
+    """Imágenes generales para la sección de comunicados.
+
+    Este modelo no referencia a ningun comunicado; sirve solo para almacenar
+    archivos en MEDIA_ROOT/comunicados/ subidos desde el admin.
+    """
+    imagen = models.ImageField(upload_to='comunicados/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Imagen Comunicado'
+        verbose_name_plural = 'Imágenes Comunicados'
+        ordering = ['-uploaded_at']
+
+    def __str__(self):
+        return f"ImagenComunicado {self.id}"
+
+

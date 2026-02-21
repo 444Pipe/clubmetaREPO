@@ -11,6 +11,7 @@ from .models import (
     ReservaServicioAdicional,
     Comunicado,
     ComunicadoImagen,
+    ImagenComunicado,
 )
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 import re
@@ -49,6 +50,13 @@ class ComunicadoAdmin(admin.ModelAdmin):
     list_filter = ('activo',)
     search_fields = ('titulo', 'cuerpo')
     inlines = [ComunicadoImagenInline]
+
+
+# Registro mínimo para que el administrador pueda subir imágenes generales
+@admin.register(ImagenComunicado)
+class ImagenComunicadoAdmin(admin.ModelAdmin):
+    list_display = ('id', 'imagen', 'uploaded_at')
+    readonly_fields = ('uploaded_at',)
 
 
 class CustomGroupAdmin(DjangoGroupAdmin):
