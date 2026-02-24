@@ -62,12 +62,11 @@
       {% for c in comunicados %}
         <div class="comunicado-card">
           {% if c.images.all|length > 0 %}
-            {% for img in c.images.all %}
+            {% with img=c.images.all|first %}
               {% if img.imagen %}
                 <img src="{{ img.imagen.url }}" class="comunicado-img" alt="Imagen comunicado" />
-                {% break %}
               {% endif %}
-            {% endfor %}
+            {% endwith %}
           {% endif %}
           <div class="comunicado-info">
             <div class="comunicado-titulo">{{ c.titulo }}</div>
