@@ -36,6 +36,7 @@
       box-shadow: 0 1px 4px rgba(30,58,138,0.10);
       background: #f1f5f9;
       transition: transform 0.2s;
+      cursor: pointer;
     }
     .comunicados-gallery img:hover {
       transform: scale(1.04);
@@ -87,6 +88,20 @@
         card.style.animation = 'fadeInCard 0.7s';
         card.style.animationDelay = (i * 0.12) + 's';
       });
+      // Modal para imagen
+      document.querySelectorAll('.comunicados-gallery img').forEach(function(img) {
+        img.addEventListener('click', function() {
+          var modal = document.getElementById('imgModal');
+          var modalImg = document.getElementById('imgModalImg');
+          modal.style.display = 'flex';
+          modalImg.src = img.src;
+        });
+      });
+      document.getElementById('imgModal').addEventListener('click', function(e) {
+        if (e.target === this || e.target.classList.contains('close-modal')) {
+          this.style.display = 'none';
+        }
+      });
     });
   </script>
   <style>
@@ -95,6 +110,11 @@
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
+  <!-- Modal para imagen completa -->
+  <div id="imgModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center;">
+    <span class="close-modal" style="position:absolute; top:30px; right:40px; font-size:2.5rem; color:#fff; cursor:pointer;">&times;</span>
+    <img id="imgModalImg" src="" style="max-width:90vw; max-height:90vh; border-radius:12px; box-shadow:0 4px 24px #000; background:#fff;" alt="Imagen completa" />
+  </div>
   {% if imagenes %}
     <div class="mt-3 comunicados-gallery">
       {% for img in imagenes %}
