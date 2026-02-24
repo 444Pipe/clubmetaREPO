@@ -1,10 +1,35 @@
 {% extends 'base.html' %}
 {% block title %}Comunicados de Gerencia - CLUB EL META{% endblock %}
 {% block content %}
-<div class="container py-5">
+<div class="comunicados-bg">
+  <div class="comunicados-overlay"></div>
+  <div class="container py-5" style="position:relative; z-index:2;">
   <h1 class="mb-3">Comunicados de Gerencia</h1>
   <p>Aquí publicamos comunicados oficiales de la gerencia para asociados y visitantes.</p>
   <style>
+    .comunicados-bg {
+      position: relative;
+      min-height: 100vh;
+      width: 100vw;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
+      background: url('/static/img/fondin.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      z-index: 0;
+    }
+    .comunicados-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 40, 120, 0.45);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .container.py-5 {
+      position: relative;
+      z-index: 2;
+    }
     .comunicados-gallery {
       display: flex;
       flex-wrap: wrap;
@@ -146,5 +171,7 @@
       {% endfor %}
     </div>
   {% endif %}
+    </div>
+  </div>
 </div>
 {% endblock %}
