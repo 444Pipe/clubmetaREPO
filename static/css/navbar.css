@@ -39,6 +39,22 @@
 .menu-info-list .submenu a { display:block; padding:8px 12px; color:#07203a; text-decoration:none; border-radius:6px }
 .menu-info-list .menu-group:hover > .submenu{ display:block }
 
+/* Top-level secondary menu on blue header: make links plain, white and spaced */
+.menu-info-list > li > a { background: transparent; color: var(--nav-text-light); padding: 8px 12px; display:inline-block; border-radius:6px; font-weight:700; text-transform:none }
+.menu-info-list > li > a:hover, .menu-info-list > li > a:focus { background: rgba(255,255,255,0.06); color: var(--nav-text-light); }
+
+/* Keep submenu (dropdown) as white box with blue links */
+.menu-info-list .submenu a { color: var(--nav-accent); font-weight:600 }
+.menu-info-list .submenu a:hover, .menu-info-list .submenu a:focus { background: rgba(30,64,175,0.04); }
+
+/* Accent button for login */
+.nav-link.btn-accent { background: #fff; color: var(--nav-accent); padding: 6px 12px; border-radius: 8px; font-weight:700; box-shadow: 0 1px 0 rgba(0,0,0,0.06); text-decoration:none }
+.nav-link.btn-accent:hover, .nav-link.btn-accent:focus { background: #ffffff; color: var(--nav-accent); opacity:0.95 }
+
+/* Logout button (in form) styled to blend with nav */
+.nav-logout-form .btn-logout { background: transparent; color: var(--nav-text-light); padding:6px 10px; border: none; font-weight:700 }
+.nav-logout-form .btn-logout:hover { text-decoration:underline }
+
 /* Improved submenu link styling for visibility */
 .menu-info-list .submenu a { color: var(--nav-accent); font-weight:700; }
 .menu-info-list .submenu a:hover, .menu-info-list .submenu a:focus { background: rgba(30,64,175,0.06); color: var(--nav-accent); outline: none; }
