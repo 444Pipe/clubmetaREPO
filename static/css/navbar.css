@@ -45,20 +45,25 @@
   .menu-info-list { gap:14px; padding:8px 10px; overflow-x:auto; -webkit-overflow-scrolling:touch }
   .menu-info-list > li > a { white-space:nowrap; font-size:0.9rem }
 
-  /* Mobile: hide the full-width secondary bar by default; show only when nav is opened */
+  /* Mobile: hide the full-width secondary bar by default; show only via hamburger
+     Hide desktop dropdown panels to avoid overlapping. Use the mobile-submenu
+     as a single fixed overlay when `body.nav-open` is present. */
   .menu-info { display:none !important }
 
-  /* Mobile submenu inside primary menu (hamburger) hidden by default */
-  .primary-menu .mobile-submenu, .primary-menu .dropdown-panel { display:none }
-  body.nav-open .primary-menu .mobile-submenu, body.nav-open .primary-menu .dropdown-panel { display:block }
+  .primary-menu .dropdown-panel { display:none !important }
+  .primary-menu .mobile-submenu { display:none }
 
-  /* When nav is opened also show the global .menu-info below header */
-  body.nav-open .menu-info { display:flex !important; }
+  /* When hamburger opens, reveal a single full-width mobile submenu overlay */
+  body.nav-open .primary-menu .mobile-submenu {
+    display:block; position:fixed; left:0; right:0; top:var(--header-height,64px);
+    background: linear-gradient(180deg,#163a94 0%, #234ea8 100%); padding:18px 12px; z-index:1200;
+    box-shadow: 0 8px 24px rgba(9,30,66,0.24);
+  }
 
-  /* Mobile submenu layout: stacked center */
-  .primary-menu .mobile-submenu .menu-info-list { display:block; text-align:center; }
-  .primary-menu .mobile-submenu .menu-info-list li { padding:14px 0 }
-  .primary-menu .mobile-submenu .menu-info-list li a { color:#fff; font-weight:700; display:block }
+  /* Mobile submenu layout: stacked center, roomy tap targets */
+  .primary-menu .mobile-submenu .menu-info-list { display:block; text-align:center; margin:0 }
+  .primary-menu .mobile-submenu .menu-info-list li { padding:14px 0; list-style:none }
+  .primary-menu .mobile-submenu .menu-info-list li a { color:#fff; font-weight:700; display:block; font-size:1.06rem }
 }
 .menu-info-list .menu-group { position:relative; }
 .menu-info-list .submenu { display:none; position:absolute; top:100%; left:0; min-width:200px; background:#fff; color:#07203a; padding:8px; border-radius:8px; box-shadow:0 8px 22px rgba(9,30,66,0.12); list-style:none; z-index:270 }
