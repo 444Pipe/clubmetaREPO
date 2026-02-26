@@ -39,6 +39,22 @@
 .menu-info-list .submenu a { display:block; padding:8px 12px; color:#07203a; text-decoration:none; border-radius:6px }
 .menu-info-list .menu-group:hover > .submenu{ display:block }
 
+/* Improved submenu link styling for visibility */
+.menu-info-list .submenu a { color: var(--nav-accent); font-weight:700; }
+.menu-info-list .submenu a:hover, .menu-info-list .submenu a:focus { background: rgba(30,64,175,0.06); color: var(--nav-accent); outline: none; }
+
+/* Dropdown panel when included inside the main navbar (desktop) */
+.dropdown-panel { padding: 0.5rem; }
+.dropdown-panel .menu-info-list { padding: 8px; }
+.dropdown-panel .submenu { position: static; box-shadow: none; border-radius:6px; background:#fff; }
+
+/* Mobile: when submenu appears inside the blue slide-out panel, keep links readable */
+.primary-menu .menu-info-list .submenu a, .primary-menu .menu-info-list a { color: var(--nav-text-light); font-weight:600 }
+.primary-menu .menu-info-list .submenu a:hover { background: rgba(255,255,255,0.06); }
+
+/* Small pointer triangle for desktop submenu */
+.menu-info-list .submenu::before { content: ''; position: absolute; top: -8px; left: 18px; width: 12px; height: 12px; background: #fff; transform: rotate(45deg); box-shadow: -2px -2px 4px rgba(9,30,66,0.04); }
+
 
 /* Secondary menu (menu_info) displayed under header on desktop */
 .menu-info{background:transparent;border-top:1px solid rgba(255,255,255,0.04);} 
