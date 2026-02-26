@@ -14,14 +14,8 @@ document.addEventListener('DOMContentLoaded', function(){
   // Mobile: make dropdown toggles expandable
   document.querySelectorAll('.has-dropdown > .dropdown-toggle').forEach(function(btn){
     btn.addEventListener('click', function(e){
-      const href = btn.getAttribute('href');
+      // On mobile, dropdown-toggle should always behave as a toggle (do not navigate)
       if(window.innerWidth <= 900){
-        if(href && href.trim() !== '#' && href.trim() !== ''){
-          // let the browser navigate to the link; close mobile nav for cleanliness
-          document.body.classList.remove('nav-open');
-          menu.classList.remove('open');
-          return;
-        }
         e.preventDefault();
         const parent = btn.parentElement;
         parent.classList.toggle('expanded');
