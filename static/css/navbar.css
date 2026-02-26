@@ -26,13 +26,14 @@
 .nav-links{margin:0 auto}
 /* On desktop keep brand left and push nav to the right */
 .nav-links li{position:relative}
-.nav-links a{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;color:var(--nav-text-light);text-decoration:none;border-radius:6px;font-weight:600}
+.nav-links a{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;color:var(--nav-text-light);text-decoration:none;border-radius:10px;font-weight:600;
+  border:1px solid rgba(255,255,255,0.06); background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); transition:transform .12s ease, box-shadow .12s ease, background .12s ease}
 .nav-links a i { color: rgba(255,255,255,0.95); }
-.nav-links a:hover{background:rgba(255,255,255,0.06)}
+.nav-links a:hover{background:rgba(255,255,255,0.06); transform:translateY(-2px); box-shadow:0 8px 28px rgba(9,30,66,0.12)}
 
 /* Accent button style for highlighted links (e.g., Acceder) */
-.nav-links a.btn-accent{background:rgba(255,255,255,0.08);padding:8px 12px;border:1px solid rgba(255,255,255,0.12);}
-.nav-links a.btn-accent:hover{background:rgba(255,255,255,0.14)}
+.nav-links a.btn-accent{background:rgba(255,255,255,0.12);padding:10px 16px;border:1px solid rgba(255,255,255,0.2); color:#fff !important; box-shadow:0 8px 20px rgba(9,30,66,0.12);}
+.nav-links a.btn-accent:hover{background:rgba(255,255,255,0.18); transform:translateY(-2px)}
 
 .has-dropdown .dropdown-panel{display:none;position:absolute;top:100%;left:0;min-width:220px;background:#fff;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.12);padding:10px;z-index:260}
 .has-dropdown:hover .dropdown-panel{display:block}
