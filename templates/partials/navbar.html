@@ -28,7 +28,7 @@
         <li class="has-dropdown">
           <a href="{% url 'reservas:index' %}" class="dropdown-toggle">Bienvenidos <i class="bi bi-caret-down-fill"></i></a>
           <div class="dropdown-panel">
-            {% if '/accounts/login' not in request.path and '/admin' not in request.path and '/reservas/panel' not in request.path and not user.is_staff %}
+            {% if '/accounts/login' not in request.path and '/admin' not in request.path and '/reservas/panel' not in request.path and '/espacios' not in request.path and not user.is_staff %}
               {% include 'partials/menu_info.html' %}
             {% endif %}
           </div>
@@ -52,7 +52,7 @@
 
       <!-- Mobile submenu (re-uses the same partial) -->
       <div class="mobile-submenu">
-        {% if '/accounts/login' not in request.path and '/admin' not in request.path and '/reservas/panel' not in request.path and not user.is_staff %}
+        {% if '/accounts/login' not in request.path and '/admin' not in request.path and '/reservas/panel' not in request.path and '/espacios' not in request.path and not user.is_staff %}
           {% include 'partials/menu_info.html' %}
         {% endif %}
       </div>
