@@ -167,8 +167,12 @@
   .primary-menu { padding-bottom: 110px }
 
   .mobile-cta { display:block; position:absolute; left:20px; right:20px; bottom:20px; z-index:1400; text-align:center }
-  .btn-accent-mobile { display:inline-block; width:100%; padding:12px 14px; background:#ffffff; color:var(--nav-accent); border-radius:999px; font-weight:800; text-decoration:none; box-shadow:0 10px 24px rgba(17,24,39,0.12); }
+  .btn-accent-mobile { display:inline-block; width:100%; padding:12px 14px; background:#ffffff; color:var(--nav-accent); border-radius:999px; font-weight:800; text-decoration:none; box-shadow:0 10px 24px rgba(17,24,39,0.12); font-size:1rem }
   .btn-accent-mobile:active, .btn-accent-mobile:focus { transform:translateY(1px); box-shadow:0 6px 18px rgba(17,24,39,0.08) }
+
+  /* Stronger specificity to avoid being overridden by generic link color rules */
+  .primary-menu .mobile-cta .btn-accent-mobile { color: var(--nav-accent) !important; background: #ffffff !important }
+  .primary-menu .mobile-cta .btn-accent-mobile { text-shadow:none }
 }
 
 /* Small accessibility tweaks */
