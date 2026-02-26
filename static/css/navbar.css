@@ -143,7 +143,10 @@
 
 @media (max-width: 900px){
   .nav-container{padding:10px}
-  .brand-text{display:none}
+  /* Show brand text on mobile (previously hidden) and reduce size to fit */
+  .brand-text{display:block;color:var(--nav-text-light);margin-left:8px}
+  .brand-line-small{font-size:0.55rem;opacity:0.95}
+  .brand-line-large{font-size:0.72rem;opacity:1}
   /* Make toggle clearly visible and on top of overlays */
   .nav-toggle{display:block; position:relative; z-index:1302; width:44px; height:44px; padding:8px; border-radius:8px; background:transparent}
   .nav-toggle:focus{outline:2px solid rgba(255,255,255,0.14)}
