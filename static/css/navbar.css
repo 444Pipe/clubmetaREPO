@@ -137,10 +137,11 @@
 
 /* Desktop-only adjustments */
 @media (min-width: 901px){
-  .nav-container{justify-content:flex-start}
+  /* Place logo at left and nav group flush to the right edge of the header */
+  .nav-container{justify-content:space-between}
   .mobile-cta{display:none}
-  .brand-wrap{margin-right:18px}
-  .nav-links{margin-left:auto; margin-right:20px}
+  .brand-wrap{margin-right:12px}
+  .nav-links{margin-left:0; margin-right:8px}
 
   /* Make desktop 'Acceder' button more visible with white text */
   .nav-links a.btn-accent{
@@ -154,11 +155,11 @@
   }
   .nav-links a.btn-accent:hover{ background: rgba(255,255,255,0.18) }
   
-  /* Desktop: hide the compact duplicate 'Bienvenidos' dropdown toggle in the top bar
-     We keep the secondary full-width menu below (menu-info) as the canonical place */
-  .nav-links li.has-dropdown > a.dropdown-toggle { display:none !important }
-  /* small spacing to keep items visually separated from logo */
-  .nav-links > li { margin-left: 18px }
+    /* Desktop: hide the compact duplicate 'Bienvenidos' dropdown toggle in the top bar
+      We keep the secondary full-width menu below (menu-info) as the canonical place */
+    .nav-links li.has-dropdown > a.dropdown-toggle { display:none !important }
+    /* small spacing to keep items visually separated from logo */
+    .nav-links > li { margin-left: 12px }
 }
 
 /* Mobile */
