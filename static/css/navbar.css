@@ -1,8 +1,9 @@
 /* Blue-themed navbar styles to match original design */
 :root{
-  --nav-gradient: linear-gradient(180deg,#15306f,#1e3a8a);
+  /* Top header gradient adjusted to darker compact blue (first reference image) */
+  --nav-gradient: linear-gradient(180deg,#0b2a59 0%, #13366b 100%);
   --nav-text-light: #ffffff;
-  --nav-accent: #1e40af;
+  --nav-accent: #143e86;
 }
 
 .site-header{
@@ -41,7 +42,7 @@
 /* menu_info submenu styles */
 .menu-info-list { display:flex; gap:18px; align-items:center; margin:0; padding:0; }
 .menu-info-list { /* full-width blue secondary bar */
-  display:flex; gap:24px; align-items:center; margin:0; padding:8px 0; width:100%; justify-content:center; background: linear-gradient(90deg,#163a94 0%,#234ea8 100%); box-shadow:0 2px 0 rgba(0,0,0,0.08); z-index:260
+  display:flex; gap:24px; align-items:center; margin:0; padding:8px 0; width:100%; justify-content:center; background: linear-gradient(90deg,#0d3160 0%, #15336e 100%); box-shadow:0 2px 0 rgba(0,0,0,0.08); z-index:260
 }
 .menu-info-list > li { list-style:none }
 .menu-info-list > li > a { background:transparent; color:#fff; padding:6px 16px; display:inline-block; border-radius:6px; font-weight:800; letter-spacing:0.4px; text-transform:uppercase; font-size:0.86rem; text-shadow:0 1px 0 rgba(0,0,0,0.18) }
@@ -61,11 +62,11 @@
   .primary-menu .mobile-submenu { display:none }
 
   /* When hamburger opens, reveal a single full-width mobile submenu overlay */
-  body.nav-open .primary-menu .mobile-submenu {
-     display:block; position:fixed; left:0; right:0; top:var(--header-height,64px); bottom:0;
-     background: linear-gradient(180deg,#163a94 0%, #234ea8 100%); padding:18px 12px; z-index:1200;
-     box-shadow: none; overflow-y:auto; -webkit-overflow-scrolling: touch;
-  }
+    body.nav-open .primary-menu .mobile-submenu {
+      display:block; position:fixed; left:0; right:0; top:var(--header-height,64px); bottom:0;
+      background: linear-gradient(180deg,#0b2a59 0%, #13366b 100%); padding:18px 12px; z-index:1200;
+      box-shadow: none; overflow-y:auto; -webkit-overflow-scrolling: touch;
+    }
 
   /* Mobile submenu layout: stacked center, roomy tap targets */
   .primary-menu .mobile-submenu .menu-info-list { display:block; text-align:center; margin:0 }
