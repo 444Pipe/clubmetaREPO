@@ -2,7 +2,7 @@
 <nav class="menu-info" role="navigation" aria-label="Menu secundario">
   <ul class="menu-info-list" role="menubar">
     <li role="none" class="menu-group has-dropdown">
-      <a role="menuitem" href="#" aria-haspopup="true" aria-expanded="false">Bienvenidos</a>
+      <a role="menuitem" href="{% url 'reservas:index' %}" aria-haspopup="true" aria-expanded="false">Bienvenidos</a>
       <ul role="menu" class="submenu">
         <li role="none"><a role="menuitem" href="{% url 'vision' %}">Visión</a></li>
         <li role="none"><a role="menuitem" href="{% url 'mision' %}">Misión</a></li>
