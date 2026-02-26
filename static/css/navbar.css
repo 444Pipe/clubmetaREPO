@@ -12,7 +12,26 @@
 }
 
 /* Ensure header sits above mobile submenu overlay so the toggle is reachable */
-.site-header{position:relative; z-index:1301}
+.site-header{position:relative; z-index:1301; overflow:hidden}
+
+/* Decorative overlay: subtle diagonal stripes + soft vignette to enrich the blue header */
+.site-header::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  /* repeating diagonal stripes + light radial highlight */
+  background-image:
+    repeating-linear-gradient(135deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 20px),
+    radial-gradient(circle at 10% 10%, rgba(255,255,255,0.04), transparent 18%),
+    linear-gradient(0deg, rgba(0,0,0,0.03), rgba(0,0,0,0.02));
+  mix-blend-mode: overlay;
+  opacity: 0.9;
+}
+
+/* Ensure header children render above the decorative overlay */
+.site-header > * { position: relative; z-index: 1 }
 
 .nav-container{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;max-width:1200px;margin:0 auto}
 .brand-wrap{display:flex;align-items:center;gap:12px}
