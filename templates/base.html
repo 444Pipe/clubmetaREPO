@@ -16,7 +16,7 @@
 </head>
 <body class="no-js">
   {% include 'partials/navbar.html' %}
-  {% if '/accounts/login' not in request.path %}
+  {% if '/accounts/login' not in request.path and '/admin' not in request.path and '/reservas/panel' not in request.path %}
     {% include 'partials/menu_info.html' %}
   {% endif %}
 
