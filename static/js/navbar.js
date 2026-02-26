@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function(){
       const expanded = this.getAttribute('aria-expanded') === 'true';
       this.setAttribute('aria-expanded', String(!expanded));
       menu.classList.toggle('open');
+      // add body class so CSS can reveal mobile submenu / global menu-info when nav is open
+      document.body.classList.toggle('nav-open');
     });
   }
 
@@ -73,6 +75,8 @@ document.addEventListener('DOMContentLoaded', function(){
     if(!isClickInside && menu && menu.classList.contains('open')){
       menu.classList.remove('open');
       if(toggle) toggle.setAttribute('aria-expanded','false');
+      // remove body class too
+      document.body.classList.remove('nav-open');
     }
   });
 });
