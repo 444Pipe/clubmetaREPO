@@ -153,6 +153,12 @@
     font-weight:800;
   }
   .nav-links a.btn-accent:hover{ background: rgba(255,255,255,0.18) }
+  
+  /* Desktop: hide the compact duplicate 'Bienvenidos' dropdown toggle in the top bar
+     We keep the secondary full-width menu below (menu-info) as the canonical place */
+  .nav-links li.has-dropdown > a.dropdown-toggle { display:none !important }
+  /* small spacing to keep items visually separated from logo */
+  .nav-links > li { margin-left: 18px }
 }
 
 /* Mobile */
