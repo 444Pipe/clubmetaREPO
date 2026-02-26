@@ -16,7 +16,9 @@
 </head>
 <body class="no-js">
   {% include 'partials/navbar.html' %}
-  {% include 'partials/menu_info.html' %}
+  {% if '/accounts/login' not in request.path %}
+    {% include 'partials/menu_info.html' %}
+  {% endif %}
 
   <!-- Mensajes flotantes (sin afectar el layout) -->
   {% if messages %}

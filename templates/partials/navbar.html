@@ -22,7 +22,9 @@
         <li class="has-dropdown">
           <a href="{% url 'reservas:index' %}" class="dropdown-toggle">Bienvenidos <i class="bi bi-caret-down-fill"></i></a>
           <div class="dropdown-panel">
-            {% include 'partials/menu_info.html' %}
+            {% if '/accounts/login' not in request.path %}
+              {% include 'partials/menu_info.html' %}
+            {% endif %}
           </div>
         </li>
         {% if user.is_authenticated %}
@@ -44,7 +46,9 @@
 
       <!-- Mobile submenu (re-uses the same partial) -->
       <div class="mobile-submenu">
-        {% include 'partials/menu_info.html' %}
+        {% if '/accounts/login' not in request.path %}
+          {% include 'partials/menu_info.html' %}
+        {% endif %}
       </div>
 
       <!-- Mobile CTA: prominent access button anchored to bottom of slide-out menu -->
