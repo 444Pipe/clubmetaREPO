@@ -69,9 +69,11 @@
 
 /* Brand / logo boxed design (restored) */
 .brand-wrap { display:flex; align-items:center }
-.brand-link { display:flex; align-items:center; gap:10px; background: linear-gradient(180deg,#2b56b0 0%,#163a94 100%); padding:6px 10px; border-radius:6px; box-shadow:0 3px 0 rgba(0,0,0,0.12); }
-.brand-logo { width:44px; height:44px; object-fit:contain; display:block }
-.brand-text { color:#fff; font-weight:900; letter-spacing:0.6px; text-transform:uppercase; font-size:0.9rem }
+.brand-link { display:flex; align-items:center; gap:12px; background: linear-gradient(180deg,#0f3a8c 0%,#1e54b0 50%,#163a94 100%); padding:8px 14px; border-radius:8px; box-shadow:0 4px 0 rgba(0,0,0,0.14); }
+.brand-logo { width:46px; height:46px; object-fit:contain; display:block }
+.brand-text { color:#ffffff; font-weight:900; letter-spacing:0.6px; text-transform:uppercase; font-size:0.86rem; line-height:1; display:block }
+.brand-text br { content:""; display:block; line-height:0.95 }
+.brand-text { text-shadow:0 1px 0 rgba(0,0,0,0.18) }
 
 @media (max-width:880px) {
   .brand-link { padding:6px 8px }
