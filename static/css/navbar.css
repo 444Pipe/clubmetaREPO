@@ -191,6 +191,18 @@
   .menu-info-list .menu-group.expanded > .submenu{display:block}
 }
 
+/* Mobile 'Inicio' visible pill: show only on small screens to keep header minimal */
+.mobile-home-btn{display:none}
+
+@media (max-width:900px){
+  .mobile-home-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(255,255,255,0.06);color:var(--nav-text-light);border-radius:999px;font-weight:800;text-decoration:none;border:1px solid rgba(255,255,255,0.06);margin-left:8px}
+  .mobile-home-btn .mobile-home-label{display:inline-block}
+  /* keep the home pill visually separate from the brand */
+  .brand-wrap + .mobile-home-btn{margin-left:12px}
+  /* if you prefer the hamburger to remain, leave it; otherwise hide it by uncommenting the next line */
+  /* .nav-toggle{display:none !important} */
+}
+
 /* Mobile CTA styles */
 @media (max-width:900px){
   /* hide the top 'Acceder' link inside the main list so mobile CTA is the primary action */

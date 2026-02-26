@@ -11,6 +11,12 @@
       </div>
     </div>
 
+    <!-- Mobile-only visible Inicio button (keeps header minimal on small screens) -->
+    <a href="{% url 'reservas:index' %}" class="mobile-home-btn" aria-label="Inicio">
+      <i class="bi bi-house-door"></i>
+      <span class="mobile-home-label">Inicio</span>
+    </a>
+
     <button class="nav-toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="Abrir menú">
       <span class="hamburger"></span>
     </button>
