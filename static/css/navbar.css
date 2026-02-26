@@ -55,16 +55,21 @@
 
   /* When hamburger opens, reveal a single full-width mobile submenu overlay */
   body.nav-open .primary-menu .mobile-submenu {
-    display:block; position:fixed; left:0; right:0; top:var(--header-height,64px);
-    background: linear-gradient(180deg,#163a94 0%, #234ea8 100%); padding:18px 12px; z-index:1200;
-    box-shadow: 0 8px 24px rgba(9,30,66,0.24);
+     display:block; position:fixed; left:0; right:0; top:var(--header-height,64px); bottom:0;
+     background: linear-gradient(180deg,#163a94 0%, #234ea8 100%); padding:18px 12px; z-index:1200;
+     box-shadow: none; overflow-y:auto; -webkit-overflow-scrolling: touch;
   }
 
   /* Mobile submenu layout: stacked center, roomy tap targets */
   .primary-menu .mobile-submenu .menu-info-list { display:block; text-align:center; margin:0 }
   .primary-menu .mobile-submenu .menu-info-list li { padding:14px 0; list-style:none }
   .primary-menu .mobile-submenu .menu-info-list li a { color:#fff; font-weight:700; display:block; font-size:1.06rem }
+    .primary-menu .mobile-submenu .menu-info-list { display:block; text-align:center; margin:0; max-width:640px; margin-left:auto; margin-right:auto }
+    .primary-menu .mobile-submenu .menu-info-list li { padding:16px 0; list-style:none; border-radius:4px }
+    .primary-menu .mobile-submenu .menu-info-list li a { color:#fff; font-weight:700; display:block; font-size:1.06rem }
 }
+    /* Ensure desktop dropdown panels remain hidden on mobile to avoid duplicates */
+    .primary-menu .dropdown-panel { display:none !important }
 .menu-info-list .menu-group { position:relative; }
 .menu-info-list .submenu { display:none; position:absolute; top:100%; left:0; min-width:200px; background:#fff; color:#07203a; padding:8px; border-radius:8px; box-shadow:0 8px 22px rgba(9,30,66,0.12); list-style:none; z-index:270 }
 .menu-info-list .submenu li { text-align:center; }

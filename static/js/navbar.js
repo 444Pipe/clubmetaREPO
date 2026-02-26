@@ -14,7 +14,14 @@ document.addEventListener('DOMContentLoaded', function(){
   // Mobile: make dropdown toggles expandable
   document.querySelectorAll('.has-dropdown > .dropdown-toggle').forEach(function(btn){
     btn.addEventListener('click', function(e){
+      const href = btn.getAttribute('href');
       if(window.innerWidth <= 900){
+        if(href && href.trim() !== '#' && href.trim() !== ''){
+          // let the browser navigate to the link; close mobile nav for cleanliness
+          document.body.classList.remove('nav-open');
+          menu.classList.remove('open');
+          return;
+        }
         e.preventDefault();
         const parent = btn.parentElement;
         parent.classList.toggle('expanded');
@@ -32,7 +39,13 @@ document.addEventListener('DOMContentLoaded', function(){
       const parent = btn.parentElement;
       const submenu = parent.querySelector('.submenu');
       if(window.innerWidth <= 900){
-        // mobile: toggle
+        // mobile: if the link points to a real href (e.g. index) allow navigation.
+        const href = btn.getAttribute('href');
+        if(href && href.trim() !== '#' && href.trim() !== ''){
+          // allow default navigation to happen
+          return;
+        }
+        // otherwise toggle submenu
         e.preventDefault();
         const isOpen = parent.classList.toggle('expanded');
         if(submenu) submenu.style.display = isOpen ? 'block' : 'none';
