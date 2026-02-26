@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Visión - CLUB EL META{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/vision.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/vision.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="vision-section-bg">
+  <div class="vision-card">
+    <div class="vision-ribbon">
+      <img src="{% static 'img/logo.png' %}" alt="Logo Club El Meta">
+      CLUB EL META
+    </div>
+    <div class="vision-title">Visión</div>
+    <img src="{% static 'img/fondin.jpeg' %}" alt="Visión" class="vision-img">
+    <p class="vision-text">En el 2026 El Club Meta estará consolidado como una corporación líder en calidad de la prestación de servicios de recreación y esparcimiento a la familia llanera; igualmente como centro de negocios para empresarios nacionales y extranjeras.</p>
+  </div>
+</div>
+{% endblock %}
