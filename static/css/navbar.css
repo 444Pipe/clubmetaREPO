@@ -12,28 +12,7 @@
 }
 
 /* Ensure header sits above mobile submenu overlay so the toggle is reachable */
-.site-header{position:relative; z-index:1301; overflow:hidden}
-
-/* Decorative overlay: subtle diagonal stripes + soft vignette to enrich the blue header */
-.site-header::before{
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  /* stronger decorative overlay so it's immediately visible (for testing) */
-  background-image:
-    repeating-linear-gradient(135deg, rgba(255,255,255,0.06) 0 2px, transparent 2px 24px),
-    radial-gradient(circle at 12% 12%, rgba(255,255,255,0.08), transparent 24%),
-    linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.03));
-  /* use normal blending so the effect is obvious across deployments */
-  mix-blend-mode: normal;
-  opacity: 0.95;
-  background-size: auto, cover, cover;
-}
-
-/* Ensure header children render above the decorative overlay */
-.site-header > * { position: relative; z-index: 1 }
+.site-header{position:relative; z-index:1301}
 
 .nav-container{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;max-width:1200px;margin:0 auto}
 .brand-wrap{display:flex;align-items:center;gap:12px}
