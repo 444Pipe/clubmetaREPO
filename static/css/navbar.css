@@ -16,8 +16,8 @@
 
 .nav-container{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;max-width:1200px;margin:0 auto}
 .brand-wrap{display:flex;align-items:center;gap:12px}
-.brand-logo{height:56px;width:56px;object-fit:contain;border-radius:8px}
-.brand-text{font-weight:800;font-size:20px;color:var(--nav-text-light);margin-left:8px}
+.brand-logo{height:72px;width:72px;object-fit:contain;border-radius:8px}
+.brand-text{font-weight:900;font-size:22px;color:var(--nav-text-light);margin-left:10px}
 
 /* Desktop nav */
 .primary-menu{display:flex;align-items:center}
@@ -99,17 +99,17 @@
 
 /* Brand / logo boxed design (restored) */
 .brand-wrap { display:flex; align-items:center }
-.brand-link { display:flex; align-items:center; gap:14px; background: linear-gradient(180deg,#0f3a8c 0%,#1e54b0 50%,#163a94 100%); padding:8px 12px; border-radius:8px; }
-.brand-logo { width:50px; height:50px; object-fit:contain; display:block }
+.brand-link { display:flex; align-items:center; gap:16px; background: linear-gradient(180deg,#0f3a8c 0%,#1e54b0 50%,#163a94 100%); padding:10px 14px; border-radius:8px; }
+.brand-logo { width:64px; height:64px; object-fit:contain; display:block }
 .brand-text { display:block; }
-.brand-line-small { display:block; color:#cfe6ff; font-weight:700; font-size:0.7rem; letter-spacing:0.8px; text-transform:uppercase; font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif }
-.brand-line-large { display:block; color:#ffffff; font-weight:800; font-size:0.98rem; letter-spacing:0.45px; text-transform:uppercase; font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif }
+.brand-line-small { display:block; color:#cfe6ff; font-weight:800; font-size:0.85rem; letter-spacing:0.8px; text-transform:uppercase; font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif }
+.brand-line-large { display:block; color:#ffffff; font-weight:900; font-size:1.12rem; letter-spacing:0.45px; text-transform:uppercase; font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif }
 
 @media (max-width:880px) {
-  .brand-link { padding:6px 8px }
-  .brand-logo { width:42px; height:42px }
-  .brand-line-small { font-size:0.6rem }
-  .brand-line-large { font-size:0.86rem }
+  .brand-link { padding:8px 10px }
+  .brand-logo { width:54px; height:54px }
+  .brand-line-small { font-size:0.65rem }
+  .brand-line-large { font-size:0.9rem }
 }
 
 /* Improved submenu link styling for visibility */
