@@ -21,13 +21,15 @@
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  /* repeating diagonal stripes + light radial highlight */
+  /* stronger decorative overlay so it's immediately visible (for testing) */
   background-image:
-    repeating-linear-gradient(135deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 20px),
-    radial-gradient(circle at 10% 10%, rgba(255,255,255,0.04), transparent 18%),
-    linear-gradient(0deg, rgba(0,0,0,0.03), rgba(0,0,0,0.02));
-  mix-blend-mode: overlay;
-  opacity: 0.9;
+    repeating-linear-gradient(135deg, rgba(255,255,255,0.06) 0 2px, transparent 2px 24px),
+    radial-gradient(circle at 12% 12%, rgba(255,255,255,0.08), transparent 24%),
+    linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.03));
+  /* use normal blending so the effect is obvious across deployments */
+  mix-blend-mode: normal;
+  opacity: 0.95;
+  background-size: auto, cover, cover;
 }
 
 /* Ensure header children render above the decorative overlay */
