@@ -11,6 +11,9 @@
   border-bottom: 3px solid rgba(255,255,255,0.06);
 }
 
+/* Ensure header sits above mobile submenu overlay so the toggle is reachable */
+.site-header{position:relative; z-index:1301}
+
 .nav-container{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;max-width:1200px;margin:0 auto}
 .brand-wrap{display:flex;align-items:center;gap:12px}
 .brand-logo{height:56px;width:56px;object-fit:contain;border-radius:8px}
@@ -141,7 +144,9 @@
 @media (max-width: 900px){
   .nav-container{padding:10px}
   .brand-text{display:none}
-  .nav-toggle{display:block}
+  /* Make toggle clearly visible and on top of overlays */
+  .nav-toggle{display:block; position:relative; z-index:1302; width:44px; height:44px; padding:8px; border-radius:8px; background:transparent}
+  .nav-toggle:focus{outline:2px solid rgba(255,255,255,0.14)}
   .primary-menu{position:fixed;right:0;top:0;bottom:0;width:280px;background:var(--nav-gradient);flex-direction:column;padding:20px;transform:translateX(110%);transition:transform .28s ease;box-shadow:-8px 0 30px rgba(0,0,0,0.12);z-index:280}
   .primary-menu.open{transform:translateX(0)}
   .nav-links{flex-direction:column;gap:6px}
@@ -151,6 +156,19 @@
   .menu-info-list{flex-direction:column;padding:0}
   .menu-info-list .submenu{position:static;display:none;background:transparent;padding:0;box-shadow:none}
   .menu-info-list .menu-group.expanded > .submenu{display:block}
+}
+
+/* Mobile CTA styles */
+@media (max-width:900px){
+  /* hide the top 'Acceder' link inside the main list so mobile CTA is the primary action */
+  .nav-links a.btn-accent { display: none }
+
+  /* ensure enough bottom padding so mobile submenu content can scroll above CTA */
+  .primary-menu { padding-bottom: 110px }
+
+  .mobile-cta { display:block; position:absolute; left:20px; right:20px; bottom:20px; z-index:1400; text-align:center }
+  .btn-accent-mobile { display:inline-block; width:100%; padding:12px 14px; background:#ffffff; color:var(--nav-accent); border-radius:999px; font-weight:800; text-decoration:none; box-shadow:0 10px 24px rgba(17,24,39,0.12); }
+  .btn-accent-mobile:active, .btn-accent-mobile:focus { transform:translateY(1px); box-shadow:0 6px 18px rgba(17,24,39,0.08) }
 }
 
 /* Small accessibility tweaks */

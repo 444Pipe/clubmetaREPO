@@ -46,6 +46,11 @@
       <div class="mobile-submenu">
         {% include 'partials/menu_info.html' %}
       </div>
+
+      <!-- Mobile CTA: prominent access button anchored to bottom of slide-out menu -->
+      <div class="mobile-cta" aria-hidden="false">
+        <a href="{% url 'reservas:login' %}" class="btn-accent-mobile"><i class="bi bi-person-circle"></i> Acceder</a>
+      </div>
     </nav>
   </div>
 </header>
