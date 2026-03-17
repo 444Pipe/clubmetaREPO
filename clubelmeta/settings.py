@@ -119,15 +119,27 @@ TEMPLATES = [
 # ---------------------------
 # DATABASE
 # ---------------------------
-# Producción: PostgreSQL (Railway)
-# Local: SQLite automático
-DATABASES = {
-    "default": dj_database_url.config(
-        default="sqlite:///db.sqlite3",
-        conn_max_age=600,
-        ssl_require=not DEBUG,
-    )
-}
+# Producción: PostgreSQL (Railway, usando DATABASE_URL)
+# Local: SQLite por defecto cuando no hay DATABASE_URL
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if DATABASE_URL:
+    # Entorno Railway / producción con Postgres
+    DATABASES = {
+        "default": dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=not DEBUG,
+        )
+    }
+else:
+    # Entorno local: usar SQLite sin parámetros de SSL incompatibles
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 
 # ---------------------------

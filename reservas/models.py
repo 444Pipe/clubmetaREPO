@@ -77,7 +77,6 @@ class ConfiguracionSalon(models.Model):
         verbose_name = "Configuración de Salón"
         verbose_name_plural = "Configuraciones de Salones"
         ordering = ['salon__nombre', 'tipo_configuracion']
-        unique_together = ['salon', 'tipo_configuracion']
         # Permiso específico para modificación de precios/configuración (solo Administrador General)
         permissions = (
             ("can_modify_prices", "Puede modificar precios y parámetros del sistema"),
