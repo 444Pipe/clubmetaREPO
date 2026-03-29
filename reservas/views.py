@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import logout
 from django.contrib import messages
-from .models import Salon, ConfiguracionSalon, Reserva, BloqueoEspacio
+from .models import Salon, ConfiguracionSalon, Reserva, BloqueoEspacio, AnuncioFlotante
 import csv
 from datetime import datetime
 import datetime as dt
@@ -123,7 +123,12 @@ def validate_socio_code(request):
 
 def index(request):
     """Página principal - bienvenida"""
-    return render(request, 'index.html')
+    anuncios = AnuncioFlotante.objects.filter(activo=True, mostrar_en_index=True).order_by('-creado')
+    # Por ahora mostramos el anuncio más reciente (si existe)
+    anuncio_destacado = anuncios.first() if anuncios.exists() else None
+    return render(request, 'index.html', {
+        'anuncio_flotante': anuncio_destacado,
+    })
 
 
 def comunicados(request):

@@ -12,6 +12,7 @@ from .models import (
     Comunicado,
     ComunicadoImagen,
     ImagenComunicado,
+    AnuncioFlotante,
 )
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 import re
@@ -57,6 +58,14 @@ class ComunicadoAdmin(admin.ModelAdmin):
 class ImagenComunicadoAdmin(admin.ModelAdmin):
     list_display = ('id', 'imagen', 'uploaded_at')
     readonly_fields = ('uploaded_at',)
+
+
+@admin.register(AnuncioFlotante)
+class AnuncioFlotanteAdmin(admin.ModelAdmin):
+    list_display = ('id', 'titulo', 'mostrar_en_index', 'activo', 'creado')
+    list_filter = ('activo', 'mostrar_en_index')
+    search_fields = ('titulo',)
+    readonly_fields = ('creado', 'actualizado')
 
 
 class CustomGroupAdmin(DjangoGroupAdmin):

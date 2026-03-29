@@ -352,3 +352,29 @@ class ImagenComunicado(models.Model):
         return f"ImagenComunicado {self.id}"
 
 
+class AnuncioFlotante(models.Model):
+    """Anuncios flotantes con imagen para mostrar en el sitio público.
+
+    Se usan principalmente en la página de inicio (index) y se gestionan
+    desde el admin. Cada anuncio tiene una imagen (Cloudinary), un título
+    opcional y un enlace opcional.
+    """
+
+    titulo = models.CharField(max_length=200, blank=True)
+    imagen = CloudinaryField('imagen')
+    enlace = models.URLField(blank=True, null=True, help_text='URL a abrir al hacer clic en el anuncio (opcional)')
+    mostrar_en_index = models.BooleanField(default=True, help_text='Si está activo para la página de inicio')
+    activo = models.BooleanField(default=True)
+    creado = models.DateTimeField(auto_now_add=True)
+    actualizado = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Anuncio flotante'
+        verbose_name_plural = 'Anuncios flotantes'
+        ordering = ['-creado']
+
+    def __str__(self):
+        base = self.titulo or f"Anuncio {self.pk}" if self.pk else 'Anuncio sin guardar'
+        return base
+
+
