@@ -42,8 +42,8 @@
 
       <div class="mobile-menu-body">
         <ul class="nav-links">
-          <li><a href="{% url 'reservas:index' %}"><i class="bi bi-house-door"></i> Inicio</a></li>
-          <li><a href="{% url 'reservas:register' %}"><i class="bi bi-calendar-check"></i> Reservar</a></li>
+          <li class="hide-on-mobile"><a href="{% url 'reservas:index' %}"><i class="bi bi-house-door"></i> Inicio</a></li>
+          <li class="hide-on-mobile"><a href="{% url 'reservas:register' %}"><i class="bi bi-calendar-check"></i> Reservar</a></li>
           <li class="has-dropdown">
             <a href="{% url 'reservas:index' %}" class="dropdown-toggle">Bienvenidos <i class="bi bi-caret-down-fill"></i></a>
             <div class="dropdown-panel">
