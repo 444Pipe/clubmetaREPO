@@ -68,8 +68,6 @@
       </div>
     </div>
     <nav>
-      <a class="menu-link" href="{% url 'reservas:index' %}"><i class="fa fa-house fa-fw"></i> Inicio</a>
-      <a class="menu-link" href="{% url 'reservas:register' %}"><i class="fa fa-calendar-check fa-fw"></i> Reservar</a>
       <a class="menu-link" href="{% url 'reservas:calendario' %}"><i class="fa fa-calendar-days fa-fw"></i> Calendario</a>
       <a class="menu-link" href="{% url 'reservas:reportes' %}"><i class="fa fa-chart-line fa-fw"></i> Reportes</a>
       <a class="menu-link" href="{% url 'reservas:panel' %}"><i class="fa fa-user-shield fa-fw"></i> Panel Admin</a>
@@ -78,6 +76,7 @@
       </div>
     </nav>
     <div class="logout">
+      <a class="menu-link" href="{% url 'reservas:index' %}" style="color:#a0c4ff; margin-bottom:8px;"><i class="fa fa-eye fa-fw"></i> Ver Sitio</a>
       <form method="post" action="{% url 'reservas:logout' %}">
         {% csrf_token %}
         <button type="submit" class="menu-link" style="background: transparent; border: none; width:100%; text-align:left; padding:10px 12px; color:#ffdede;">
