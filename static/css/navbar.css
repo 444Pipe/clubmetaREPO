@@ -160,7 +160,7 @@
 
 
 /* Secondary menu (menu_info) displayed under header on desktop */
-.menu-info{background:transparent;border-top:1px solid rgba(255,255,255,0.04); position:relative; z-index:1200; width:100%} 
+.menu-info{background:#0f3f9f;border-top:1px solid rgba(255,255,255,0.04); position:relative; z-index:1200; width:100%} 
 .menu-info-list{display:flex;gap:18px;list-style:none;margin:0;padding:10px 20px}
 .menu-info-list a{color:var(--nav-text-light);text-decoration:none;padding:8px 10px;border-radius:6px;font-weight:600}
 .menu-info-list a:hover{background:rgba(255,255,255,0.04)}
