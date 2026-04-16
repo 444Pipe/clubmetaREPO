@@ -24,8 +24,27 @@
     .admin-layout .card.shadow { box-shadow: 0 6px 18px rgba(10,39,87,0.06); }
     .admin-layout .table thead th { background: #f8fafc; }
     @media (max-width: 991px) {
-      .admin-layout .admin-sidebar { position: relative; width: 100%; height: auto; }
-      .admin-layout .main-area { margin-left: 0 !important; padding:16px; }
+      .admin-layout .admin-sidebar { 
+        position: fixed !important;
+        top: 0; left: 0; bottom: 0;
+        transform: translateX(-100%); 
+        transition: transform 0.3s ease-in-out;
+        box-shadow: 4px 0 15px rgba(0,0,0,0.2) !important;
+        width: 260px !important;
+        height: 100vh !important;
+        z-index: 2000 !important;
+        display: flex !important;
+      }
+      .admin-layout .admin-sidebar.open {
+        transform: translateX(0);
+      }
+      .admin-layout .main-area { margin-left: 0 !important; padding:16px; width:100%; overflow-x:hidden; }
+      .admin-backdrop {
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.5); z-index: 1999;
+        display: none; opacity: 0; transition: opacity 0.3s;
+      }
+      .admin-backdrop.show { display: block; opacity: 1; }
     }
     /* Oculta el footer del sitio solo dentro del layout admin */
     .admin-layout footer { display: none !important; }
@@ -68,11 +87,56 @@
     </div>
   </aside>
 
+  <div id="adminBackdropBase" class="admin-backdrop"></div>
+
   <section class="main-area">
+    <!-- Navbar mÃ³vil visible sÃ³lo en <991px -->
+    <div class="d-lg-none mb-3 d-flex align-items-center bg-white p-3 rounded shadow-sm">
+      <button id="mobileAdminToggleBase" class="btn btn-outline-secondary me-3" type="button" aria-label="Abrir MenÃº">
+        <i class="fa fa-bars"></i>
+      </button>
+      <h5 class="mb-0 text-primary fw-bold">Panel Admin</h5>
+    </div>
+
     <main class="panel-main container-fluid">
       {% block admin_content %}{% endblock %}
     </main>
   </section>
 
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const toggleBtnBase = document.getElementById('mobileAdminToggleBase');
+    const sidebarBase = document.querySelector('.admin-layout .admin-sidebar');
+    const backdropBase = document.getElementById('adminBackdropBase');
+
+    if(toggleBtnBase && sidebarBase && backdropBase) {
+      function openSidebarBase() {
+        sidebarBase.classList.add('open');
+        backdropBase.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+      
+      function closeSidebarBase() {
+        sidebarBase.classList.remove('open');
+        backdropBase.classList.remove('show');
+        document.body.style.overflow = '';
+      }
+
+      toggleBtnBase.addEventListener('click', openSidebarBase);
+      backdropBase.addEventListener('click', closeSidebarBase);
+      
+      // Close sidebar also when a link is clicked
+      const menuLinksBase = sidebarBase.querySelectorAll('.menu-link');
+      menuLinksBase.forEach(link => {
+        link.addEventListener('click', () => {
+          if(window.innerWidth <= 991) {
+            closeSidebarBase();
+          }
+        });
+      });
+    }
+  });
+</script>
 {% endblock %}

@@ -24,17 +24,20 @@
     .card.shadow { box-shadow: 0 6px 18px rgba(10,39,87,0.06); }
     .table thead th { background: #f8fafc; }
     @media (max-width: 991px) {
-      .admin-sidebar { 
+      .admin-layout .admin-sidebar { 
+        position: fixed !important;
+        top: 0; left: 0; bottom: 0;
         transform: translateX(-100%); 
         transition: transform 0.3s ease-in-out;
         box-shadow: 4px 0 15px rgba(0,0,0,0.2);
-        width: 260px;
-        height: 100vh;
+        width: 260px !important;
+        height: 100vh !important;
+        z-index: 2000 !important;
       }
-      .admin-sidebar.open {
+      .admin-layout .admin-sidebar.open {
         transform: translateX(0);
       }
-      .main-area { margin-left: 0; padding:16px; width: 100%; overflow-x: hidden; }
+      .admin-layout .main-area { margin-left: 0 !important; padding:16px; width: 100%; overflow-x: hidden; }
       .admin-backdrop {
         position: fixed; top: 0; left: 0; right: 0; bottom: 0;
         background: rgba(0,0,0,0.5); z-index: 1999;
