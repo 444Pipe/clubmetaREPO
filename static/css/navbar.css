@@ -13,7 +13,7 @@
 }
 
 /* Ensure header sits above mobile submenu overlay so the toggle is reachable */
-.site-header{position:relative; z-index:1301}
+.site-header{position:sticky; top:0; z-index:1301}
 
 .nav-container{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;max-width:1280px;margin:0 auto}
 .brand-wrap{display:flex;align-items:center;gap:10px}
