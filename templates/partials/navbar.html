@@ -14,10 +14,12 @@
     </div>
 
     <!-- Mobile-only visible Inicio button (keeps header minimal on small screens) -->
+    {% if request.path != '/' %}
     <a href="{% url 'reservas:index' %}" class="mobile-home-btn" aria-label="Inicio">
       <i class="bi bi-house-door"></i>
       <span class="mobile-home-label">Inicio</span>
     </a>
+    {% endif %}
 
     <button class="nav-toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="Abrir menú">
       <span class="hamburger"></span>
@@ -42,7 +44,9 @@
 
       <div class="mobile-menu-body">
         <ul class="nav-links">
+          {% if request.path != '/' %}
           <li class="hide-on-mobile"><a href="{% url 'reservas:index' %}"><i class="bi bi-house-door"></i> Inicio</a></li>
+          {% endif %}
           <li class="hide-on-mobile"><a href="{% url 'reservas:register' %}"><i class="bi bi-calendar-check"></i> Reservar</a></li>
           {% if user.is_authenticated %}
             {% if user.is_staff %}
