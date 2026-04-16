@@ -44,16 +44,6 @@
         <ul class="nav-links">
           <li class="hide-on-mobile"><a href="{% url 'reservas:index' %}"><i class="bi bi-house-door"></i> Inicio</a></li>
           <li class="hide-on-mobile"><a href="{% url 'reservas:register' %}"><i class="bi bi-calendar-check"></i> Reservar</a></li>
-          <li class="has-dropdown">
-            <a href="{% url 'reservas:index' %}" class="dropdown-toggle">Bienvenidos <i class="bi bi-caret-down-fill"></i></a>
-            <div class="dropdown-panel">
-              <ul class="dropdown-submenu">
-                <li><a href="{% url 'vision' %}">Visión</a></li>
-                <li><a href="{% url 'mision' %}">Misión</a></li>
-                <li><a href="{% url 'instalaciones' %}">Instalaciones</a></li>
-              </ul>
-            </div>
-          </li>
           {% if user.is_authenticated %}
             {% if user.is_staff %}
               <li><a href="{% url 'reservas:calendario' %}"><i class="bi bi-calendar3"></i> Calendario</a></li>
