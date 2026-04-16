@@ -7,17 +7,22 @@
 }
 
 .site-header{
-  background: linear-gradient(180deg, rgba(15, 63, 159, 0.85) 0%, rgba(21, 63, 174, 0.85) 100%);
+  position:sticky; top:0; z-index:1301;
+}
+
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8, 30, 80, 0.9) 0%, rgba(12, 45, 115, 0.9) 100%);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   box-shadow: 0 4px 20px rgba(0,0,0,0.12);
   border-bottom: 1px solid rgba(255,255,255,0.15);
+  z-index: -1;
 }
 
-/* Ensure header sits above mobile submenu overlay so the toggle is reachable */
-.site-header{position:sticky; top:0; z-index:1301}
-
-.nav-container{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;max-width:1280px;margin:0 auto}
+.nav-container{position:relative; z-index:1; display:flex;align-items:center;justify-content:space-between;padding:10px 20px;max-width:1280px;margin:0 auto}
 .brand-wrap{display:flex;align-items:center;gap:10px}
 .brand-logo{height:45px;width:auto;object-fit:contain;border-radius:6px}
 .brand-text{font-weight:700;font-size:18px;color:var(--nav-text-light);margin-left:8px}
