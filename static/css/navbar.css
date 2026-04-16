@@ -360,24 +360,25 @@
 
   .mobile-cta {
     display:block; position:sticky; bottom:0; left:0; right:0;
-    padding:16px 20px; z-index:1400; text-align:center;
-    background: linear-gradient(to top, rgba(10,45,122,0.98) 60%, transparent);
+    padding:32px 20px 40px; z-index:1400; text-align:center;
+    margin-top:auto;
+    background: transparent;
   }
   .btn-accent-mobile {
     display:inline-flex; align-items:center; justify-content:center; gap:10px;
-    width:100%; padding:16px 20px;
-    background: linear-gradient(135deg, #ffffff 0%, #e8f0fe 100%);
-    color:var(--nav-accent) !important; border-radius:16px;
-    font-weight:800; text-decoration:none;
-    box-shadow:0 8px 32px rgba(0,0,0,0.18);
-    font-size:1.05rem; letter-spacing:0.3px;
-    transition:transform .15s ease, box-shadow .15s ease;
+    width:100%; padding:14px 20px;
+    background: transparent;
+    color:#fff !important; border-radius:12px;
+    border: 2px solid rgba(255,255,255,0.8);
+    font-weight:700; text-decoration:none;
+    font-size:1.05rem; letter-spacing:0.5px;
+    transition:all .2s ease;
   }
   .btn-accent-mobile i{ font-size:1.2rem; }
-  .btn-accent-mobile:active, .btn-accent-mobile:focus {
-    transform:translateY(1px); box-shadow:0 4px 18px rgba(0,0,0,0.12);
+  .btn-accent-mobile:hover, .btn-accent-mobile:focus {
+    background: #fff; color: var(--nav-accent) !important;
   }
-  .primary-menu .mobile-cta .btn-accent-mobile { color: var(--nav-accent) !important; text-shadow:none }
+  .primary-menu .mobile-cta .btn-accent-mobile { text-shadow:none }
 }
 
 /* Small accessibility tweaks */
