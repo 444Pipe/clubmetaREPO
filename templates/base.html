@@ -130,11 +130,27 @@
       
       <div class="text-center">
         <p class="mb-0 small">© 2026 CLUB EL META. Todos los derechos reservados.</p>
+        {% if not user.is_authenticated %}
+        <div class="mt-3">
+          <a href="{% url 'reservas:login' %}" class="staff-access-link">Acceso staff</a>
+        </div>
+        {% endif %}
       </div>
     </div>
   </footer>
   
   <style>
+    .staff-access-link {
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.25);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+    }
+    .staff-access-link:hover {
+      color: rgba(255, 255, 255, 0.55);
+      text-decoration: none;
+    }
+
     .social-link {
       display: inline-flex;
       align-items: center;

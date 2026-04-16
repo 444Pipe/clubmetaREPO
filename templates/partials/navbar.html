@@ -58,8 +58,6 @@
                 <button type="submit" class="btn-logout"><i class="bi bi-box-arrow-right"></i> Salir <span class="username">({{ user.username }})</span></button>
               </form>
             </li>
-          {% else %}
-              <li><a href="{% url 'reservas:login' %}" class="nav-link btn-accent"><i class="bi bi-person-circle"></i> Acceder</a></li>
           {% endif %}
         </ul>
 
@@ -72,10 +70,7 @@
         </div>
       </div>
 
-      <!-- Mobile CTA: prominent access button anchored to bottom of slide-out menu -->
-      <div class="mobile-cta" aria-hidden="false">
-        <a href="{% url 'reservas:login' %}" class="btn-accent-mobile"><i class="bi bi-person-circle"></i> Acceder</a>
-      </div>
+
     </nav>
   </div>
 </header>
