@@ -61,20 +61,7 @@
   .primary-menu .dropdown-panel { display:none !important }
   .primary-menu .mobile-submenu { display:none }
 
-  /* When hamburger opens, reveal a single full-width mobile submenu overlay */
-          body.nav-open .primary-menu .mobile-submenu {
-            display:block; position:fixed; left:0; right:0; top:var(--header-height,64px); bottom:0;
-            background: linear-gradient(180deg,#0f3f9f 0%, #153fae 100%); padding:18px 12px; z-index:1200;
-            box-shadow: none; overflow-y:auto; -webkit-overflow-scrolling: touch;
-          }
-
-  /* Mobile submenu layout: stacked center, roomy tap targets */
-  .primary-menu .mobile-submenu .menu-info-list { display:block; text-align:center; margin:0 }
-  .primary-menu .mobile-submenu .menu-info-list li { padding:14px 0; list-style:none }
-  .primary-menu .mobile-submenu .menu-info-list li a { color:#fff; font-weight:700; display:block; font-size:1.06rem }
-    .primary-menu .mobile-submenu .menu-info-list { display:block; text-align:center; margin:0; max-width:640px; margin-left:auto; margin-right:auto }
-    .primary-menu .mobile-submenu .menu-info-list li { padding:16px 0; list-style:none; border-radius:4px }
-    .primary-menu .mobile-submenu .menu-info-list li a { color:#fff; font-weight:700; display:block; font-size:1.06rem }
+  /* Mobile-submenu now lives inside the slide-out panel body; no separate overlay needed */
 }
     /* Ensure desktop dropdown panels remain hidden on mobile to avoid duplicates */
     .primary-menu .dropdown-panel { display:none !important }
@@ -206,6 +193,12 @@
 .primary-menu{gap:12px}
 .mobile-submenu{display:none}
 
+/* Hide mobile-only elements on desktop */
+.mobile-menu-header{display:none}
+.mobile-menu-body{display:contents}
+.mobile-menu-divider{display:none}
+.mobile-close-btn{display:none}
+
 @media (max-width: 900px){
   .nav-container{padding:10px}
   /* Show brand text on mobile (previously hidden) and reduce size to fit */
@@ -215,15 +208,118 @@
   /* Make toggle clearly visible and on top of overlays */
   .nav-toggle{display:block; position:relative; z-index:1302; width:44px; height:44px; padding:8px; border-radius:8px; background:transparent}
   .nav-toggle:focus{outline:2px solid rgba(255,255,255,0.14)}
-  .primary-menu{position:fixed;right:0;top:0;bottom:0;width:280px;background:var(--nav-gradient);flex-direction:column;padding:20px;transform:translateX(110%);transition:transform .28s ease;box-shadow:-8px 0 30px rgba(0,0,0,0.12);z-index:280}
+
+  /* Full-screen slide-out panel */
+  .primary-menu{
+    position:fixed; left:0; top:0; bottom:0; right:0;
+    width:100%;
+    background: linear-gradient(170deg, #0a2d7a 0%, #0f3f9f 40%, #1a4fc4 100%);
+    flex-direction:column;
+    padding:0;
+    transform:translateX(100%);
+    transition:transform .32s cubic-bezier(.4,0,.2,1);
+    box-shadow:-12px 0 40px rgba(0,0,0,0.20);
+    z-index:1300;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+  }
   .primary-menu.open{transform:translateX(0)}
-  .nav-links{flex-direction:column;gap:6px}
+
+  /* Mobile brand header inside slide-out */
+  .mobile-menu-header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 20px 16px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  .mobile-brand{
+    display:flex; align-items:center; gap:12px;
+  }
+  .mobile-brand .brand-logo-wrap{ width:44px; height:44px }
+  .mobile-brand .brand-logo{ width:30px; height:30px }
+  .mobile-brand .brand-text{ display:flex; flex-direction:column; gap:1px }
+  .mobile-brand .brand-line-small{ display:block; font-size:9px; letter-spacing:1.4px; color:rgba(200,220,255,0.7); font-weight:600; text-transform:uppercase }
+  .mobile-brand .brand-line-large{ display:block; font-size:14px; font-weight:800; color:#fff; letter-spacing:0.6px; text-transform:uppercase }
+
+  /* Close button (X) */
+  .mobile-close-btn{
+    background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.10);
+    color:#fff; width:40px; height:40px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px; cursor:pointer;
+    transition:background .15s ease, transform .15s ease;
+  }
+  .mobile-close-btn:hover, .mobile-close-btn:active{
+    background:rgba(255,255,255,0.15); transform:scale(1.05);
+  }
+
+  /* Scrollable body area */
+  .mobile-menu-body{
+    flex:1; padding:16px 16px 120px; overflow-y:auto;
+  }
+
+  /* Nav links as glass cards */
+  .nav-links{flex-direction:column; gap:8px; padding:0; margin:0}
+  .nav-links li{ list-style:none }
+  .nav-links a{
+    display:flex !important; align-items:center; gap:12px;
+    padding:14px 18px !important;
+    background:rgba(255,255,255,0.06) !important;
+    border:1px solid rgba(255,255,255,0.08) !important;
+    border-radius:14px !important;
+    color:#fff !important; font-weight:700 !important; font-size:1rem;
+    text-decoration:none;
+    backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+    transition:background .15s ease, transform .15s ease;
+  }
+  .nav-links a:hover, .nav-links a:active{
+    background:rgba(255,255,255,0.12) !important;
+    transform:translateX(4px);
+  }
+  .nav-links a i{
+    font-size:1.2rem; color:rgba(255,255,255,0.85); width:24px; text-align:center; flex-shrink:0;
+  }
+
+  /* Divider between sections */
+  .mobile-menu-divider{
+    height:1px; background:rgba(255,255,255,0.08);
+    margin:16px 0;
+  }
+
+  /* Dropdown/submenu inside mobile */
   .has-dropdown .dropdown-panel{position:static;display:block;background:transparent;box-shadow:none;padding:0}
-  .mobile-submenu{display:block;margin-top:12px}
+  .mobile-submenu{display:block;margin-top:0}
   .menu-info{display:block}
-  .menu-info-list{flex-direction:column;padding:0}
+  .menu-info-list{flex-direction:column;padding:0;gap:6px}
   .menu-info-list .submenu{position:static;display:none;background:transparent;padding:0;box-shadow:none}
   .menu-info-list .menu-group.expanded > .submenu{display:block}
+
+  /* Style the mobile-submenu menu_info items as cards too */
+  .mobile-submenu .menu-info-list{ display:flex; flex-direction:column; gap:6px; margin:0; padding:0; background:transparent; box-shadow:none }
+  .mobile-submenu .menu-info-list > li{ list-style:none }
+  .mobile-submenu .menu-info-list > li > a{
+    display:flex; align-items:center; gap:12px;
+    padding:12px 18px;
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.06);
+    border-radius:12px;
+    color:rgba(255,255,255,0.85); font-weight:600; font-size:0.95rem;
+    text-decoration:none; text-transform:none; text-shadow:none;
+    transition:background .15s ease;
+  }
+  .mobile-submenu .menu-info-list > li > a:hover{
+    background:rgba(255,255,255,0.10);
+  }
+  /* Submenu items (expanded dropdowns) */
+  .mobile-submenu .menu-info-list .submenu{ padding-left:12px; margin-top:4px }
+  .mobile-submenu .menu-info-list .submenu a{
+    color:rgba(255,255,255,0.75) !important; font-size:0.9rem; padding:10px 16px;
+    border-radius:10px; background:transparent; border:none;
+  }
+  .mobile-submenu .menu-info-list .submenu a:hover{
+    background:rgba(255,255,255,0.06); color:#fff !important;
+  }
+  /* Remove the white triangle on mobile */
+  .mobile-submenu .menu-info-list .submenu::before{ display:none }
 }
 
 /* Mobile 'Inicio' visible pill: show only on small screens to keep header minimal */
@@ -241,18 +337,28 @@
 /* Mobile CTA styles */
 @media (max-width:900px){
   /* hide the top 'Acceder' link inside the main list so mobile CTA is the primary action */
-  .nav-links a.btn-accent { display: none }
+  .nav-links a.btn-accent { display: none !important }
 
-  /* ensure enough bottom padding so mobile submenu content can scroll above CTA */
-  .primary-menu { padding-bottom: 110px }
-
-  .mobile-cta { display:block; position:absolute; left:20px; right:20px; bottom:20px; z-index:1400; text-align:center }
-  .btn-accent-mobile { display:inline-block; width:100%; padding:12px 14px; background:#ffffff; color:var(--nav-accent); border-radius:999px; font-weight:800; text-decoration:none; box-shadow:0 10px 24px rgba(17,24,39,0.12); font-size:1rem }
-  .btn-accent-mobile:active, .btn-accent-mobile:focus { transform:translateY(1px); box-shadow:0 6px 18px rgba(17,24,39,0.08) }
-
-  /* Stronger specificity to avoid being overridden by generic link color rules */
-  .primary-menu .mobile-cta .btn-accent-mobile { color: var(--nav-accent) !important; background: #ffffff !important }
-  .primary-menu .mobile-cta .btn-accent-mobile { text-shadow:none }
+  .mobile-cta {
+    display:block; position:sticky; bottom:0; left:0; right:0;
+    padding:16px 20px; z-index:1400; text-align:center;
+    background: linear-gradient(to top, rgba(10,45,122,0.98) 60%, transparent);
+  }
+  .btn-accent-mobile {
+    display:inline-flex; align-items:center; justify-content:center; gap:10px;
+    width:100%; padding:16px 20px;
+    background: linear-gradient(135deg, #ffffff 0%, #e8f0fe 100%);
+    color:var(--nav-accent) !important; border-radius:16px;
+    font-weight:800; text-decoration:none;
+    box-shadow:0 8px 32px rgba(0,0,0,0.18);
+    font-size:1.05rem; letter-spacing:0.3px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-accent-mobile i{ font-size:1.2rem; }
+  .btn-accent-mobile:active, .btn-accent-mobile:focus {
+    transform:translateY(1px); box-shadow:0 4px 18px rgba(0,0,0,0.12);
+  }
+  .primary-menu .mobile-cta .btn-accent-mobile { color: var(--nav-accent) !important; text-shadow:none }
 }
 
 /* Small accessibility tweaks */

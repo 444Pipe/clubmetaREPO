@@ -1,6 +1,16 @@
 document.addEventListener('DOMContentLoaded', function(){
   const toggle = document.querySelector('.nav-toggle');
   const menu = document.getElementById('primary-menu');
+  const closeBtn = document.querySelector('.mobile-close-btn');
+
+  function closeMenu(){
+    if(menu){
+      menu.classList.remove('open');
+      document.body.classList.remove('nav-open');
+      if(toggle) toggle.setAttribute('aria-expanded','false');
+    }
+  }
+
   if(toggle && menu){
     toggle.addEventListener('click', function(){
       const expanded = this.getAttribute('aria-expanded') === 'true';
@@ -9,6 +19,11 @@ document.addEventListener('DOMContentLoaded', function(){
       // add body class so CSS can reveal mobile submenu / global menu-info when nav is open
       document.body.classList.toggle('nav-open');
     });
+  }
+
+  // Close button inside slide-out menu
+  if(closeBtn){
+    closeBtn.addEventListener('click', closeMenu);
   }
 
   // Mobile: make dropdown toggles expandable
