@@ -34,10 +34,6 @@ document.addEventListener('DOMContentLoaded', function(){
         e.preventDefault();
         const parent = btn.parentElement;
         parent.classList.toggle('expanded');
-        const panel = parent.querySelector('.dropdown-panel');
-        if(panel){
-          panel.style.display = parent.classList.contains('expanded') ? 'block' : 'none';
-        }
       }
     });
   });

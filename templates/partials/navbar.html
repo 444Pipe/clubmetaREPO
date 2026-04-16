@@ -47,9 +47,11 @@
           <li class="has-dropdown">
             <a href="{% url 'reservas:index' %}" class="dropdown-toggle">Bienvenidos <i class="bi bi-caret-down-fill"></i></a>
             <div class="dropdown-panel">
-              {% if '/accounts/login' not in request.path and '/admin' not in request.path and '/reservas/panel' not in request.path and '/espacios' not in request.path and not user.is_staff %}
-                {% include 'partials/menu_info.html' %}
-              {% endif %}
+              <ul class="dropdown-submenu">
+                <li><a href="{% url 'vision' %}">Visión</a></li>
+                <li><a href="{% url 'mision' %}">Misión</a></li>
+                <li><a href="{% url 'instalaciones' %}">Instalaciones</a></li>
+              </ul>
             </div>
           </li>
           {% if user.is_authenticated %}

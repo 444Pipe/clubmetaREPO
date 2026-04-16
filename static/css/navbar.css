@@ -39,6 +39,11 @@
 .has-dropdown .dropdown-panel{display:none;position:absolute;top:100%;left:0;min-width:220px;background:#fff;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.12);padding:10px;z-index:260}
 .has-dropdown:hover .dropdown-panel{display:block}
 
+/* Desktop dropdown submenu list */
+.dropdown-submenu{list-style:none;padding:4px 0;margin:0}
+.dropdown-submenu li a{display:block;padding:8px 14px;color:var(--nav-accent);text-decoration:none;border-radius:6px;font-weight:600}
+.dropdown-submenu li a:hover{background:rgba(30,64,175,0.06)}
+
 /* menu_info submenu styles */
 .menu-info-list { display:flex; gap:18px; align-items:center; margin:0; padding:0; }
 .menu-info-list { /* full-width blue secondary bar */
@@ -57,14 +62,14 @@
      Hide desktop dropdown panels to avoid overlapping. Use the mobile-submenu
      as a single fixed overlay when `body.nav-open` is present. */
   .menu-info { display:none !important }
+  /* But keep menu-info visible when inside the mobile-submenu (slide-out panel) */
+  .mobile-submenu .menu-info { display:block !important }
 
-  .primary-menu .dropdown-panel { display:none !important }
+  .primary-menu .dropdown-panel { display:none }
   .primary-menu .mobile-submenu { display:none }
 
   /* Mobile-submenu now lives inside the slide-out panel body; no separate overlay needed */
 }
-    /* Ensure desktop dropdown panels remain hidden on mobile to avoid duplicates */
-    .primary-menu .dropdown-panel { display:none !important }
 .menu-info-list .menu-group { position:relative; }
 .menu-info-list .submenu { display:none; position:absolute; top:100%; left:0; min-width:200px; background:#fff; color:#07203a; padding:8px; border-radius:8px; box-shadow:0 8px 22px rgba(9,30,66,0.12); list-style:none; z-index:270 }
 .menu-info-list .submenu li { text-align:center; }
@@ -286,8 +291,21 @@
   }
 
   /* Dropdown/submenu inside mobile */
-  .has-dropdown .dropdown-panel{position:static;display:block;background:transparent;box-shadow:none;padding:0}
-  .mobile-submenu{display:block;margin-top:0}
+  .has-dropdown .dropdown-panel{position:static;display:none;background:transparent;box-shadow:none;padding:0}
+  .has-dropdown.expanded .dropdown-panel{display:block !important}
+  /* Simple dropdown submenu items inside the Bienvenidos dropdown */
+  .dropdown-submenu{list-style:none;padding:4px 0 0 12px;margin:0}
+  .dropdown-submenu li a{
+    display:flex;align-items:center;gap:12px;
+    padding:10px 18px !important;
+    background:rgba(255,255,255,0.03) !important;
+    border:1px solid rgba(255,255,255,0.05) !important;
+    border-radius:12px !important;
+    color:rgba(255,255,255,0.85) !important;font-weight:600 !important;font-size:0.95rem;
+    text-decoration:none;margin-top:4px;
+  }
+  .dropdown-submenu li a:hover{background:rgba(255,255,255,0.10) !important}
+  .primary-menu .mobile-submenu{display:block !important;margin-top:0}
   .menu-info{display:block}
   .menu-info-list{flex-direction:column;padding:0;gap:6px}
   .menu-info-list .submenu{position:static;display:none;background:transparent;padding:0;box-shadow:none}
