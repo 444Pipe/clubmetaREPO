@@ -4,32 +4,176 @@
 {% block title %}Reservar Espacio - CLUB EL META{% endblock %}
 
 <style>
+  /* Premium Form Styles */
+  :root {
+    --primary-color: #1e3a8a;
+    --primary-hover: #1e40af;
+    --secondary-color: #f8fafc;
+    --border-color: #e2e8f0;
+    --text-color: #334155;
+    --focus-ring: rgba(37, 99, 235, 0.25);
+  }
+
+  body {
+    background-color: #f1f5f9;
+  }
+
+  .premium-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+    overflow: hidden;
+  }
+
+  .premium-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #3b82f6 100%);
+    color: white;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .premium-header h3 {
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .premium-header p {
+    opacity: 0.9;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .form-section-title {
+    color: var(--primary-color);
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
+  }
+
+  .form-section-title i {
+    color: #3b82f6;
+  }
+
+  /* Floating labels modern tweaks */
+  .form-floating > .form-control,
+  .form-floating > .form-select {
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+    background-color: var(--secondary-color);
+  }
+  
+  .form-floating > .form-control:focus,
+  .form-floating > .form-select:focus {
+    background-color: #fff;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px var(--focus-ring);
+  }
+
+  .form-floating > label {
+    color: #64748b;
+  }
+
+  /* Input group with floating label fix */
+  .input-group > .form-floating:not(:first-child) > .form-control {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  
+  .input-group-text {
+    background-color: #fff;
+    border-color: var(--border-color);
+    color: #94a3b8;
+  }
+
+  .input-group:focus-within .input-group-text {
+    border-color: #3b82f6;
+    color: #3b82f6;
+  }
+
+  /* Custom Pill Radios */
+  .btn-check:checked + .btn-outline-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+  }
+  
+  .pill-radio-group .btn {
+    border-radius: 2rem;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+  }
+
+  /* Servicios Cards */
+  .servicio-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid var(--border-color);
+    border-radius: 0.75rem;
+    background: #fff;
+  }
+  
+  .servicio-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 20px -8px rgba(0,0,0,0.15) !important;
+    border-color: #3b82f6;
+  }
+
+  .servicio-card .badge {
+    font-size: 0.85rem;
+    padding: 0.4em 0.8em;
+  }
+  
+  /* Animaciones suaves */
+  .collapse-animation {
+    transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out;
+    overflow: hidden;
+  }
+
+  /* Sticky Footer de Resumen */
+  .sticky-summary {
+    position: sticky;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--border-color);
+    padding: 1rem 1.5rem;
+    margin: 2rem -1.5rem -1.5rem -1.5rem;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    z-index: 10;
+  }
+
+  .btn-submit {
+    background: var(--primary-color);
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-submit:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  }
+
   /* Hacer placeholders más transparentes */
   ::placeholder {
     color: #adb5bd !important;
     opacity: 0.5 !important;
-  }
-  
-  :-ms-input-placeholder {
-    color: #adb5bd !important;
-    opacity: 0.5 !important;
-  }
-  
-  ::-ms-input-placeholder {
-    color: #adb5bd !important;
-    opacity: 0.5 !important;
-  }
-  
-  /* Estilos para tarjetas de servicios */
-  .servicio-card {
-    transition: all 0.3s ease;
-    border: 2px solid #e9ecef;
-  }
-  
-  .servicio-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.15) !important;
-    border-color: #0d6efd;
   }
   
   .servicio-cantidad {
@@ -37,18 +181,22 @@
   }
   
   .subtotal-servicio {
-    font-weight: bold;
-    color: #198754;
+    font-weight: 700;
+    color: #059669;
+    font-size: 1.1rem;
   }
 </style>
 
 {% block content %}
 <div class="container my-5">
   <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card shadow">
-        <div class="card-body">
-          <h3 class="card-title mb-3">Formulario de Reserva de Espacio</h3>
+    <div class="col-lg-9 col-md-10">
+      <div class="premium-card">
+        <div class="premium-header">
+          <h3>Reserva tu Espacio</h3>
+          <p>Completa los detalles a continuación y asegura tu evento con nosotros</p>
+        </div>
+        <div class="card-body p-4 p-md-5">
 
           {% if errors %}
           <div class="alert alert-danger">
@@ -203,62 +351,80 @@
           <form id="reservationForm" method="post" action="{% url 'reservas:register' %}">
             {% csrf_token %}
 
-            <!-- Sección: Socio (mover arriba para agilizar validación) -->
-            <div class="mb-3">
-              <label class="form-label">¿Eres Socio del Club?</label><br>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="es_socio" id="socio_si" value="si">
-                <label class="form-check-label" for="socio_si">Sí</label>
+            <!-- Sección: Socio -->
+            <div class="mb-5">
+              <div class="form-section-title">
+                <i class="bi bi-star-fill"></i> Tipo de Cliente
               </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="es_socio" id="socio_no" value="no" checked>
-                <label class="form-check-label" for="socio_no">No</label>
+              <p class="text-muted mb-3">¿Eres Socio del Club?</p>
+              <div class="btn-group pill-radio-group mb-3" role="group">
+                <input type="radio" class="btn-check" name="es_socio" id="socio_no" value="no" checked>
+                <label class="btn btn-outline-primary px-4" for="socio_no">No soy socio</label>
+              
+                <input type="radio" class="btn-check" name="es_socio" id="socio_si" value="si">
+                <label class="btn btn-outline-primary px-4" for="socio_si">Sí, soy socio</label>
               </div>
-              <div id="codigoSocioBox" class="mt-2" style="display:none;">
-                <input type="text" name="socio_code" id="socio_code" class="form-control" maxlength="20" placeholder="Ingresa tu código de socio">
-                <small id="codigoFeedback" class="form-text"></small>
+              
+              <div id="codigoSocioBox" class="collapse-animation mt-2" style="max-height: 0; opacity: 0;">
+                <div class="form-floating mb-3">
+                  <input type="text" name="socio_code" id="socio_code" class="form-control" maxlength="20" placeholder="Ingresa tu código de socio">
+                  <label for="socio_code"><i class="bi bi-upc-scan me-2"></i>Código de Socio</label>
+                  <small id="codigoFeedback" class="form-text"></small>
+                </div>
               </div>
             </div>
 
             <!-- Sección: Información del Cliente -->
-            <div class="mb-4">
-              <h5 class="text-primary mb-3"><i class="bi bi-person-circle"></i> Datos del Cliente</h5>
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Nombre Completo</label>
-                  <input type="text" name="nombre_cliente" class="form-control" required placeholder="Ej: Juan Pérez">
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Correo Electrónico</label>
-                  <input type="email" name="email_cliente" class="form-control" required placeholder="ejemplo@correo.com">
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label">Teléfono</label>
-                  <input type="tel" name="telefono_cliente" class="form-control" required placeholder="3201234567">
-                </div>
+            <div class="mb-5">
+              <div class="form-section-title">
+                <i class="bi bi-person-badge-fill"></i> Datos del Contacto
               </div>
-              <div class="row">
-                <div class="col-md-12 mb-3">
-                  <label class="form-label">Número de Personas</label>
-                  <input type="number" name="num_personas" class="form-control" min="1" required value="1">
-                  <small class="text-muted">¿Cuántos invitados asistirán?</small>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">¿Vienes de alguna Entidad o Empresa?</label><br>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="tiene_entidad" id="entidad_si" value="si">
-                    <label class="form-check-label" for="entidad_si">Sí</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="tiene_entidad" id="entidad_no" value="no" checked>
-                    <label class="form-check-label" for="entidad_no">No</label>
+              
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="form-floating">
+                    <input type="text" name="nombre_cliente" id="nombre_cliente" class="form-control" required placeholder="Ej: Juan Pérez">
+                    <label for="nombre_cliente"><i class="bi bi-person me-2"></i>Nombre Completo</label>
                   </div>
                 </div>
-                <div class="col-md-6 mb-3" id="entidadBox" style="display:none;">
-                  <label class="form-label">Nombre de la Entidad/Empresa</label>
-                  <input type="text" name="nombre_entidad" id="nombre_entidad" class="form-control" placeholder="Ej: Empresa ABC S.A.S.">
+                <div class="col-md-6">
+                  <div class="form-floating">
+                    <input type="email" name="email_cliente" id="email_cliente" class="form-control" required placeholder="ejemplo@correo.com">
+                    <label for="email_cliente"><i class="bi bi-envelope me-2"></i>Correo Electrónico</label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-floating">
+                    <input type="tel" name="telefono_cliente" id="telefono_cliente" class="form-control" required placeholder="3201234567">
+                    <label for="telefono_cliente"><i class="bi bi-telephone me-2"></i>Teléfono</label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-floating">
+                    <input type="number" name="num_personas" id="num_personas" class="form-control" min="1" required value="1">
+                    <label for="num_personas"><i class="bi bi-people me-2"></i>Número de Personas</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mt-4">
+                <div class="col-12">
+                  <p class="text-muted mb-2">¿Vienes en representación de alguna Entidad o Empresa?</p>
+                  <div class="btn-group pill-radio-group mb-3" role="group">
+                    <input type="radio" class="btn-check" name="tiene_entidad" id="entidad_no" value="no" checked>
+                    <label class="btn btn-outline-primary px-4" for="entidad_no">No</label>
+                  
+                    <input type="radio" class="btn-check" name="tiene_entidad" id="entidad_si" value="si">
+                    <label class="btn btn-outline-primary px-4" for="entidad_si">Sí</label>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div id="entidadBox" class="collapse-animation" style="max-height: 0; opacity: 0;">
+                    <div class="form-floating">
+                      <input type="text" name="nombre_entidad" id="nombre_entidad" class="form-control" placeholder="Ej: Empresa ABC S.A.S.">
+                      <label for="nombre_entidad"><i class="bi bi-building me-2"></i>Nombre de la Entidad/Empresa</label>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -266,239 +432,207 @@
             <hr>
 
             <!-- Sección: Selección de Espacio -->
-            <div class="mb-4">
-              <h5 class="text-primary mb-3"><i class="bi bi-building"></i> Espacio y Disponibilidad</h5>
-              <div class="mb-3">
-                <label class="form-label fw-bold">Selecciona el Espacio</label>
-                <select name="espacio_id" id="espacioSelect" class="form-select form-select-lg" required>
-                  {% if not selected_salon %}
-                    <option value="">-- Seleccione un salón --</option>
-                  {% else %}
-                    <option value="">-- Seleccione configuración --</option>
-                  {% endif %}
-                  {% for r in rooms %}
-                    <option value="{{ r.id }}" 
-                            data-salon="{{ r.name }}" 
-                            data-salon-id="{{ r.salon_id }}"
-                            data-price-particular-4h="{{ r.price_particular_4h }}"
-                            data-price-particular-8h="{{ r.price_particular_8h }}"
-                            data-price-socio-4h="{{ r.price_socio_4h }}"
-                            data-price-socio-8h="{{ r.price_socio_8h }}"
-                            {% if default_config_id and default_config_id == r.id %}selected{% endif %}>
-                      {{ r.name }} ({{ r.desc }})
-                    </option>
-                  {% endfor %}
-                </select>
+            <div class="mb-5">
+              <div class="form-section-title">
+                <i class="bi bi-geo-alt-fill"></i> Espacio y Disponibilidad
               </div>
-              <div id="bloqueosInfo" class="mt-3" style="display:none;">
-                <div class="alert alert-warning">
+              <div class="row">
+                <div class="col-12 mb-3">
+                  <div class="form-floating">
+                    <select name="espacio_id" id="espacioSelect" class="form-select form-select-lg" required style="height: 4rem;">
+                      {% if not selected_salon %}
+                        <option value="">-- Seleccione un espacio --</option>
+                      {% else %}
+                        <option value="">-- Seleccione configuración --</option>
+                      {% endif %}
+                      {% for r in rooms %}
+                        <option value="{{ r.id }}" 
+                                data-salon="{{ r.name }}" 
+                                data-salon-id="{{ r.salon_id }}"
+                                data-price-particular-4h="{{ r.price_particular_4h }}"
+                                data-price-particular-8h="{{ r.price_particular_8h }}"
+                                data-price-socio-4h="{{ r.price_socio_4h }}"
+                                data-price-socio-8h="{{ r.price_socio_8h }}"
+                                {% if default_config_id and default_config_id == r.id %}selected{% endif %}>
+                          {{ r.name }} ({{ r.desc }})
+                        </option>
+                      {% endfor %}
+                    </select>
+                    <label for="espacioSelect"><i class="bi bi-building me-2"></i>Selecciona el Espacio Ideal</label>
+                  </div>
+                </div>
+              </div>
+              <div id="bloqueosInfo" class="collapse-animation" style="max-height: 0; opacity: 0;">
+                <div class="alert alert-warning mt-2 border-warning">
                   <strong><i class="bi bi-calendar-x"></i> Fechas no disponibles para este espacio:</strong>
-                  <ul id="bloqueosList" class="mb-0 mt-2"></ul>
+                  <ul id="bloqueosList" class="mb-0 mt-2 ps-3 text-danger fw-medium"></ul>
                 </div>
               </div>
             </div>
-
-            <hr>
 
             <!-- Sección: Fecha y Horarios -->
-            <div class="mb-4">
-              <h5 class="text-primary mb-3"><i class="bi bi-calendar-event"></i> Fecha y Horarios</h5>
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label class="form-label fw-bold">Fecha del Evento</label>
-                  <input type="date" name="fecha_evento" id="fechaEvento" class="form-control form-control-lg" required>
-                  <div id="availabilityStatus" class="mt-2" style="display:none;"></div>
-                  <p id="mondayNotice" class="form-text text-muted small mt-1">Nota: No se pueden hacer reservas los lunes (el club permanece cerrado).</p>
+            <div class="mb-5">
+              <div class="form-section-title">
+                <i class="bi bi-calendar-check-fill"></i> Fecha y Horarios
+              </div>
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <div class="form-floating">
+                    <input type="date" name="fecha_evento" id="fechaEvento" class="form-control" required>
+                    <label for="fechaEvento"><i class="bi bi-calendar-event me-2"></i>Fecha del Evento</label>
+                  </div>
+                  <div id="availabilityStatus" class="mt-2 text-sm" style="display:none; font-size: 0.85rem;"></div>
+                  <p id="mondayNotice" class="form-text text-muted small mt-1"><i class="bi bi-info-circle"></i> No se hacen reservas los lunes.</p>
                 </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label fw-bold">Hora de Inicio</label>
-                  <input type="time" name="hora_inicio" class="form-control form-control-lg" required>
-                  <small class="text-muted">¿A qué hora inicia tu evento?</small>
-                  <div class="small text-muted mt-1">Horario a convenir.</div>
+                <div class="col-md-4">
+                  <div class="form-floating">
+                    <input type="time" name="hora_inicio" id="hora_inicio" class="form-control" required>
+                    <label for="hora_inicio"><i class="bi bi-clock-history me-2"></i>Hora de Inicio</label>
+                  </div>
+                  <small class="text-muted d-block mt-1">Horario a convenir.</small>
                 </div>
-                <div class="col-md-4 mb-3">
-                  <label class="form-label fw-bold">Duración</label>
-                  <select name="duracion_horas" class="form-select form-select-lg" required>
-                    <option value="4" selected>4 horas</option>
-                    <option value="8">8 horas</option>
-                  </select>
-                  <small class="text-muted">Termina a las <span id="horaFin" class="fw-bold">--:--</span></small>
+                <div class="col-md-4">
+                  <div class="form-floating">
+                    <select name="duracion_horas" id="duracion_horas" class="form-select" required>
+                      <option value="4" selected>4 horas</option>
+                      <option value="8">8 horas</option>
+                    </select>
+                    <label for="duracion_horas"><i class="bi bi-hourglass-split me-2"></i>Duración</label>
+                  </div>
+                  <small class="text-muted d-block mt-1">Termina a las <span id="horaFin" class="fw-bold text-primary">--:--</span></small>
                 </div>
               </div>
 
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Tiempo para Decoración <span class="badge bg-info">A Convenir</span></label>
-                  <select name="tiempo_decoracion" class="form-select">
-                    <option value="0" selected>No necesito</option>
-                    <option value="1">1 hora antes</option>
-                    <option value="2">2 horas antes</option>
-                    <option value="3">3 horas antes</option>
-                  </select>
-                  <small class="text-muted">Tiempo adicional para montaje (sin costo extra)</small>
+              <div class="row mt-3">
+                <div class="col-md-6">
+                  <div class="form-floating">
+                    <select name="tiempo_decoracion" id="tiempo_decoracion" class="form-select">
+                      <option value="0" selected>No necesito</option>
+                      <option value="1">1 hora antes</option>
+                      <option value="2">2 horas antes</option>
+                      <option value="3">3 horas antes</option>
+                    </select>
+                    <label for="tiempo_decoracion"><i class="bi bi-palette me-2"></i>Tiempo para Decoración</label>
+                  </div>
+                  <small class="text-muted d-block mt-1">Sin costo extra. Sujeto a disponibilidad.</small>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <div id="tiempoTotalInfo" class="alert alert-info mt-4" style="display:none;">
-                    <strong><i class="bi bi-clock"></i> Ocupación total:</strong> <span id="ocupacionTotal"></span>
+                <div class="col-md-6">
+                  <div id="tiempoTotalInfo" class="alert alert-info border-info d-flex align-items-center h-100 m-0 py-2" style="display:none !important;">
+                    <div>
+                      <strong><i class="bi bi-info-circle-fill me-2"></i>Ocupación total:</strong>
+                      <span id="ocupacionTotal" class="d-block mt-1"></span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-
-            <hr>
-
-            <!-- Resumen de Precio -->
-            <div id="precioResumen" class="mb-4" style="display:none;">
-              <div class="alert alert-success" style="background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); border-left: 5px solid #28a745;">
-                <div class="d-flex justify-content-between align-items-center">
-                  <div>
-                    <h5 class="mb-1"><i class="bi bi-currency-dollar"></i> Precio del espacio</h5>
-                    <small class="text-muted" id="precioDetalle">Selecciona un espacio y duración</small>
-                  </div>
-                  <div class="text-end">
-                    <h3 class="mb-0 text-success fw-bold" id="precioMonto">$0</h3>
-                    <small class="text-muted" id="precioDuracion">Por 4 horas</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <hr>
-
-            <!-- Servicios Adicionales -->
+                       <!-- Servicios Adicionales -->
             {% if servicios_adicionales %}
-            <div class="mb-4" id="serviciosAdicionalesSection">
-              <h5 class="text-primary mb-3"><i class="bi bi-stars"></i> Servicios Adicionales (Opcional)</h5>
-              <p class="text-muted mb-3">Complementa tu reserva con nuestros servicios adicionales</p>
+            <div class="mb-5" id="serviciosAdicionalesSection">
+              <div class="form-section-title">
+                <i class="bi bi-stars"></i> Servicios Adicionales <span class="badge bg-soft-primary text-primary ms-2" style="font-size: 0.7rem; background: #e0e7ff; color: #1e3a8a !important; padding: 0.35em 0.65em;">OPCIONAL</span>
+              </div>
+              <p class="text-muted mb-4">Complementa tu evento con nuestros servicios exclusivos.</p>
               
-              <!-- Selector para mostrar/ocultar servicios adicionales -->
-              <div class="d-flex align-items-center mb-3">
-                <label class="me-3 fw-bold mb-0">¿Desea ver servicios adicionales?</label>
-                <div class="btn-group" role="group" aria-label="mostrar servicios">
-                  <input type="radio" class="btn-check" name="mostrar_servicios" id="mostrar_servicios_si" value="si">
-                  <label class="btn btn-outline-primary btn-sm" for="mostrar_servicios_si">Sí</label>
-
+              <div class="d-flex align-items-center mb-4 p-3 bg-white rounded-3 border">
+                <label class="me-3 fw-bold mb-0 text-dark">¿Deseas incluir servicios adicionales?</label>
+                <div class="btn-group pill-radio-group" role="group">
                   <input type="radio" class="btn-check" name="mostrar_servicios" id="mostrar_servicios_no" value="no" checked>
-                  <label class="btn btn-outline-secondary btn-sm" for="mostrar_servicios_no">No</label>
+                  <label class="btn btn-outline-secondary btn-sm px-4" for="mostrar_servicios_no">No por ahora</label>
+
+                  <input type="radio" class="btn-check" name="mostrar_servicios" id="mostrar_servicios_si" value="si">
+                  <label class="btn btn-outline-primary btn-sm px-4" for="mostrar_servicios_si">Sí, ver opciones</label>
                 </div>
               </div>
 
-              <div id="serviciosContainer" style="display: none;">
-                <div class="row">
+              <div id="serviciosContainer" class="collapse-animation" style="display: none; opacity: 0;">
+                <div class="row g-4">
                 {% for servicio in servicios_adicionales %}
-                <div class="col-md-6 mb-3">
-                  <div class="card h-100 shadow-sm servicio-card">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h6 class="card-title mb-0">{{ servicio.nombre }}</h6>
-                        <span class="badge bg-success">
+                <div class="col-md-6">
+                  <div class="servicio-card h-100 p-3">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                      <div>
+                        <h6 class="fw-bold mb-1 text-dark">{{ servicio.nombre }}</h6>
+                        <span class="badge rounded-pill" style="background: {% if servicio.precio_unitario > 0 %}#dcfce7{% else %}#f1f5f9{% endif %}; color: {% if servicio.precio_unitario > 0 %}#166534{% else %}#475569{% endif %};">
                           {% if servicio.precio_unitario > 0 %}
-                            ${{ servicio.precio_unitario|floatformat:0|intcomma }}
+                            ${{ servicio.precio_unitario|floatformat:0|intcomma }} / {{ servicio.unidad_medida|default:"Unid" }}
                           {% else %}
-                            PTC
+                            P.T.C.
                           {% endif %}
                         </span>
                       </div>
-                      <p class="card-text small text-muted mb-3">{{ servicio.descripcion }}</p>
-                      
-                      {% if "Montaje" in servicio.nombre %}
-                      <!-- Toggle Sí/No para Montaje -->
-                      <div class="mb-2">
-                        <div class="d-flex align-items-center justify-content-center gap-3">
-                          <label class="form-label mb-0 fw-bold">¿Incluir montaje?</label>
-                          <div class="btn-group" role="group">
-                            <input type="radio" class="btn-check" name="montaje_toggle_{{ servicio.id }}" id="montaje_si_{{ servicio.id }}" value="1">
-                            <label class="btn btn-outline-success btn-sm" for="montaje_si_{{ servicio.id }}">Sí</label>
-                            
-                            <input type="radio" class="btn-check" name="montaje_toggle_{{ servicio.id }}" id="montaje_no_{{ servicio.id }}" value="0" checked>
-                            <label class="btn btn-outline-danger btn-sm" for="montaje_no_{{ servicio.id }}">No</label>
-                          </div>
-                        </div>
+                    </div>
+                    <p class="small text-muted mb-3" style="line-height: 1.4; height: 3em; overflow: hidden;">{{ servicio.descripcion }}</p>
+                    
+                    {% if "Montaje" in servicio.nombre %}
+                    <div class="d-flex align-items-center justify-content-between bg-light p-2 rounded-2">
+                      <span class="small fw-bold text-dark">¿Incluir?</span>
+                      <div class="btn-group" role="group">
+                        <input type="radio" class="btn-check" name="montaje_toggle_{{ servicio.id }}" id="montaje_no_{{ servicio.id }}" value="0" checked>
+                        <label class="btn btn-outline-danger btn-sm px-3" for="montaje_no_{{ servicio.id }}">No</label>
+
+                        <input type="radio" class="btn-check" name="montaje_toggle_{{ servicio.id }}" id="montaje_si_{{ servicio.id }}" value="1">
+                        <label class="btn btn-outline-success btn-sm px-3" for="montaje_si_{{ servicio.id }}">Sí</label>
                       </div>
-                      <input 
-                        type="hidden" 
-                        class="servicio-cantidad" 
-                        name="servicio_{{ servicio.id }}" 
-                        id="servicio_{{ servicio.id }}"
-                        value="0"
-                        data-precio="{{ servicio.precio_unitario }}"
-                        data-nombre="{{ servicio.nombre }}"
-                      >
-                      {% else %}
-                      <!-- Input de cantidad para otros servicios -->
-                      <div class="input-group input-group-sm">
-                        <span class="input-group-text">Cantidad</span>
-                        <input 
-                          type="number" 
-                          class="form-control servicio-cantidad" 
-                          name="servicio_{{ servicio.id }}" 
-                          id="servicio_{{ servicio.id }}"
-                          min="0" 
-                          value="0"
-                          data-precio="{{ servicio.precio_unitario }}"
-                          data-nombre="{{ servicio.nombre }}"
-                          placeholder="0"
-                        >
-                        <span class="input-group-text">{{ servicio.unidad_medida|default:"Unidad" }}</span>
-                      </div>
-                      {% if servicio.unidad_medida == "Persona" %}
-                      <div class="mt-2 d-flex align-items-center gap-2">
-                        <button type="button" class="btn btn-sm btn-outline-secondary fill-by-people" data-servicio-id="{{ servicio.id }}">Usar número de personas</button>
-                        <small class="text-muted">Unidad: {{ servicio.unidad_medida }} — Precio: {% if servicio.precio_unitario > 0 %}${{ servicio.precio_unitario|floatformat:0|intcomma }}{% else %}PTC{% endif %}</small>
-                      </div>
-                      {% endif %}
-                      {% endif %}
-                      
-                      <small class="text-muted d-block mt-2">
-                        <span class="subtotal-servicio" data-servicio-id="{{ servicio.id }}">$0</span>
-                      </small>
+                    </div>
+                    <input type="hidden" class="servicio-cantidad" name="servicio_{{ servicio.id }}" id="servicio_{{ servicio.id }}" value="0" data-precio="{{ servicio.precio_unitario }}" data-nombre="{{ servicio.nombre }}">
+                    {% else %}
+                    <div class="input-group input-group-sm mb-2">
+                      <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-plus-minus"></i></span>
+                      <input type="number" class="form-control servicio-cantidad border-start-0 ps-0" name="servicio_{{ servicio.id }}" id="servicio_{{ servicio.id }}" min="0" value="0" data-precio="{{ servicio.precio_unitario }}" data-nombre="{{ servicio.nombre }}" placeholder="0">
+                      <span class="input-group-text bg-light border-start-0 text-muted small">{{ servicio.unidad_medida|default:"Unidad" }}</span>
+                    </div>
+                    {% if servicio.unidad_medida == "Persona" %}
+                    <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none fill-by-people mb-2" data-servicio-id="{{ servicio.id }}">
+                      <i class="bi bi-arrow-repeat me-1"></i>Mismo # de personas
+                    </button>
+                    {% endif %}
+                    {% endif %}
+                    
+                    <div class="text-end mt-2 pt-2 border-top">
+                      <span class="text-muted small">Subtotal:</span>
+                      <span class="subtotal-servicio ms-1" data-servicio-id="{{ servicio.id }}">$0</span>
                     </div>
                   </div>
                 </div>
                 {% endfor %}
-              </div>
-              
-              <!-- Total Servicios -->
-              <div class="alert alert-info mt-3" id="totalServiciosAlert" style="display:none;">
-                <div class="d-flex justify-content-between align-items-center">
-                  <strong><i class="bi bi-plus-circle"></i> Subtotal Servicios Adicionales:</strong>
-                  <h5 class="mb-0" id="totalServiciosMonto">$0</h5>
-                </div>
-              </div>
-              
-              <!-- Gran Total -->
-              <div class="alert alert-primary mt-2" id="granTotalAlert" style="display:none;">
-                <div class="d-flex justify-content-between align-items-center">
-                  <strong><i class="bi bi-calculator"></i> TOTAL A PAGAR:</strong>
-                  <h4 class="mb-0 fw-bold" id="granTotalMonto">$0</h4>
                 </div>
               </div>
             </div>
-
-            <hr>
             {% else %}
-            <div class="mb-4" id="serviciosAdicionalesSection">
-              <h5 class="text-primary mb-3"><i class="bi bi-stars"></i> Servicios Adicionales (Opcional)</h5>
-              <div class="alert alert-secondary">
-                <strong>No hay servicios adicionales cargados.</strong>
-                <div class="mt-2">Si eres administrador ejecuta en tu entorno de desarrollo:</div>
-                <pre class="mt-2" style="background:#f8f9fa;padding:10px;border-radius:6px;">python manage.py cargar_servicios</pre>
-                <small class="text-muted">Una vez creados los servicios aparecerán aquí para que el cliente pueda seleccionar cantidades.</small>
+            <div class="mb-5">
+              <div class="form-section-title"><i class="bi bi-stars"></i> Servicios Adicionales</div>
+              <div class="alert bg-light border text-center py-4">
+                <i class="bi bi-info-circle text-muted mb-2 d-block" style="font-size: 1.5rem;"></i>
+                <p class="mb-0 text-muted">No hay servicios adicionales disponibles en este momento.</p>
               </div>
             </div>
-
-            <hr>
             {% endif %}
 
             <!-- Sección: Detalles Adicionales -->
-            <div class="mb-4">
-              <h5 class="text-primary mb-3"><i class="bi bi-chat-dots"></i> Detalles Adicionales (Opcional)</h5>
-              <textarea name="note" class="form-control" rows="3" placeholder="Cuéntanos más sobre tu evento: tipo de celebración, decoración especial, necesidades particulares, etc."></textarea>
+            <div class="mb-5">
+              <div class="form-section-title">
+                <i class="bi bi-chat-left-text-fill"></i> Observaciones Especiales
+              </div>
+              <div class="form-floating">
+                <textarea name="note" id="note" class="form-control" style="height: 120px" placeholder="Cuéntanos más..."></textarea>
+                <label for="note">¿Alguna necesidad o detalle especial para tu evento?</label>
+              </div>
             </div>
 
-            <button id="submitBtn" type="submit" class="btn btn-primary btn-lg w-100 py-3">
-              <i class="bi bi-check-circle"></i> Confirmar Reserva
-            </button>
+            <!-- Sticky Summary Footer -->
+            <div class="sticky-summary">
+              <div class="summary-info">
+                <div class="d-none d-md-block text-muted small mb-1">Inversión Estimada:</div>
+                <div class="h3 fw-bold mb-0 text-primary" id="granTotalSticky">$0</div>
+                <div id="ahorroSocioNotice" style="display:none;" class="small text-success fw-medium">¡Tarifa de socio aplicada!</div>
+              </div>
+              <button id="submitBtn" type="submit" class="btn btn-submit text-white">
+                <span class="d-none d-sm-inline">Confirmar Reserva</span>
+                <span class="d-inline d-sm-none">Reservar</span>
+                <i class="bi bi-arrow-right-short ms-1" style="font-size: 1.2rem;"></i>
+              </button>
+            </div>
           </form>
           {% endif %}
 
@@ -1020,28 +1154,131 @@
     </script>
 
   <script>
-    // Toggle para mostrar/ocultar servicios adicionales y persistencia en localStorage
-    document.addEventListener('DOMContentLoaded', function(){
-      const mostrarSi = document.getElementById('mostrar_servicios_si');
-      const mostrarNo = document.getElementById('mostrar_servicios_no');
-      const serviciosContainer = document.getElementById('serviciosContainer');
-      if (!mostrarSi || !mostrarNo || !serviciosContainer) return;
-
-      // Default to 'No' on page load (ignore previous tests in localStorage)
-      mostrarNo.checked = true;
-
-      function applyShow(show) {
-        serviciosContainer.style.display = show ? 'block' : 'none';
-        try { localStorage.setItem('mostrar_servicios', show ? 'si' : 'no'); } catch(e){}
-        if (typeof calcularTotales === 'function') calcularTotales();
+    // Toggle para Socio
+    function toggleSocioBox() {
+      const si = document.getElementById('socio_si');
+      const box = document.getElementById('codigoSocioBox');
+      if (si && box) {
+        if (si.checked) {
+          box.style.maxHeight = '100px';
+          box.style.opacity = '1';
+          box.style.pointerEvents = 'auto';
+        } else {
+          box.style.maxHeight = '0';
+          box.style.opacity = '0';
+          box.style.pointerEvents = 'none';
+        }
       }
+    }
 
-      mostrarSi.addEventListener('change', function(){ if (mostrarSi.checked) applyShow(true); });
-      mostrarNo.addEventListener('change', function(){ if (mostrarNo.checked) applyShow(false); });
+    // Toggle para Entidad
+    function toggleEntidadBox() {
+      const si = document.getElementById('entidad_si');
+      const box = document.getElementById('entidadBox');
+      if (si && box) {
+        if (si.checked) {
+          box.style.maxHeight = '100px';
+          box.style.opacity = '1';
+          box.style.pointerEvents = 'auto';
+        } else {
+          box.style.maxHeight = '0';
+          box.style.opacity = '0';
+          box.style.pointerEvents = 'none';
+        }
+      }
+    }
 
-      // Inicializar
-      applyShow(mostrarSi.checked);
+    // Toggle para Servicios Adicionales con animación
+    function toggleServicios() {
+      const si = document.getElementById('mostrar_servicios_si');
+      const container = document.getElementById('serviciosContainer');
+      if (si && container) {
+        if (si.checked) {
+          container.style.display = 'block';
+          setTimeout(() => {
+            container.style.opacity = '1';
+          }, 10);
+        } else {
+          container.style.opacity = '0';
+          setTimeout(() => {
+            container.style.display = 'none';
+          }, 300);
+          // Opcional: resetear cantidades si se oculta? (mejor no por si el usuario se arrepiente)
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const socioRadios = document.querySelectorAll('input[name="es_socio"]');
+      socioRadios.forEach(r => r.addEventListener('change', () => { toggleSocioBox(); updatePrices(); }));
+
+      const entidadRadios = document.querySelectorAll('input[name="tiene_entidad"]');
+      entidadRadios.forEach(r => r.addEventListener('change', toggleEntidadBox));
+
+      const serviciosRadios = document.querySelectorAll('input[name="mostrar_servicios"]');
+      serviciosRadios.forEach(r => r.addEventListener('change', toggleServicios));
+
+      // Escuchar cambios en montaje
+      document.querySelectorAll('input[id^="montaje_"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+          const serviceId = this.id.split('_')[2];
+          const input = document.getElementById('servicio_' + serviceId);
+          if(input) {
+            input.value = this.value;
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        });
+      });
+
+      // Inicializar estados
+      toggleSocioBox();
+      toggleEntidadBox();
+      toggleServicios();
     });
+
+    // Actualizar Gran Total en el Sticky Footer
+    function updateStickyTotal(total) {
+      const sticky = document.getElementById('granTotalSticky');
+      const ahorro = document.getElementById('ahorroSocioNotice');
+      if(sticky) {
+        sticky.textContent = '$' + total.toLocaleString();
+      }
+      if(ahorro) {
+        const esSocio = document.getElementById('socio_si').checked;
+        ahorro.style.display = esSocio ? 'block' : 'none';
+      }
+    }
+
+    // Sobrescribir o enganchar a calcularTotales para actualizar el sticky
+    const originalCalcularTotales = window.calcularTotales;
+    window.calcularTotales = function() {
+      // Dejamos que la lógica original (si existe) haga su trabajo
+      if(typeof originalCalcularTotales === 'function') originalCalcularTotales();
+      
+      // Recalculamos para el sticky
+      let total = 0;
+      
+      // 1. Precio Salón (lógica simplificada para el resumen visual rápido)
+      const select = document.getElementById('espacioSelect');
+      const duracion = document.querySelector('select[name="duracion_horas"]').value;
+      const esSocio = document.getElementById('socio_si').checked;
+      
+      if(select && select.selectedOptions[0]) {
+        const opt = select.selectedOptions[0];
+        const key = esSocio ? `price-socio-${duracion}h` : `price-particular-${duracion}h`;
+        const salonPrice = parseFloat(opt.dataset[key.replace(/-([a-z])/g, (g) => g[1].toUpperCase())]) || 0;
+        total += salonPrice;
+      }
+      
+      // 2. Servicios
+      document.querySelectorAll('.servicio-cantidad').forEach(input => {
+        const cant = parseInt(input.value) || 0;
+        const precio = parseFloat(input.dataset.precio) || 0;
+        total += (cant * precio);
+      });
+      
+      updateStickyTotal(total);
+    };
   </script>
 
 {% if form_dict %}
