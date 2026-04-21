@@ -32,6 +32,8 @@ ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS if h.strip()]
 CSRF_TRUSTED_ORIGINS = [
     "https://*.railway.app",
     "https://clubelmeta-production.up.railway.app",
+    "https://clubelmeta.co",
+    "https://www.clubelmeta.co",
 ]
 
 

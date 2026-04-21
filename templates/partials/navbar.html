@@ -4,7 +4,10 @@
     <div class="brand-wrap">
       <div class="brand-link" aria-hidden="true">
         <span class="brand-logo-wrap">
-          <img src="{% static 'img/logo.png' %}" alt="CORPORACIÓN CLUB EL META" class="brand-logo">
+          <picture>
+            <source srcset="{% static 'img/logo.webp' %}" type="image/webp">
+            <img src="{% static 'img/logo.png' %}" alt="CORPORACIÓN CLUB EL META" class="brand-logo" fetchpriority="high">
+          </picture>
         </span>
         <span class="brand-text">
           <span class="brand-line-small">CORPORACIÓN</span>
@@ -30,7 +33,10 @@
       <div class="mobile-menu-header">
         <div class="mobile-brand">
           <span class="brand-logo-wrap">
-            <img src="{% static 'img/logo.png' %}" alt="CORPORACIÓN CLUB EL META" class="brand-logo">
+            <picture>
+              <source srcset="{% static 'img/logo.webp' %}" type="image/webp">
+              <img src="{% static 'img/logo.png' %}" alt="CORPORACIÓN CLUB EL META" class="brand-logo">
+            </picture>
           </span>
           <span class="brand-text">
             <span class="brand-line-small">CORPORACIÓN</span>
