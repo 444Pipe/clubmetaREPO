@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="es">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}CLUB EL META{% endblock %}</title>
   {% load static %}
-  <link rel="icon" type="image/png" href="{% static 'img/faviconlogo.png' %}">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
   <!-- Bootstrap para estilos rápidos -->
@@ -15,17 +15,19 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   {% block extra_css %}{% endblock %}
 </head>
+
 <body class="no-js">
   {% include 'partials/navbar.html' %}
-  {% if '/accounts/login' not in request.path and '/admin' not in request.path and '/reservas/panel' not in request.path and '/espacios' not in request.path and not user.is_staff %}
-    {% include 'partials/menu_info.html' %}
+  {% if '/accounts/login' not in request.path and '/admin' not in request.path and '/reservas/panel' not in request.path
+  and '/espacios' not in request.path and not user.is_staff %}
+  {% include 'partials/menu_info.html' %}
   {% endif %}
 
   <!-- Mensajes flotantes (sin afectar el layout) -->
   {% if messages %}
   <div style="position: fixed; top: 80px; right: 20px; z-index: 9999; max-width: 400px;">
     {% for message in messages %}
-      <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-lg" role="alert" style="
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-lg" role="alert" style="
         backdrop-filter: blur(10px);
         background: {% if message.tags == 'success' %}rgba(34, 197, 94, 0.95){% elif message.tags == 'error' %}rgba(239, 68, 68, 0.95){% elif message.tags == 'warning' %}rgba(245, 158, 11, 0.95){% else %}rgba(59, 130, 246, 0.95){% endif %};
         color: white;
@@ -33,23 +35,25 @@
         border-radius: 12px;
         animation: slideInRight 0.4s ease-out;
       ">
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <i class="bi {% if message.tags == 'success' %}bi-check-circle-fill{% elif message.tags == 'error' %}bi-x-circle-fill{% elif message.tags == 'warning' %}bi-exclamation-triangle-fill{% else %}bi-info-circle-fill{% endif %}" style="font-size: 24px;"></i>
-          <div style="flex: 1;">
-            {{ message }}
-          </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <i class="bi {% if message.tags == 'success' %}bi-check-circle-fill{% elif message.tags == 'error' %}bi-x-circle-fill{% elif message.tags == 'warning' %}bi-exclamation-triangle-fill{% else %}bi-info-circle-fill{% endif %}"
+          style="font-size: 24px;"></i>
+        <div style="flex: 1;">
+          {{ message }}
         </div>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     {% endfor %}
   </div>
-  
+
   <style>
     @keyframes slideInRight {
       from {
         transform: translateX(400px);
         opacity: 0;
       }
+
       to {
         transform: translateX(0);
         opacity: 1;
@@ -76,11 +80,11 @@
           <p class="mb-2">
             <i class="bi bi-telephone-fill me-2"></i>
             <span class="text-white">Contacto para espacios:</span>
-            <div class="ms-4 mt-1">
-              <a href="tel:+573507016630" class="text-white text-decoration-none">350 701 6630</a>
-              <span class="text-white mx-2">|</span>
-              <a href="tel:+573134660698" class="text-white text-decoration-none">313 466 0698</a>
-            </div>
+          <div class="ms-4 mt-1">
+            <a href="tel:+573507016630" class="text-white text-decoration-none">350 701 6630</a>
+            <span class="text-white mx-2">|</span>
+            <a href="tel:+573134660698" class="text-white text-decoration-none">313 466 0698</a>
+          </div>
           </p>
           <p class="mb-2">
             <i class="bi bi-phone-fill me-2"></i>
@@ -89,18 +93,22 @@
           <p class="mb-0">
             <i class="bi bi-envelope-fill me-2"></i>
             <a href="mailto:gerencia@clubelmeta.com" class="text-white text-decoration-none">gerencia@clubelmeta.com</a>
-            <span class="d-block ms-4 mt-1"><a href="mailto:secretaria@clubelmeta.co" class="text-white text-decoration-none">secretaria@clubelmeta.co</a></span>
+            <span class="d-block ms-4 mt-1"><a href="mailto:secretaria@clubelmeta.co"
+                class="text-white text-decoration-none">secretaria@clubelmeta.co</a></span>
           </p>
         </div>
-        
+
         <!-- SÍGUENOS -->
-        <div class="col-md-4 mb-4 mb-md-0 text-center" style="background:transparent; box-shadow:none; border-radius:0;">
+        <div class="col-md-4 mb-4 mb-md-0 text-center"
+          style="background:transparent; box-shadow:none; border-radius:0;">
           <h5 class="text-uppercase mb-3 fw-bold">Síguenos</h5>
           <div class="d-flex justify-content-center gap-3 mb-3">
-            <a href="https://www.facebook.com/ClubelMeta/?locale=es_LA" target="_blank" class="social-link" title="Facebook">
+            <a href="https://www.facebook.com/ClubelMeta/?locale=es_LA" target="_blank" class="social-link"
+              title="Facebook">
               <i class="bi bi-facebook"></i>
             </a>
-            <a href="https://www.instagram.com/clubelmeta/?hl=es-la" target="_blank" class="social-link" title="Instagram">
+            <a href="https://www.instagram.com/clubelmeta/?hl=es-la" target="_blank" class="social-link"
+              title="Instagram">
               <i class="bi bi-instagram"></i>
             </a>
             <a href="https://wa.me/573507016630" target="_blank" class="social-link" title="WhatsApp">
@@ -108,13 +116,15 @@
             </a>
           </div>
           <p class="mb-0 small">
-            <a href="https://www.facebook.com/ClubelMeta/?locale=es_LA" target="_blank" class="text-white text-decoration-none">Facebook</a>
+            <a href="https://www.facebook.com/ClubelMeta/?locale=es_LA" target="_blank"
+              class="text-white text-decoration-none">Facebook</a>
           </p>
           <p class="mb-0 small">
-            <a href="https://www.instagram.com/clubelmeta/?hl=es-la" target="_blank" class="text-white text-decoration-none">Instagram</a>
+            <a href="https://www.instagram.com/clubelmeta/?hl=es-la" target="_blank"
+              class="text-white text-decoration-none">Instagram</a>
           </p>
         </div>
-        
+
         <!-- INFORMACIÓN -->
         <div class="col-md-4 text-md-end text-center">
           <h5 class="text-uppercase mb-3 fw-bold">Información</h5>
@@ -126,9 +136,9 @@
           </p>
         </div>
       </div>
-      
+
       <hr class="my-4 bg-secondary">
-      
+
       <div class="text-center">
         <p class="mb-0 small">© 2026 CLUB EL META. Todos los derechos reservados.</p>
         {% if not user.is_authenticated %}
@@ -139,7 +149,7 @@
       </div>
     </div>
   </footer>
-  
+
   <style>
     .staff-access-link {
       font-size: 0.7rem;
@@ -147,6 +157,7 @@
       text-decoration: none;
       letter-spacing: 0.5px;
     }
+
     .staff-access-link:hover {
       color: rgba(255, 255, 255, 0.55);
       text-decoration: none;
@@ -165,30 +176,30 @@
       transition: all 0.3s ease;
       font-size: 1.3rem;
     }
-    
+
     .social-link:hover {
       background: rgba(255, 255, 255, 0.2);
       transform: translateY(-3px);
       color: white;
     }
-    
+
     .social-link i.bi-facebook:hover {
       color: #1877f2;
     }
-    
+
     .social-link i.bi-instagram:hover {
       color: #E4405F;
     }
-    
+
     .social-link i.bi-whatsapp:hover {
       color: #25D366;
     }
-    
+
     footer h5 {
       letter-spacing: 1px;
       font-size: 1rem;
     }
-    
+
     footer a:hover {
       text-decoration: underline !important;
     }
@@ -201,4 +212,5 @@
   {% block extra_js %}{% endblock %}
   {% block scripts %}{% endblock %}
 </body>
+
 </html>
