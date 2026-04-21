@@ -339,7 +339,14 @@ def register(request):
         configuracion = None
     
     if errors:
-        return render(request, 'register.html', {'rooms': rooms, 'errors': errors, 'form': request.POST}, status=400)
+        form_dict = {k: v for k, v in request.POST.items()}
+        return render(request, 'register.html', {
+            'rooms': rooms, 
+            'servicios_adicionales': servicios_adicionales, 
+            'errors': errors, 
+            'form': request.POST,
+            'form_dict': form_dict
+        }, status=400)
     
     # Determine price depending on socio code and duration (4H/8H)
     es_socio = request.POST.get('es_socio', 'no')
@@ -482,7 +489,14 @@ def register(request):
     except Exception as e:
         messages.error(request, f'Error al crear la reserva: {str(e)}')
         errors.append(f"Error al guardar la reserva: {str(e)}")
-        return render(request, 'register.html', {'errors': errors, 'rooms': rooms})
+        form_dict = {k: v for k, v in request.POST.items()}
+        return render(request, 'register.html', {
+            'errors': errors, 
+            'rooms': rooms, 
+            'servicios_adicionales': servicios_adicionales,
+            'form': request.POST,
+            'form_dict': form_dict
+        })
 
 @staff_member_required
 def admin(request):

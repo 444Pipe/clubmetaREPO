@@ -1044,6 +1044,59 @@
     });
   </script>
 
+{% if form_dict %}
+{{ form_dict|json_script:"formData" }}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const dataNode = document.getElementById('formData');
+    if (dataNode) {
+        try {
+            const formData = JSON.parse(dataNode.textContent);
+            for (const [key, value] of Object.entries(formData)) {
+                if(key === 'csrfmiddlewaretoken') continue;
+                const elems = document.getElementsByName(key);
+                if (elems.length) {
+                    if (elems[0].type === 'radio') {
+                        for (const radio of elems) {
+                            if (radio.value === value) radio.checked = true;
+                        }
+                    } else if (elems[0].tagName === 'SELECT') {
+                        elems[0].value = value;
+                    } else {
+                        elems[0].value = value;
+                    }
+                }
+            }
+            // Disparar eventos para recalcular UI
+            if (typeof toggleSocioBox === 'function') toggleSocioBox();
+            if (typeof toggleEntidadBox === 'function') toggleEntidadBox();
+            
+            // Forzar disparo de evento change en el select de espacios
+            const espacioSelect = document.getElementById('espacioSelect');
+            if(espacioSelect && espacioSelect.value) {
+                espacioSelect.dispatchEvent(new Event('change'));
+            }
+            
+            if (typeof updatePrices === 'function') updatePrices();
+            if (typeof calcularHorarios === 'function') calcularHorarios();
+            
+            // Mantener estado de "Mostrar servicios adicionales" si se marcó "Sí"
+            if (formData['mostrar_servicios'] === 'si') {
+               const mostrarSi = document.getElementById('mostrar_servicios_si');
+               if(mostrarSi) {
+                   mostrarSi.checked = true;
+                   mostrarSi.dispatchEvent(new Event('change'));
+               }
+            }
+
+        } catch(e) {
+            console.error("Error al restaurar el formulario:", e);
+        }
+    }
+});
+</script>
+{% endif %}
+
 {% endblock %}
 {% endblock %}
 
