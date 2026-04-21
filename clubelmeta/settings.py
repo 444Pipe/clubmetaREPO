@@ -60,7 +60,7 @@ INSTALLED_APPS = [
 # ---------------------------
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
-# Legacy SMTP settings (kept for compatibility but not used when using Resend)
+# Legacy SMTP settings
 EMAIL_HOST = os.getenv("EMAIL_HOST", "")
 EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
 EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True") == "True"
