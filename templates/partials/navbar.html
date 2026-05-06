@@ -2,7 +2,7 @@
 <header class="site-header">
   <div class="nav-container">
     <div class="brand-wrap">
-      <div class="brand-link" aria-hidden="true">
+      <a href="{% url 'reservas:index' %}" class="brand-link" aria-label="Ir al inicio">
         <span class="brand-logo-wrap">
           <picture>
             <source srcset="{% static 'img/logo.webp' %}" type="image/webp">
@@ -13,7 +13,7 @@
           <span class="brand-line-small">CORPORACIÓN</span>
           <span class="brand-line-large">CLUB EL META</span>
         </span>
-      </div>
+      </a>
     </div>
 
     <!-- Mobile-only visible Inicio button (keeps header minimal on small screens) -->
@@ -31,7 +31,7 @@
     <nav id="primary-menu" class="primary-menu">
       <!-- Mobile brand header (visible only in slide-out) -->
       <div class="mobile-menu-header">
-        <div class="mobile-brand">
+        <a href="{% url 'reservas:index' %}" class="mobile-brand" aria-label="Ir al inicio">
           <span class="brand-logo-wrap">
             <picture>
               <source srcset="{% static 'img/logo.webp' %}" type="image/webp">
@@ -42,7 +42,7 @@
             <span class="brand-line-small">CORPORACIÓN</span>
             <span class="brand-line-large">CLUB EL META</span>
           </span>
-        </div>
+        </a>
 
       </div>
 
