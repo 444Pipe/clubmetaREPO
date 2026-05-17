@@ -43,12 +43,26 @@
 </style>
 
 {% block content %}
-<div class="container my-5">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card shadow">
-        <div class="card-body">
-          <h3 class="card-title mb-3">Formulario de Reserva de Espacio</h3>
+<div class="container reserva-page my-5">
+  <div class="row g-4 justify-content-center">
+    <div class="col-lg-8 col-xl-7">
+      <div class="card pm-card reserva-card">
+        <div class="card-body p-4 p-md-5">
+          <div class="reserva-header mb-4">
+            <span class="reserva-eyebrow">RESERVA DE ESPACIO</span>
+            <h3 class="card-title mb-2 reserva-title">Reserva tu evento en CLUB EL META</h3>
+            <p class="reserva-lead mb-0">Completa los siguientes pasos para registrar tu solicitud. Te confirmaremos por correo y WhatsApp.</p>
+          </div>
+
+          {% if not success %}
+          <ol class="pm-steps mb-4" aria-label="Pasos de la reserva">
+            <li class="active"><span class="pm-step-num">1</span><span class="pm-step-label">Cliente</span></li>
+            <li><span class="pm-step-num">2</span><span class="pm-step-label">Espacio</span></li>
+            <li><span class="pm-step-num">3</span><span class="pm-step-label">Fecha y hora</span></li>
+            <li><span class="pm-step-num">4</span><span class="pm-step-label">Servicios</span></li>
+            <li><span class="pm-step-num">5</span><span class="pm-step-label">Confirmar</span></li>
+          </ol>
+          {% endif %}
 
           {% if errors %}
           <div class="alert alert-danger">
@@ -200,7 +214,7 @@
           {% endif %}
 
           {% if not success %}
-          <form id="reservationForm" method="post" action="{% url 'reservas:register' %}">
+          <form id="reservationForm" class="pm-form" method="post" action="{% url 'reservas:register' %}">
             {% csrf_token %}
 
             <!-- Sección: Socio (mover arriba para agilizar validación) -->
@@ -496,15 +510,86 @@
               <textarea name="note" class="form-control" rows="3" placeholder="Cuéntanos más sobre tu evento: tipo de celebración, decoración especial, necesidades particulares, etc."></textarea>
             </div>
 
-            <button id="submitBtn" type="submit" class="btn btn-primary btn-lg w-100 py-3">
+            <button id="submitBtn" type="submit" class="btn pm-btn-primary btn-lg w-100 py-3">
               <i class="bi bi-check-circle"></i> Confirmar Reserva
             </button>
+            <p class="text-center text-muted small mt-3 mb-0">
+              <i class="bi bi-shield-check"></i> Tus datos están protegidos. Recibirás una confirmación por correo.
+            </p>
           </form>
           {% endif %}
 
         </div>
       </div>
     </div>
+
+    {% if not success %}
+    <!-- Sticky summary aside (mirrors current form selections; safe additive UI) -->
+    <aside class="col-lg-4 col-xl-4 d-none d-lg-block">
+      <div class="pm-sticky-panel">
+        <div class="card pm-card reserva-summary-card">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <span class="reserva-summary-icon"><i class="bi bi-clipboard-check"></i></span>
+              <h6 class="mb-0 fw-bold" style="color:#0c2a5e;">Resumen de tu reserva</h6>
+            </div>
+
+            <ul class="reserva-summary-list">
+              <li>
+                <span class="rs-label"><i class="bi bi-person"></i> Cliente</span>
+                <span id="summaryCliente" class="rs-value text-muted">—</span>
+              </li>
+              <li>
+                <span class="rs-label"><i class="bi bi-people"></i> Personas</span>
+                <span id="summaryPersonas" class="rs-value text-muted">—</span>
+              </li>
+              <li>
+                <span class="rs-label"><i class="bi bi-building"></i> Espacio</span>
+                <span id="summaryEspacio" class="rs-value text-muted">—</span>
+              </li>
+              <li>
+                <span class="rs-label"><i class="bi bi-calendar3"></i> Fecha</span>
+                <span id="summaryFecha" class="rs-value text-muted">—</span>
+              </li>
+              <li>
+                <span class="rs-label"><i class="bi bi-clock"></i> Hora</span>
+                <span id="summaryHora" class="rs-value text-muted">—</span>
+              </li>
+              <li>
+                <span class="rs-label"><i class="bi bi-hourglass-split"></i> Duración</span>
+                <span id="summaryDuracion" class="rs-value text-muted">—</span>
+              </li>
+            </ul>
+
+            <div class="reserva-summary-divider"></div>
+
+            <div class="reserva-summary-row">
+              <span>Espacio</span>
+              <strong id="summaryPrecio">—</strong>
+            </div>
+            <div class="reserva-summary-row" id="summaryServiciosRow" style="display:none;">
+              <span>Servicios adicionales</span>
+              <strong id="summaryServicios">—</strong>
+            </div>
+
+            <div class="reserva-summary-total" id="summaryTotalRow">
+              <span>Total estimado</span>
+              <strong id="summaryTotal">—</strong>
+            </div>
+
+            <p class="reserva-summary-note">
+              <i class="bi bi-info-circle"></i>
+              Valor aproximado. Se confirma con el equipo de eventos del Club.
+            </p>
+
+            <a href="https://wa.me/573507016630" target="_blank" rel="noopener" class="reserva-help-link">
+              <i class="bi bi-whatsapp"></i> ¿Dudas? Habla con un asesor
+            </a>
+          </div>
+        </div>
+      </div>
+    </aside>
+    {% endif %}
   </div>
 </div>
 
@@ -1043,6 +1128,285 @@
       applyShow(mostrarSi.checked);
     });
   </script>
+
+<!-- Premium polish: visual refinements + summary aside live updater.
+     All logic untouched; this block only listens to existing inputs and
+     mirrors their state into the sticky summary aside. -->
+<style>
+  /* Page wrapper polish */
+  .reserva-page { max-width: 1280px; }
+  .reserva-card { background: #ffffff; }
+  .reserva-eyebrow {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #d97706;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .reserva-title {
+    font-size: clamp(1.4rem, 3.2vw, 1.85rem);
+    font-weight: 800;
+    color: #0c2a5e;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .reserva-lead {
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    max-width: 560px;
+  }
+  .reserva-header { padding-bottom: 1.25rem; border-bottom: 1px solid rgba(15, 23, 42, 0.06); }
+
+  /* Section headings inside the form: turn the existing h5.text-primary into
+     a premium label with accent bar */
+  .reserva-card .card-body form > .mb-4 > h5.text-primary,
+  .reserva-card .card-body form > .mb-3 > h5.text-primary {
+    position: relative;
+    color: #0c2a5e !important;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+    font-size: 1.08rem;
+    padding-left: 14px;
+    margin-bottom: 1rem;
+  }
+  .reserva-card .card-body form > .mb-4 > h5.text-primary::before,
+  .reserva-card .card-body form > .mb-3 > h5.text-primary::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 4px; bottom: 4px;
+    width: 4px;
+    background: linear-gradient(180deg, #1e3a8a, #2456a8);
+    border-radius: 4px;
+  }
+  .reserva-card .card-body form > .mb-4 > h5.text-primary i { color: #1e3a8a; margin-right: 4px; }
+
+  /* Section spacing */
+  .reserva-card .card-body form > .mb-4 { padding: 1.25rem 0; }
+
+  /* Replace ugly <hr> dividers between sections with subtle gradient */
+  .reserva-card .card-body form > hr {
+    border: 0;
+    height: 1px;
+    margin: 0.5rem 0;
+    background: linear-gradient(90deg, transparent, rgba(15, 23, 42, 0.10), transparent);
+  }
+
+  /* Radio groups (es_socio, tiene_entidad, mostrar_servicios) become pills */
+  .reserva-card .form-check-inline {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 0.25rem;
+    padding: 0.45rem 0.9rem;
+    background: #f1f5f9;
+    border: 1.5px solid transparent;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.18s cubic-bezier(.22,.61,.36,1);
+  }
+  .reserva-card .form-check-inline:hover { background: #e2e8f0; }
+  .reserva-card .form-check-inline:has(input:checked) {
+    background: rgba(30, 58, 138, 0.08);
+    border-color: rgba(30, 58, 138, 0.30);
+  }
+  .reserva-card .form-check-inline .form-check-input { margin-right: 0.45rem; cursor: pointer; }
+  .reserva-card .form-check-inline .form-check-input:checked { background-color: #1e3a8a; border-color: #1e3a8a; }
+  .reserva-card .form-check-inline .form-check-label { cursor: pointer; font-weight: 600; color: #1e293b; font-size: 0.9rem; }
+
+  /* Services cards: cleaner, with selection state */
+  .reserva-card .servicio-card {
+    border: 1.5px solid rgba(15, 23, 42, 0.08) !important;
+    border-radius: 12px !important;
+    box-shadow: none !important;
+    transition: all 0.2s cubic-bezier(.22,.61,.36,1) !important;
+  }
+  .reserva-card .servicio-card:hover {
+    transform: translateY(-2px) !important;
+    border-color: rgba(30, 58, 138, 0.30) !important;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08) !important;
+  }
+  .reserva-card .servicio-card .card-title { color: #0c2a5e; font-weight: 700; font-size: 0.95rem; }
+  .reserva-card .servicio-card .badge.bg-success { background: linear-gradient(135deg, #059669, #047857) !important; font-weight: 600; padding: 5px 10px; border-radius: 999px; }
+
+  /* Summary aside (sticky on desktop) */
+  .reserva-summary-card { border: 1px solid rgba(15, 23, 42, 0.06); background: linear-gradient(180deg, #ffffff, #f8fafc); }
+  .reserva-summary-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.10), rgba(59, 130, 246, 0.06));
+    color: #1e3a8a; font-size: 1.05rem;
+  }
+  .reserva-summary-list { list-style: none; padding: 0; margin: 0 0 1rem; }
+  .reserva-summary-list li {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+    padding: 8px 0; border-bottom: 1px dashed rgba(15, 23, 42, 0.06);
+  }
+  .reserva-summary-list li:last-child { border-bottom: none; }
+  .rs-label { color: #64748b; font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+  .rs-label i { color: #1e3a8a; }
+  .rs-value { color: #0f172a; font-size: 0.88rem; font-weight: 600; text-align: right; max-width: 60%; word-wrap: break-word; }
+  .reserva-summary-divider { height: 1px; background: rgba(15, 23, 42, 0.10); margin: 0.75rem 0; }
+  .reserva-summary-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; color: #475569; font-size: 0.88rem; }
+  .reserva-summary-row strong { color: #0c2a5e; font-size: 0.95rem; }
+  .reserva-summary-total {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 16px; margin-top: 10px;
+    background: linear-gradient(135deg, #0c2a5e, #1e3a8a);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 0.95rem;
+  }
+  .reserva-summary-total strong { font-size: 1.2rem; color: #fff; }
+  .reserva-summary-note { color: #64748b; font-size: 0.75rem; margin: 0.85rem 0 0.6rem; line-height: 1.45; display: flex; gap: 6px; }
+  .reserva-summary-note i { color: #94a3b8; flex-shrink: 0; margin-top: 2px; }
+  .reserva-help-link {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin-top: 0.75rem; padding: 10px 14px;
+    background: rgba(37, 211, 102, 0.08); color: #128C7E;
+    border: 1px solid rgba(37, 211, 102, 0.25);
+    border-radius: 10px;
+    text-decoration: none; font-weight: 600; font-size: 0.88rem;
+    transition: all 0.18s ease;
+  }
+  .reserva-help-link:hover { background: rgba(37, 211, 102, 0.14); color: #128C7E; }
+
+  /* Tablet/mobile: aside becomes a sticky bottom-bar */
+  @media (max-width: 991.98px) {
+    .reserva-page .card-body { padding: 1.5rem !important; }
+  }
+
+  /* Success box: keep functional, just remove harsh borders */
+  #successBox { box-shadow: 0 10px 30px rgba(15, 23, 42, 0.10); }
+</style>
+
+<script>
+  // Live updater for the sticky summary aside. Reads existing form fields
+  // and existing display IDs; does NOT modify form values or submit logic.
+  (function(){
+    function $(sel) { return document.querySelector(sel); }
+    function byId(id) { return document.getElementById(id); }
+
+    function updateSummary() {
+      try {
+        var nombre = $('input[name="nombre_cliente"]');
+        var personas = $('input[name="num_personas"]');
+        var espacioSelect = byId('espacioSelect');
+        var fecha = byId('fechaEvento');
+        var horaInicio = $('input[name="hora_inicio"]');
+        var duracion = $('select[name="duracion_horas"]');
+        var horaFinEl = byId('horaFin');
+        var precioMonto = byId('precioMonto');
+        var totalServiciosMonto = byId('totalServiciosMonto');
+        var totalServiciosAlert = byId('totalServiciosAlert');
+        var granTotalMonto = byId('granTotalMonto');
+        var granTotalAlert = byId('granTotalAlert');
+
+        var sumCliente = byId('summaryCliente');
+        var sumPersonas = byId('summaryPersonas');
+        var sumEspacio = byId('summaryEspacio');
+        var sumFecha = byId('summaryFecha');
+        var sumHora = byId('summaryHora');
+        var sumDuracion = byId('summaryDuracion');
+        var sumPrecio = byId('summaryPrecio');
+        var sumServicios = byId('summaryServicios');
+        var sumServiciosRow = byId('summaryServiciosRow');
+        var sumTotal = byId('summaryTotal');
+
+        if (!sumCliente) return; // aside not rendered
+
+        sumCliente.textContent = (nombre && nombre.value.trim()) ? nombre.value.trim() : '—';
+        sumCliente.classList.toggle('text-muted', !(nombre && nombre.value.trim()));
+
+        sumPersonas.textContent = (personas && personas.value) ? (personas.value + (personas.value === '1' ? ' persona' : ' personas')) : '—';
+        sumPersonas.classList.toggle('text-muted', !(personas && personas.value));
+
+        var espacioName = '—';
+        if (espacioSelect && espacioSelect.selectedIndex > 0) {
+          var opt = espacioSelect.options[espacioSelect.selectedIndex];
+          espacioName = opt.getAttribute('data-salon') || opt.textContent.replace(/\s*\(.*\)\s*$/, '').trim() || '—';
+        }
+        sumEspacio.textContent = espacioName;
+        sumEspacio.classList.toggle('text-muted', espacioName === '—');
+
+        if (fecha && fecha.value) {
+          try {
+            var parts = fecha.value.split('-');
+            var d = new Date(parseInt(parts[0],10), parseInt(parts[1],10)-1, parseInt(parts[2],10));
+            sumFecha.textContent = d.toLocaleDateString('es-CO', { weekday:'short', day:'2-digit', month:'short', year:'numeric' });
+            sumFecha.classList.remove('text-muted');
+          } catch(e) {
+            sumFecha.textContent = fecha.value;
+            sumFecha.classList.remove('text-muted');
+          }
+        } else {
+          sumFecha.textContent = '—';
+          sumFecha.classList.add('text-muted');
+        }
+
+        if (horaInicio && horaInicio.value) {
+          var horaTxt = horaInicio.value;
+          if (horaFinEl && horaFinEl.textContent && horaFinEl.textContent !== '--:--') {
+            horaTxt += ' → ' + horaFinEl.textContent;
+          }
+          sumHora.textContent = horaTxt;
+          sumHora.classList.remove('text-muted');
+        } else {
+          sumHora.textContent = '—';
+          sumHora.classList.add('text-muted');
+        }
+
+        if (duracion && duracion.value) {
+          sumDuracion.textContent = duracion.value + ' horas';
+          sumDuracion.classList.remove('text-muted');
+        }
+
+        // Price mirroring
+        var precioText = (precioMonto && precioMonto.textContent && precioMonto.textContent !== '$0') ? precioMonto.textContent : '—';
+        sumPrecio.textContent = precioText;
+
+        var serviciosVisible = totalServiciosAlert && totalServiciosAlert.style.display !== 'none';
+        if (serviciosVisible && totalServiciosMonto && totalServiciosMonto.textContent) {
+          sumServiciosRow.style.display = 'flex';
+          sumServicios.textContent = totalServiciosMonto.textContent;
+        } else {
+          sumServiciosRow.style.display = 'none';
+        }
+
+        // Total
+        if (granTotalAlert && granTotalAlert.style.display !== 'none' && granTotalMonto && granTotalMonto.textContent) {
+          sumTotal.textContent = granTotalMonto.textContent;
+        } else if (precioText !== '—') {
+          sumTotal.textContent = precioText;
+        } else {
+          sumTotal.textContent = '—';
+        }
+      } catch (e) {
+        // never break the form
+        console.warn('Summary update failed:', e);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function(){
+      // Initial paint
+      updateSummary();
+      // Listen to any form change / input
+      var form = document.getElementById('reservationForm');
+      if (form) {
+        form.addEventListener('input', updateSummary);
+        form.addEventListener('change', updateSummary);
+      }
+      // Watch summary-driving display elements via MutationObserver
+      ['precioResumen','precioMonto','horaFin','totalServiciosAlert','totalServiciosMonto','granTotalAlert','granTotalMonto']
+        .forEach(function(id){
+          var el = document.getElementById(id);
+          if (!el) return;
+          new MutationObserver(updateSummary).observe(el, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] });
+        });
+    });
+  })();
+</script>
 
 {% if form_dict %}
 {{ form_dict|json_script:"formData" }}

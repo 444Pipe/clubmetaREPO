@@ -462,4 +462,254 @@ main a:not(.btn):not(.nav-link-custom):not(.nav-link-logout):not(.brand-link):no
   .btn { font-size: 0.98rem; }
 }
 
+/* =====================================================================
+   PREMIUM MINIMALIST DESIGN TOKENS & SHARED UTILITIES
+   (additive — opt-in via classes; does not override unrelated styles)
+   ===================================================================== */
+
+:root {
+  /* Refined corporate palette: navy with warm accent */
+  --pm-navy-900: #0c2a5e;
+  --pm-navy-800: #133a78;
+  --pm-navy-700: #1e3a8a;
+  --pm-navy-600: #2456a8;
+  --pm-navy-500: #3b82f6;
+  --pm-gold-500: #d97706;
+  --pm-gold-400: #f59e0b;
+  --pm-ink-900: #0f172a;
+  --pm-ink-700: #1e293b;
+  --pm-ink-500: #475569;
+  --pm-ink-400: #64748b;
+  --pm-ink-300: #94a3b8;
+  --pm-surface: #ffffff;
+  --pm-surface-alt: #f8fafc;
+  --pm-surface-soft: #f1f5f9;
+  --pm-border: rgba(15, 23, 42, 0.08);
+  --pm-border-strong: rgba(15, 23, 42, 0.14);
+
+  /* Soft shadows (layered, premium feel) */
+  --pm-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
+  --pm-shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.06), 0 10px 15px -3px rgba(15, 23, 42, 0.08);
+  --pm-shadow-lg: 0 10px 25px -5px rgba(15, 23, 42, 0.10), 0 20px 40px -10px rgba(15, 23, 42, 0.10);
+  --pm-shadow-glow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+
+  /* Type scale (fluid) */
+  --pm-fs-xs: clamp(0.72rem, 1.5vw, 0.78rem);
+  --pm-fs-sm: clamp(0.82rem, 1.8vw, 0.9rem);
+  --pm-fs-base: clamp(0.94rem, 2vw, 1rem);
+  --pm-fs-lg: clamp(1.05rem, 2.4vw, 1.15rem);
+  --pm-fs-xl: clamp(1.25rem, 3vw, 1.5rem);
+  --pm-fs-2xl: clamp(1.6rem, 4vw, 2.1rem);
+
+  /* Radii */
+  --pm-radius-sm: 8px;
+  --pm-radius-md: 12px;
+  --pm-radius-lg: 18px;
+  --pm-radius-xl: 24px;
+
+  /* Easing */
+  --pm-ease: cubic-bezier(.22, .61, .36, 1);
+}
+
+/* Premium card surface — clean white with subtle border and soft shadow */
+.pm-card {
+  background: var(--pm-surface);
+  border: 1px solid var(--pm-border);
+  border-radius: var(--pm-radius-lg);
+  box-shadow: var(--pm-shadow-sm);
+  transition: box-shadow 0.25s var(--pm-ease), transform 0.25s var(--pm-ease), border-color 0.25s var(--pm-ease);
+  overflow: hidden;
+}
+.pm-card:hover { box-shadow: var(--pm-shadow-md); border-color: var(--pm-border-strong); }
+.pm-card-lift:hover { transform: translateY(-4px); box-shadow: var(--pm-shadow-lg); }
+
+/* Section header with accent line */
+.pm-section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  color: var(--pm-navy-800);
+  font-size: var(--pm-fs-xl);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.75rem;
+}
+.pm-section-title .pm-section-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(30, 58, 138, 0.10), rgba(59, 130, 246, 0.04));
+  color: var(--pm-navy-700);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.pm-section-subtitle {
+  color: var(--pm-ink-500);
+  font-size: var(--pm-fs-sm);
+  margin-bottom: 1.25rem;
+}
+
+/* Soft divider between sections */
+.pm-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--pm-border-strong), transparent);
+  margin: 2rem 0;
+  border: 0;
+}
+
+/* Input refinement — applies when using .pm-form wrapper */
+.pm-form .form-label {
+  font-weight: 600;
+  color: var(--pm-ink-700);
+  font-size: 0.88rem;
+  letter-spacing: 0.01em;
+  margin-bottom: 0.4rem;
+}
+.pm-form .form-control,
+.pm-form .form-select {
+  border: 1.5px solid var(--pm-border-strong);
+  border-radius: var(--pm-radius-sm);
+  padding: 0.65rem 0.9rem;
+  background: var(--pm-surface);
+  font-size: 0.95rem;
+  color: var(--pm-ink-900);
+  transition: border-color 0.18s var(--pm-ease), box-shadow 0.18s var(--pm-ease), background 0.18s var(--pm-ease);
+}
+.pm-form .form-control:hover,
+.pm-form .form-select:hover {
+  border-color: var(--pm-navy-500);
+}
+.pm-form .form-control:focus,
+.pm-form .form-select:focus {
+  border-color: var(--pm-navy-600);
+  box-shadow: var(--pm-shadow-glow);
+  outline: none;
+  background: var(--pm-surface);
+}
+.pm-form .form-control-lg,
+.pm-form .form-select-lg {
+  padding: 0.85rem 1.05rem;
+  font-size: 1rem;
+}
+.pm-form .form-text { color: var(--pm-ink-400); }
+.pm-form textarea.form-control { line-height: 1.55; }
+
+/* Premium primary button (used opt-in) */
+.btn.pm-btn-primary {
+  background: linear-gradient(135deg, var(--pm-navy-700) 0%, var(--pm-navy-800) 100%);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  padding: 0.85rem 1.6rem;
+  border-radius: var(--pm-radius-md);
+  box-shadow: 0 6px 18px rgba(30, 58, 138, 0.22);
+  transition: transform 0.18s var(--pm-ease), box-shadow 0.18s var(--pm-ease), filter 0.18s var(--pm-ease);
+}
+.btn.pm-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(30, 58, 138, 0.32);
+  color: #fff;
+  filter: brightness(1.05);
+}
+.btn.pm-btn-primary:active { transform: translateY(0); }
+
+/* Step indicator (numbered chips) */
+.pm-steps {
+  display: flex;
+  gap: 0;
+  align-items: center;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.pm-steps::-webkit-scrollbar { display: none; }
+.pm-steps li {
+  flex: 1 1 0;
+  min-width: 80px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--pm-ink-400);
+  font-size: 0.82rem;
+  font-weight: 600;
+  position: relative;
+}
+.pm-steps li::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: var(--pm-border);
+  margin: 0 8px;
+  border-radius: 2px;
+}
+.pm-steps li:last-child::after { display: none; }
+.pm-steps .pm-step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--pm-surface-soft);
+  border: 1.5px solid var(--pm-border-strong);
+  color: var(--pm-ink-400);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.pm-steps li.active { color: var(--pm-navy-800); }
+.pm-steps li.active .pm-step-num {
+  background: linear-gradient(135deg, var(--pm-navy-700), var(--pm-navy-600));
+  border-color: var(--pm-navy-700);
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(30, 58, 138, 0.25);
+}
+.pm-steps li.done .pm-step-num {
+  background: var(--pm-navy-600);
+  border-color: var(--pm-navy-600);
+  color: #fff;
+}
+.pm-steps li.done::after { background: var(--pm-navy-500); }
+@media (max-width: 575.98px) {
+  .pm-steps li .pm-step-label { display: none; }
+  .pm-steps li { min-width: 0; }
+}
+
+/* Sticky side panel (used for booking summary on desktop) */
+.pm-sticky-panel { position: sticky; top: 96px; }
+@media (max-width: 991.98px) {
+  .pm-sticky-panel { position: static; }
+}
+
+/* Gentle entrance animation utility */
+@keyframes pmFadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.pm-fade-up { animation: pmFadeUp 0.45s var(--pm-ease) both; }
+
+/* Calm down hyperactive animations site-wide — overrides existing infinite
+   pulses on the WhatsApp button so it doesn't compete for attention */
+@media (prefers-reduced-motion: no-preference) {
+  .whatsapp-float, .whatsapp-pulse,
+  .info-icon-large {
+    animation-duration: 8s !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .whatsapp-float, .whatsapp-pulse,
+  .info-icon-large,
+  .info-box-enhanced::before {
+    animation: none !important;
+  }
+}
+
 

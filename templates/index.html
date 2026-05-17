@@ -1127,4 +1127,90 @@
   });
 </script>
 
+<!-- Premium polish: calmer animations, refined typography & spacing.
+     This block intentionally appears LAST so its rules take precedence
+     over earlier inline styles. No JS/logic is changed. -->
+<style>
+  /* Hero: calmer entrance and tighter heading scale */
+  #heroSection .hero-title {
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+  #heroSection .hero-subtitle {
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+
+  /* Buttons in hero: slightly softer hover so it feels premium, not bouncy */
+  .hero-btn { transition: transform 0.22s cubic-bezier(.22,.61,.36,1), box-shadow 0.22s, background-color 0.18s; }
+  .btn-light.hero-btn:hover,
+  .btn-outline-light.hero-btn:hover { transform: translateY(-3px); }
+
+  /* "Por qué elegir" feature items: cleaner spacing, no pinkish hover */
+  .feature-item { padding: 12px 14px; border-radius: 12px; gap: 14px; }
+  .feature-item:hover { background: rgba(30, 64, 175, 0.04); }
+  .feature-icon {
+    width: 32px; height: 32px;
+    box-shadow: 0 4px 10px rgba(30, 64, 175, 0.18);
+  }
+  .features-list strong { color: #0c2a5e; }
+
+  /* Why-choose carousel: keep image stable */
+  #whyCarousel { border-radius: 14px; overflow: hidden; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08); }
+  #whyCarousel .carousel-img { border-radius: 0; }
+
+  /* Tipos de Eventos: softer hover (the scale 1.03 + lift was too jumpy) */
+  .events-section { background: #fafbfc; }
+  .event-card {
+    border-radius: 16px !important;
+    border: 1px solid rgba(15, 23, 42, 0.06) !important;
+  }
+  .event-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.10) !important;
+  }
+  .event-card .card-title {
+    font-size: 1.08rem;
+    color: #0c2a5e !important;
+  }
+  .event-list li { color: #475569; }
+
+  /* Contact "info-box-enhanced": stop the constant pulsing background */
+  .info-box-enhanced::before { animation: none !important; opacity: 0 !important; }
+  .info-icon-large { animation-duration: 6s !important; }
+  .info-box-enhanced {
+    border: 1px solid rgba(15, 23, 42, 0.05);
+  }
+
+  /* WhatsApp button: keep it visible but no infinite pulse/float */
+  .whatsapp-float { animation: none !important; }
+  #whatsappContactBtn.whatsapp-btn { box-shadow: 0 10px 26px rgba(18, 140, 126, 0.22); }
+  #whatsappContactBtn .whatsapp-btn__icon { animation: none; }
+
+  /* Contact card refinements */
+  .ci-row { gap: 14px; align-items: flex-start; }
+  .ci-row i { background: linear-gradient(180deg, #eef4ff, #f8fbff) !important; color: #1e3a8a !important; }
+  .ci-label { color: #0c2a5e !important; font-weight: 700; }
+  .ci-value { color: #1e293b !important; line-height: 1.5; }
+
+  /* Sections: more breathing room on desktop, contained on mobile */
+  @media (min-width: 992px) {
+    .events-section { padding-top: 64px; padding-bottom: 64px; }
+    #whyChooseSection { margin-top: 4rem; margin-bottom: 4rem; }
+  }
+
+  /* Mobile-only: smaller, tighter event cards */
+  @media (max-width: 575.98px) {
+    .event-card .card-body { padding: 1.1rem !important; min-height: auto !important; }
+    .event-list li { padding: 4px 0; font-size: 0.92rem; }
+    .info-box-enhanced { padding: 1.5rem 1rem !important; border-radius: 14px !important; }
+    .info-icon-large { width: 48px !important; height: 48px !important; }
+    .info-icon-large i { font-size: 1.6rem !important; }
+    .contact-layout__iframe { height: 200px !important; }
+  }
+</style>
+
 {% endblock %}
