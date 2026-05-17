@@ -683,3 +683,82 @@ html[data-theme="dark"] .login #content-main {
   background: #11244a;
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
+
+/* =====================================================================
+   FIX: Aprovechar ancho completo en PC para los listados (change_list)
+   - El #content-main estaba angosto y .object-tools (Anadir) flotaba
+     lejos a la derecha, comiendo espacio util de la tabla.
+   - Solucion: el contenedor llena el ancho, la tabla crece, el filtro
+     tiene ancho fijo razonable, y el boton Anadir se posiciona dentro
+     del flujo del content-main.
+   ===================================================================== */
+
+#container { max-width: none !important; }
+#content { max-width: none !important; padding: 24px 32px; box-sizing: border-box; }
+
+/* Asegurar que el grid de content-main + content-related no quede limitado */
+.colMS, .colSM { max-width: none !important; }
+#content-main { width: auto !important; max-width: none !important; }
+
+/* Object tools (Anadir...): que vivan dentro del flujo del content-main,
+   no flotando absolutamente fuera del area visual */
+.object-tools {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 0 !important;
+  margin: 0 0 18px 0 !important;
+  position: static !important;
+  list-style: none;
+}
+.object-tools li { list-style: none; margin: 0; }
+/* En vistas con object-tools (add buttons) el changelist tenia top padding
+   raro porque object-tools era posicionado absoluto. Resetear. */
+.change-list .object-tools,
+.change-form .object-tools { float: none !important; }
+
+@media (min-width: 992px) {
+  /* Layout side-by-side: lista a la izquierda con ancho fluido, filtro fijo */
+  #changelist {
+    margin-right: 260px;  /* deja sitio para el filter sidebar */
+    width: auto;
+    max-width: none !important;
+    box-sizing: border-box;
+  }
+  #changelist-filter {
+    width: 240px !important;
+    margin-left: 0 !important;
+    position: absolute;
+    right: 32px;
+    top: 0;
+  }
+  #content-main { position: relative; }
+
+  /* La tabla del listado debe usar todo el ancho del #changelist */
+  #result_list {
+    width: 100% !important;
+    table-layout: auto;
+  }
+}
+
+/* Si la tabla aun se desborda (muchas columnas), permitir scroll horizontal
+   dentro del card en lugar de cortar visualmente */
+#changelist .results {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 10px;
+}
+
+/* En pantallas muy anchas, dar un max-width generoso para que no se
+   estire infinitamente y se vuelva incomodo de leer */
+@media (min-width: 1600px) {
+  #content { max-width: 1720px; margin: 0 auto; }
+}
+
+/* En <992px el filter sidebar ya se apila abajo (regla previa), pero
+   confirmar que el changelist no quede con margin-right huerfano */
+@media (max-width: 991.98px) {
+  #changelist { margin-right: 0 !important; }
+  #changelist-filter { position: static !important; right: auto !important; width: 100% !important; }
+}
