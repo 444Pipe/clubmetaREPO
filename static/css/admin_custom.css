@@ -93,3 +93,543 @@
 }
 
 /* Removed admin global zoom per user request */
+
+/* =====================================================================
+   DJANGO ADMIN — PREMIUM POLISH (light + dark mode aware)
+   All rules are additive; no Django admin JS or markup is touched.
+   Uses Django's native --variables so dark mode toggle keeps working.
+   ===================================================================== */
+
+:root {
+  --cm-brand: #1e3a8a;
+  --cm-brand-dark: #0c2a5e;
+  --cm-accent: #d97706;
+  --cm-accent-soft: #f59e0b;
+  --cm-ring: rgba(59, 130, 246, 0.22);
+  --cm-radius: 12px;
+  --cm-radius-sm: 8px;
+  --cm-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 14px rgba(15, 23, 42, 0.06);
+  --cm-shadow-lg: 0 10px 30px rgba(15, 23, 42, 0.10), 0 20px 50px rgba(15, 23, 42, 0.10);
+}
+
+/* ----- BASE typography & spacing ----- */
+#container,
+body.admin {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  letter-spacing: 0.005em;
+}
+#content { padding: 24px 32px; }
+.colMS, .colSM, .colM, #content-main, #content-related {
+  background: transparent;
+}
+
+/* ----- HEADER (Django default) integrated with branding ----- */
+#header {
+  padding: 12px 24px !important;
+  background: linear-gradient(135deg, #0c2a5e 0%, #1e3a8a 100%) !important;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.18);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+#header a:link, #header a:visited { color: #fff; }
+#branding h1, #branding h1 a:link, #branding h1 a:visited { color: #fff !important; font-weight: 700; }
+#user-tools {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+#user-tools a {
+  color: rgba(255, 255, 255, 0.85) !important;
+  padding: 5px 10px;
+  border-radius: 6px;
+  transition: background 0.18s ease, color 0.18s ease;
+  border-bottom: none !important;
+}
+#user-tools a:hover {
+  background: rgba(255, 255, 255, 0.10);
+  color: #fff !important;
+}
+#user-tools strong { color: #fbbf24; }
+
+/* ----- BRANDING (custom logo + title in header) ----- */
+.admin-header { padding: 0 !important; }
+.branding {
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.branding:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18); }
+.branding .admin-logo {
+  height: 38px !important;
+  width: 38px !important;
+  background: #fff;
+  padding: 3px;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.20);
+}
+.branding-title {
+  font-weight: 800 !important;
+  letter-spacing: 0.04em;
+  font-size: 15px !important;
+}
+
+/* Quick action buttons in header */
+.admin-quick-actions .qa-btn {
+  padding: 7px 14px !important;
+  border-radius: 999px !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  letter-spacing: 0.02em;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+.admin-quick-actions .qa-btn:hover { transform: translateY(-2px) !important; filter: brightness(1.06); }
+.admin-quick-actions .qa-primary {
+  background: linear-gradient(135deg, #06b6d4, #0891b2) !important;
+  box-shadow: 0 6px 16px rgba(8, 145, 178, 0.32) !important;
+}
+.admin-quick-actions .qa-secondary {
+  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+  box-shadow: 0 6px 16px rgba(217, 119, 6, 0.32) !important;
+}
+
+/* ----- BREADCRUMBS ----- */
+div.breadcrumbs {
+  background: var(--body-bg);
+  padding: 12px 32px !important;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--body-fg);
+}
+div.breadcrumbs a {
+  color: var(--link-fg) !important;
+  text-decoration: none !important;
+  padding: 3px 7px;
+  border-radius: 5px;
+  transition: background 0.18s ease;
+}
+div.breadcrumbs a:hover { background: rgba(59, 130, 246, 0.10); }
+
+/* ----- MODULE (section card on dashboard + sidebars) ----- */
+.module {
+  background: var(--body-bg) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--cm-radius) !important;
+  box-shadow: var(--cm-shadow) !important;
+  margin-bottom: 16px !important;
+  overflow: hidden;
+}
+.module h2, .module caption, .inline-group h2 {
+  background: linear-gradient(180deg, var(--darkened-bg, #1d3a73), var(--body-bg)) !important;
+  color: var(--header-link-color, #fff) !important;
+  font-size: 12px !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase;
+  padding: 10px 14px !important;
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 700;
+}
+.module table th,
+.module table td {
+  padding: 10px 14px !important;
+  border-bottom: 1px solid var(--hairline-color, rgba(15, 23, 42, 0.06));
+}
+.module table tr:last-child th,
+.module table tr:last-child td { border-bottom: none; }
+
+/* Model rows on dashboard: clearer link + action layout */
+.app-list .model th,
+.app-list .model td a,
+#content-main .module table tr a {
+  font-weight: 600;
+  padding: 6px 10px !important;
+  border-radius: 6px;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+.app-list .model th a:hover,
+#content-main .module table tr a:hover {
+  background: rgba(59, 130, 246, 0.10);
+}
+
+/* "Añadir" + "Cambiar" small buttons */
+.module table .addlink,
+.module table .changelink {
+  padding: 5px 10px !important;
+  border-radius: 6px;
+  background: rgba(34, 197, 94, 0.10);
+  color: #15803d !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  transition: background 0.18s ease;
+}
+.module table .changelink {
+  background: rgba(59, 130, 246, 0.10);
+  color: var(--link-fg) !important;
+}
+.module table .addlink:hover { background: rgba(34, 197, 94, 0.18); }
+.module table .changelink:hover { background: rgba(59, 130, 246, 0.18); }
+
+/* ----- LIST VIEW (change_list) ----- */
+#changelist {
+  background: var(--body-bg);
+  border-radius: var(--cm-radius);
+  box-shadow: var(--cm-shadow);
+  padding: 8px;
+}
+#changelist .actions {
+  background: var(--darkened-bg, #f3f6fb) !important;
+  border-radius: var(--cm-radius-sm);
+  padding: 10px 14px !important;
+  margin: 0 0 12px 0 !important;
+  border: 1px solid var(--border-color);
+}
+#changelist-search input[type="text"] {
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: 8px !important;
+  padding: 8px 12px !important;
+  background: var(--body-bg) !important;
+  color: var(--body-fg) !important;
+  font-size: 14px;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+#changelist-search input[type="text"]:focus {
+  border-color: var(--primary, #1e3a8a) !important;
+  box-shadow: 0 0 0 4px var(--cm-ring) !important;
+  outline: none;
+}
+#changelist-search input[type="submit"] {
+  border-radius: 8px !important;
+  padding: 8px 18px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em;
+}
+
+/* List table */
+#result_list {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+#result_list thead th {
+  background: var(--darkened-bg) !important;
+  text-transform: uppercase;
+  font-size: 11px !important;
+  letter-spacing: 0.10em !important;
+  font-weight: 700 !important;
+  padding: 12px 14px !important;
+  border-bottom: 2px solid var(--border-color) !important;
+}
+#result_list tbody tr {
+  transition: background 0.16s ease;
+}
+#result_list tbody tr:hover {
+  background: rgba(59, 130, 246, 0.06) !important;
+}
+#result_list tbody td, #result_list tbody th {
+  padding: 11px 14px !important;
+}
+
+/* Result counter / pagination */
+.paginator {
+  padding: 14px 8px !important;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid var(--border-color);
+  margin-top: 12px !important;
+}
+.paginator a, .paginator .this-page {
+  padding: 6px 11px !important;
+  border-radius: 6px !important;
+  border: 1px solid var(--border-color) !important;
+  text-decoration: none !important;
+  font-weight: 600;
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+.paginator a:hover { background: var(--darkened-bg); border-color: var(--primary); }
+.paginator .this-page {
+  background: var(--primary, #1e3a8a) !important;
+  color: #fff !important;
+  border-color: var(--primary, #1e3a8a) !important;
+}
+
+/* ----- FILTER SIDEBAR (right column) ----- */
+#changelist-filter {
+  background: var(--body-bg) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--cm-radius) !important;
+  box-shadow: var(--cm-shadow) !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+#changelist-filter h2 {
+  background: linear-gradient(180deg, var(--darkened-bg, #1d3a73), var(--body-bg)) !important;
+  color: var(--header-link-color, #fff) !important;
+  padding: 12px 16px !important;
+  font-size: 12px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.14em !important;
+  margin: 0 !important;
+  border-bottom: 1px solid var(--border-color);
+}
+#changelist-filter h3 {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em;
+  padding: 12px 16px 6px !important;
+  margin: 0 !important;
+  color: var(--body-quiet-color) !important;
+}
+#changelist-filter ul {
+  padding: 0 8px 12px !important;
+  margin: 0 !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+#changelist-filter ul:last-of-type { border-bottom: none !important; }
+#changelist-filter li {
+  border: 0 !important;
+  padding: 0 !important;
+  margin: 2px 0 !important;
+}
+#changelist-filter li a {
+  display: block;
+  padding: 8px 12px !important;
+  border-radius: 7px !important;
+  font-size: 13px !important;
+  color: var(--body-fg) !important;
+  text-decoration: none !important;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.16s ease;
+}
+#changelist-filter li a:hover {
+  background: rgba(59, 130, 246, 0.10) !important;
+  transform: translateX(2px);
+}
+#changelist-filter li.selected a {
+  background: linear-gradient(135deg, var(--primary, #1e3a8a), var(--secondary, #2456a8)) !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 10px rgba(30, 58, 138, 0.22);
+}
+
+/* ----- OBJECT TOOLS (Add buttons top-right) ----- */
+.object-tools {
+  padding: 0 !important;
+  margin: 0 0 16px 0 !important;
+}
+.object-tools a {
+  background: linear-gradient(135deg, #1e3a8a, #2456a8) !important;
+  color: #fff !important;
+  border-radius: 999px !important;
+  padding: 10px 20px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em;
+  font-size: 13px !important;
+  text-transform: none !important;
+  box-shadow: 0 6px 16px rgba(30, 58, 138, 0.28) !important;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+  text-decoration: none !important;
+}
+.object-tools a:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 24px rgba(30, 58, 138, 0.38) !important;
+  filter: brightness(1.08);
+}
+.object-tools a.addlink::before {
+  content: '+ ';
+  font-weight: 900;
+  margin-right: 2px;
+}
+
+/* ----- FORM PAGES (change/add) ----- */
+.form-row {
+  padding: 14px 16px !important;
+  border-bottom: 1px solid var(--hairline-color) !important;
+}
+.form-row:last-child { border-bottom: none !important; }
+.form-row label {
+  font-weight: 600 !important;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--body-quiet-color);
+}
+input[type="text"], input[type="email"], input[type="url"],
+input[type="number"], input[type="password"], input[type="search"],
+input[type="tel"], input[type="date"], input[type="time"], input[type="datetime-local"],
+textarea, select {
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: 8px !important;
+  padding: 8px 12px !important;
+  font-size: 14px !important;
+  background: var(--body-bg) !important;
+  color: var(--body-fg) !important;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+input[type="text"]:focus, input[type="email"]:focus, input[type="url"]:focus,
+input[type="number"]:focus, input[type="password"]:focus, input[type="search"]:focus,
+input[type="tel"]:focus, input[type="date"]:focus, input[type="time"]:focus,
+input[type="datetime-local"]:focus, textarea:focus, select:focus {
+  border-color: var(--primary, #1e3a8a) !important;
+  box-shadow: 0 0 0 4px var(--cm-ring) !important;
+  outline: none !important;
+}
+.help, .helptext, .form-row p.help {
+  color: var(--body-quiet-color) !important;
+  font-style: normal !important;
+  font-size: 12px !important;
+  margin-top: 4px;
+}
+
+/* Buttons */
+.submit-row, .submit-row input, .submit-row a {
+  font-weight: 700;
+}
+.button, input[type=submit], input[type=button], .submit-row input,
+a.button {
+  border-radius: 8px !important;
+  padding: 9px 20px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--border-color) !important;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+.button.default, input[type=submit].default, .submit-row input.default {
+  background: linear-gradient(135deg, #1e3a8a, #2456a8) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+  box-shadow: 0 6px 16px rgba(30, 58, 138, 0.28) !important;
+}
+.button.default:hover, input[type=submit].default:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 24px rgba(30, 58, 138, 0.38) !important;
+}
+.deletelink {
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+  border-radius: 8px !important;
+}
+.deletelink:hover { transform: translateY(-2px); }
+
+.submit-row {
+  background: var(--darkened-bg) !important;
+  padding: 14px 18px !important;
+  border-radius: var(--cm-radius-sm) !important;
+  border: 1px solid var(--border-color) !important;
+  margin: 18px 0 0 0 !important;
+}
+
+/* ----- MESSAGES (success/error/warning banners) ----- */
+.messagelist li {
+  padding: 12px 16px !important;
+  border-radius: var(--cm-radius-sm) !important;
+  margin-bottom: 8px !important;
+  box-shadow: var(--cm-shadow);
+  border-left: 4px solid;
+  font-weight: 500;
+}
+.messagelist li.success { border-left-color: #22c55e; }
+.messagelist li.warning { border-left-color: #f59e0b; }
+.messagelist li.error   { border-left-color: #ef4444; }
+.messagelist li.info    { border-left-color: #3b82f6; }
+
+/* ----- EMPTY STATE — friendlier when 0 results ----- */
+.paginator + .paginator,
+.change-list .results + .no-results,
+#changelist-form > p {
+  /* nothing — Django doesn't always render an empty-state, fall back to caption */
+}
+/* Center the "0 X" counter and pad it */
+.change-list .paginator { color: var(--body-quiet-color); font-weight: 600; }
+
+/* ----- DARK MODE ADJUSTMENTS ----- */
+html[data-theme="dark"] {
+  --cm-shadow: 0 1px 2px rgba(0, 0, 0, 0.18), 0 4px 14px rgba(0, 0, 0, 0.28);
+  --cm-shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.40), 0 20px 50px rgba(0, 0, 0, 0.40);
+  --cm-ring: rgba(99, 179, 255, 0.30);
+}
+html[data-theme="dark"] #header {
+  background: linear-gradient(135deg, #061633 0%, #0c2a5e 100%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+html[data-theme="dark"] .module h2,
+html[data-theme="dark"] .module caption,
+html[data-theme="dark"] .inline-group h2,
+html[data-theme="dark"] #changelist-filter h2 {
+  background: linear-gradient(180deg, #1d3a73, #11244a) !important;
+  color: #e6eefc !important;
+}
+html[data-theme="dark"] #result_list thead th {
+  background: #11244a !important;
+}
+html[data-theme="dark"] #result_list tbody tr:hover {
+  background: rgba(99, 179, 255, 0.08) !important;
+}
+html[data-theme="dark"] #changelist-filter li a:hover {
+  background: rgba(99, 179, 255, 0.10) !important;
+}
+html[data-theme="dark"] .module table .addlink {
+  background: rgba(34, 197, 94, 0.15);
+  color: #86efac !important;
+}
+html[data-theme="dark"] .module table .changelink {
+  background: rgba(99, 179, 255, 0.15);
+  color: #93c5fd !important;
+}
+html[data-theme="dark"] div.breadcrumbs a:hover {
+  background: rgba(99, 179, 255, 0.10);
+}
+
+/* ----- RESPONSIVE: stack filter under list on small screens ----- */
+@media (max-width: 1024px) {
+  #content { padding: 16px; }
+  #header { padding: 10px 16px !important; }
+  div.breadcrumbs { padding: 10px 16px !important; }
+  #changelist-filter {
+    position: static !important;
+    width: 100% !important;
+    margin-top: 16px !important;
+  }
+}
+@media (max-width: 720px) {
+  .admin-header { flex-direction: column; align-items: stretch; gap: 10px; }
+  .admin-quick-actions { justify-content: flex-start; flex-wrap: wrap; }
+  .object-tools a { width: 100%; text-align: center; padding: 12px 16px !important; }
+  #user-tools {
+    flex-wrap: wrap;
+    gap: 4px;
+    padding-top: 8px;
+  }
+}
+
+/* ----- LOGIN PAGE polish ----- */
+.login #container {
+  background: linear-gradient(135deg, #0c2a5e 0%, #1e3a8a 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login #content { padding: 0 !important; max-width: 420px; width: 100%; }
+.login #content-main {
+  background: #ffffff;
+  padding: 32px !important;
+  border-radius: 18px;
+  box-shadow: var(--cm-shadow-lg);
+}
+.login #content-main form input[type="submit"] {
+  width: 100%;
+  padding: 12px !important;
+  font-size: 14px !important;
+}
+.login #branding h1 a { font-size: 1.4rem !important; }
+.login .password-reset-link { text-align: center; margin-top: 14px; }
+
+html[data-theme="dark"] .login #content-main {
+  background: #11244a;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
