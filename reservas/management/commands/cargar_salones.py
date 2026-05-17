@@ -16,7 +16,7 @@ class Command(BaseCommand):
         salones_data = [
             {
                 'nombre': 'Mi Llanura',
-                'descripcion': 'Salón versátil para eventos sociales y corporativos.',
+                'descripcion': 'Salón para eventos sociales y corporativos.',
                 'configuraciones': [
                     {'tipo': 'MESA_U', 'capacidad': 60, 'precio_s': 600000, 'precio_p': 1200000},
                     {'tipo': 'AUDITORIO', 'capacidad': 200, 'precio_s': 600000, 'precio_p': 1200000},
