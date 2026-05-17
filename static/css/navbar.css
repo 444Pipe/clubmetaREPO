@@ -392,3 +392,183 @@
 /* Small accessibility tweaks */
 .btn-logout{background:none;border:0;color:var(--nav-text-light);padding:8px}
 .nav-logout-form{display:inline}
+
+/* =====================================================================
+   DESKTOP NAVBAR — DYNAMIC INTEGRATION & MICRO-INTERACTIONS (≥901px)
+   Loaded after the legacy rules so this block wins specificity ties.
+   ===================================================================== */
+@media (min-width: 901px) {
+
+  /* Unify both bars into a single visual block (no harsh border between them) */
+  .site-header { box-shadow: none; }
+  .site-header::before { background: linear-gradient(180deg, rgba(8,30,80,0.96) 0%, rgba(12,45,115,0.96) 100%); }
+  .menu-info {
+    background: linear-gradient(180deg, rgba(15, 63, 159, 0.96) 0%, rgba(13, 53, 138, 0.96) 100%) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+    box-shadow: 0 6px 20px -10px rgba(0, 0, 0, 0.30) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  /* --- Primary "Reservar" CTA in the top bar --- */
+  .nav-link-reservar {
+    position: relative;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 0 6px 18px rgba(217, 119, 6, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.20) !important;
+    padding: 9px 18px !important;
+    border-radius: 999px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.005em;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .nav-link-reservar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.28) 50%, transparent 70%);
+    transform: translateX(-120%);
+    transition: transform 0.6s cubic-bezier(.22,.61,.36,1);
+    z-index: -1;
+  }
+  .nav-link-reservar:hover::before { transform: translateX(120%); }
+  .nav-link-reservar:hover {
+    background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 26px rgba(217, 119, 6, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+  }
+  .nav-link-reservar i { color: #fff !important; }
+
+  /* --- Secondary menu items: dynamic underline reveal on hover --- */
+  .menu-info-list { padding: 10px 20px !important; gap: 4px !important; }
+  .menu-info-list > li > a {
+    position: relative;
+    padding: 10px 16px !important;
+    border-radius: 8px;
+    font-weight: 700 !important;
+    letter-spacing: 0.6px !important;
+    font-size: 0.82rem !important;
+    text-transform: uppercase;
+    transition: color 0.2s ease, background 0.2s ease;
+  }
+  .menu-info-list > li > a::after {
+    content: '';
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 4px;
+    height: 2px;
+    background: linear-gradient(90deg, #f59e0b, #fbbf24);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.28s cubic-bezier(.22,.61,.36,1);
+  }
+  .menu-info-list > li > a:hover::after,
+  .menu-info-list > li > a:focus::after,
+  .menu-info-list > li.menu-active > a::after { transform: scaleX(1); }
+
+  .menu-info-list > li > a:hover,
+  .menu-info-list > li > a:focus {
+    background: rgba(255, 255, 255, 0.10) !important;
+    color: #ffffff !important;
+  }
+
+  /* Active state (set by JS via .menu-active) */
+  .menu-info-list > li.menu-active > a {
+    background: rgba(255, 255, 255, 0.12) !important;
+    color: #ffffff !important;
+  }
+
+  /* Chevron rotation on dropdown groups */
+  .menu-info-list .menu-group > a > .bi-chevron-down {
+    margin-left: 6px;
+    transition: transform 0.25s cubic-bezier(.22,.61,.36,1);
+  }
+  .menu-info-list .menu-group:hover > a > .bi-chevron-down,
+  .menu-info-list .menu-group:focus-within > a > .bi-chevron-down { transform: rotate(180deg); }
+
+  /* --- Dropdowns: smoother reveal with subtle entrance --- */
+  .menu-info-list .submenu {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: opacity 0.22s ease, transform 0.22s cubic-bezier(.22,.61,.36,1), visibility 0.22s;
+    min-width: 220px !important;
+    padding: 8px !important;
+    border-radius: 12px !important;
+    background: #ffffff !important;
+    box-shadow: 0 14px 38px rgba(9, 30, 66, 0.22), 0 4px 12px rgba(9, 30, 66, 0.10) !important;
+    border: 1px solid rgba(15, 23, 42, 0.05);
+    margin-top: 6px;
+  }
+  .menu-info-list .menu-group:hover > .submenu,
+  .menu-info-list .menu-group:focus-within > .submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .menu-info-list .submenu a {
+    color: #0c2a5e !important;
+    font-weight: 600 !important;
+    font-size: 0.88rem !important;
+    padding: 9px 14px !important;
+    border-radius: 8px !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.16s ease, color 0.16s ease, transform 0.16s ease;
+  }
+  .menu-info-list .submenu a::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(217, 119, 6, 0.0);
+    transition: background 0.16s ease, transform 0.16s ease;
+  }
+  .menu-info-list .submenu a:hover,
+  .menu-info-list .submenu a:focus {
+    background: rgba(30, 58, 138, 0.06) !important;
+    color: #0c2a5e !important;
+    transform: translateX(2px);
+  }
+  .menu-info-list .submenu a:hover::before,
+  .menu-info-list .submenu a:focus::before {
+    background: #d97706;
+  }
+  .menu-info-list .submenu::before {
+    display: none !important;
+  }
+
+  /* Reduce noise: brand link gets a slightly softer shadow */
+  .brand-link { box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.10) !important; }
+  .brand-link:hover { transform: translateY(-1px) !important; }
+
+  /* Top bar nav-links (Inicio when not on home, etc.) get the same underline language */
+  .nav-links a:not(.nav-link-reservar):not(.nav-link-admin):not(.nav-link-logout):not(.btn-accent) {
+    position: relative;
+  }
+  .nav-links a:not(.nav-link-reservar):not(.nav-link-admin):not(.nav-link-logout):not(.btn-accent)::after {
+    content: '';
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 4px;
+    height: 2px;
+    background: linear-gradient(90deg, #f59e0b, #fbbf24);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.28s cubic-bezier(.22,.61,.36,1);
+  }
+  .nav-links a:not(.nav-link-reservar):not(.nav-link-admin):not(.nav-link-logout):not(.btn-accent):hover::after {
+    transform: scaleX(1);
+  }
+}

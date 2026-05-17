@@ -97,4 +97,49 @@ document.addEventListener('DOMContentLoaded', function(){
       document.body.classList.remove('nav-open');
     }
   });
+
+  // Highlight the active route in the secondary menu (menu-info-list).
+  // Adds .menu-active to the <li> whose link (or any submenu link) matches
+  // the current pathname. Purely additive: only adds a class, never navigates.
+  (function markActiveRoute(){
+    try {
+      const here = window.location.pathname.replace(/\/+$/, '') || '/';
+      document.querySelectorAll('.menu-info-list > li').forEach(function(li){
+        // Collect all <a> hrefs inside this li (own anchor + submenu anchors)
+        const anchors = li.querySelectorAll('a[href]');
+        let isActive = false;
+        anchors.forEach(function(a){
+          try {
+            const url = new URL(a.getAttribute('href'), window.location.origin);
+            const path = url.pathname.replace(/\/+$/, '') || '/';
+            if (path === '#' || path === '') return;
+            // Match when current path equals the link path, OR starts with it
+            // (so /deportes/tenis activates the "Deportes" group)
+            if (path === here || (path !== '/' && here.startsWith(path))) {
+              isActive = true;
+            }
+          } catch(e){}
+        });
+        if (isActive) li.classList.add('menu-active');
+      });
+    } catch(e){
+      // silently ignore — never break navigation
+    }
+  })();
+
+  // Subtle entrance animation: stagger menu-info items into view on load
+  (function staggerMenuItems(){
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.innerWidth < 901) return;
+    const items = document.querySelectorAll('.menu-info-list > li');
+    items.forEach(function(li, idx){
+      li.style.opacity = '0';
+      li.style.transform = 'translateY(-6px)';
+      li.style.transition = 'opacity 0.36s cubic-bezier(.22,.61,.36,1), transform 0.36s cubic-bezier(.22,.61,.36,1)';
+      setTimeout(function(){
+        li.style.opacity = '1';
+        li.style.transform = 'translateY(0)';
+      }, 80 + idx * 60);
+    });
+  })();
 });

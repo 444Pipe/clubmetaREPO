@@ -51,7 +51,7 @@
           {% if request.path != '/' %}
           <li class="hide-on-mobile"><a href="{% url 'reservas:index' %}"><i class="bi bi-house-door"></i> Inicio</a></li>
           {% endif %}
-          <li class="hide-on-mobile"><a href="{% url 'reservas:register' %}"><i class="bi bi-calendar-check"></i> Reservar</a></li>
+          <li class="hide-on-mobile"><a href="{% url 'reservas:register' %}" class="nav-link-reservar"><i class="bi bi-calendar-check"></i> Reservar</a></li>
           {% if user.is_authenticated %}
             {% if user.is_staff %}
               <li><a href="{% url 'reservas:calendario' %}"><i class="bi bi-calendar3"></i> Calendario</a></li>
