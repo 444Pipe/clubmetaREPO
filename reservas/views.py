@@ -193,10 +193,14 @@ def espacios(request):
                         'id': c.id,
                         'tipo': c.get_tipo_configuracion_display(),
                         'capacidad': c.capacidad_display,
-                        'montaje_image': c.imagen_montaje
+                        'capacidad_max': c.capacidad_efectiva_max,
+                        'precio_particular_4h': int(c.precio_particular_4h),
+                        'precio_particular_8h': int(c.precio_particular_8h) if c.precio_particular_8h else None,
+                        'montaje_image': c.imagen_montaje,
                     } for c in configs_list
                 ]
                 ,
+                'num_configuraciones': len(configs_list),
                 'medidas': salon.medidas_dict()
             })
     
