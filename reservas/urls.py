@@ -18,6 +18,7 @@ urlpatterns = [
     path('get-calendar-events/', views.get_calendar_events, name='get_calendar_events'),
     # Panel de reservas personalizado (evita conflicto con /admin de Django)
     path('panel/', views.admin, name='panel'),
+    path('panel/reserva-manual/', views.reserva_manual, name='reserva_manual'),
     path('reportes/', views.reportes_dashboard, name='reportes'),
     path('borrar_reservas/', views.borrar_reservas, name='borrar_reservas'),
     path('borrar_reserva/<int:reserva_id>/', views.borrar_reserva_individual, name='borrar_reserva_individual'),

@@ -68,9 +68,10 @@
       </div>
     </div>
     <nav>
+      <a class="menu-link" href="{% url 'reservas:panel' %}"><i class="fa fa-user-shield fa-fw"></i> Panel Admin</a>
+      <a class="menu-link" href="{% url 'reservas:reserva_manual' %}"><i class="fa fa-calendar-plus fa-fw"></i> Reserva manual</a>
       <a class="menu-link" href="{% url 'reservas:calendario' %}"><i class="fa fa-calendar-days fa-fw"></i> Calendario</a>
       <a class="menu-link" href="{% url 'reservas:reportes' %}"><i class="fa fa-chart-line fa-fw"></i> Reportes</a>
-      <a class="menu-link" href="{% url 'reservas:panel' %}"><i class="fa fa-user-shield fa-fw"></i> Panel Admin</a>
       <div style="margin-top:12px">
         <a class="menu-link highlight" href="/admin/reservas/bloqueoespacio/"><i class="fa fa-lock fa-fw"></i> Bloquear Espacios</a>
       </div>

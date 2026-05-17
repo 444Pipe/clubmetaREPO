@@ -1,0 +1,443 @@
+{% extends 'admin/base_admin.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Reserva manual - CLUB EL META{% endblock %}
+
+{% block extra_css %}
+<style>
+  .rm-card {
+    background: #fff;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 14px rgba(15, 23, 42, 0.06);
+  }
+  .rm-section { padding: 22px 24px; border-bottom: 1px solid rgba(15, 23, 42, 0.06); }
+  .rm-section:last-child { border-bottom: none; }
+  .rm-section-title {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 700; color: #0c2a5e;
+    font-size: 0.95rem;
+    margin: 0 0 4px;
+  }
+  .rm-section-title i { color: #1e3a8a; }
+  .rm-section-hint {
+    color: #64748b; font-size: 0.82rem;
+    margin: 0 0 18px;
+  }
+  .rm-form .form-label {
+    font-size: 0.78rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    color: #475569;
+    margin-bottom: 6px;
+  }
+  .rm-form .form-control,
+  .rm-form .form-select {
+    border: 1.5px solid rgba(15, 23, 42, 0.14);
+    border-radius: 10px;
+    padding: 9px 12px;
+    font-size: 0.95rem;
+    min-height: 42px;
+    line-height: 1.45;
+  }
+  .rm-form .form-control:focus,
+  .rm-form .form-select:focus {
+    border-color: #1e3a8a;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.18);
+    outline: none;
+  }
+  .rm-summary {
+    background: linear-gradient(180deg, #fff, #f8fafc);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 14px;
+    padding: 20px;
+    position: sticky;
+    top: 20px;
+  }
+  .rm-summary h6 {
+    color: #0c2a5e;
+    font-weight: 700;
+    font-size: 0.92rem;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .rm-summary-row {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 8px;
+    padding: 7px 0;
+    border-bottom: 1px dashed rgba(15, 23, 42, 0.08);
+    font-size: 0.85rem;
+  }
+  .rm-summary-row:last-of-type { border-bottom: none; }
+  .rm-summary-row .rm-label { color: #64748b; font-weight: 600; }
+  .rm-summary-row .rm-value { color: #0f172a; font-weight: 700; text-align: right; max-width: 60%; }
+  .rm-summary-total {
+    margin-top: 12px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, #0c2a5e, #1e3a8a);
+    color: #fff;
+    border-radius: 12px;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .rm-summary-total strong { font-size: 1.3rem; font-weight: 800; }
+  .rm-summary-note {
+    color: #94a3b8; font-size: 0.75rem;
+    margin: 10px 0 0;
+  }
+  .rm-override-check {
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.30);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 8px;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.85rem;
+    color: #92400e;
+  }
+  .rm-override-check input[type="checkbox"] {
+    width: 18px; height: 18px;
+    flex-shrink: 0;
+    accent-color: #d97706;
+  }
+  .rm-btn-primary {
+    background: linear-gradient(135deg, #1e3a8a, #2456a8);
+    border: none; color: #fff;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 700;
+    box-shadow: 0 6px 14px rgba(30, 58, 138, 0.25);
+    transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
+    width: 100%;
+  }
+  .rm-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(30, 58, 138, 0.35);
+    filter: brightness(1.06);
+  }
+  .rm-btn-secondary {
+    background: #fff; color: #1e3a8a;
+    border: 1.5px solid rgba(30, 58, 138, 0.30);
+    padding: 11px 22px;
+    border-radius: 10px;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: all 0.16s ease;
+  }
+  .rm-btn-secondary:hover {
+    background: rgba(30, 58, 138, 0.06);
+    border-color: #1e3a8a;
+    transform: translateY(-1px);
+    color: #0c2a5e;
+  }
+  .rm-page-header {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+    margin-bottom: 22px;
+  }
+  .rm-page-title {
+    color: #0f172a; font-weight: 800; letter-spacing: -0.015em;
+    font-size: 1.55rem; margin: 0;
+  }
+  .rm-page-subtitle { color: #64748b; font-size: 0.92rem; margin: 4px 0 0; }
+  .rm-alert {
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    font-size: 0.92rem;
+    border-left: 4px solid;
+  }
+  .rm-alert-danger {
+    background: rgba(220, 38, 38, 0.06);
+    border-color: #dc2626;
+    color: #991b1b;
+  }
+  .rm-alert-warning {
+    background: rgba(245, 158, 11, 0.08);
+    border-color: #f59e0b;
+    color: #92400e;
+  }
+  .rm-alert ul { margin: 4px 0 0 18px; padding: 0; }
+
+  @media (max-width: 991.98px) {
+    .rm-summary { position: static; }
+  }
+</style>
+{% endblock %}
+
+{% block admin_content %}
+<div class="container-fluid py-4 px-3 px-md-4">
+
+  <div class="rm-page-header">
+    <div>
+      <h2 class="rm-page-title"><i class="fa fa-calendar-plus me-2"></i>Reserva manual</h2>
+      <p class="rm-page-subtitle">Registrar una reserva directamente desde administración (con posibilidad de forzar lunes o exceder capacidad).</p>
+    </div>
+    <a href="{% url 'reservas:panel' %}" class="rm-btn-secondary"><i class="fa fa-arrow-left"></i> Volver al panel</a>
+  </div>
+
+  {% if errors %}
+  <div class="rm-alert rm-alert-danger">
+    <strong>No se pudo crear la reserva:</strong>
+    <ul>{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul>
+  </div>
+  {% endif %}
+
+  {% if warnings %}
+  <div class="rm-alert rm-alert-warning">
+    <strong>Atención:</strong>
+    <ul>{% for w in warnings %}<li>{{ w }}</li>{% endfor %}</ul>
+  </div>
+  {% endif %}
+
+  <form method="post" class="rm-form" id="reservaManualForm" novalidate>
+    {% csrf_token %}
+    <div class="row g-4">
+      <!-- IZQUIERDA: el formulario -->
+      <div class="col-lg-8">
+        <div class="rm-card">
+
+          <!-- Cliente -->
+          <div class="rm-section">
+            <h6 class="rm-section-title"><i class="fa fa-user"></i> Datos del cliente</h6>
+            <p class="rm-section-hint">Información básica de quien hace la reserva.</p>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Nombre completo</label>
+                <input type="text" name="nombre_cliente" class="form-control" required value="{{ form_dict.nombre_cliente|default:'' }}" placeholder="Ej: Juan Pérez">
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Teléfono</label>
+                <input type="tel" name="telefono_cliente" class="form-control" required value="{{ form_dict.telefono_cliente|default:'' }}" placeholder="3201234567">
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Tipo cliente</label>
+                <select name="tipo_cliente" class="form-select" required>
+                  {% for t in tipos_cliente %}
+                  <option value="{{ t }}" {% if form_dict.tipo_cliente == t %}selected{% endif %}>{{ t|title }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Email</label>
+                <input type="email" name="email_cliente" class="form-control" required value="{{ form_dict.email_cliente|default:'' }}" placeholder="cliente@correo.com">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Empresa / Entidad (opcional)</label>
+                <input type="text" name="nombre_entidad" class="form-control" value="{{ form_dict.nombre_entidad|default:'' }}" placeholder="Ej: Empresa ABC S.A.S.">
+              </div>
+            </div>
+          </div>
+
+          <!-- Espacio y fecha -->
+          <div class="rm-section">
+            <h6 class="rm-section-title"><i class="fa fa-building"></i> Espacio, fecha y horario</h6>
+            <p class="rm-section-hint">Selecciona la configuración del salón y cuándo será el evento.</p>
+            <div class="row g-3">
+              <div class="col-md-12">
+                <label class="form-label">Espacio (configuración de salón)</label>
+                <select name="configuracion_id" id="rmConfiguracion" class="form-select" required
+                        data-current="{{ form_dict.configuracion_id|default:'' }}">
+                  <option value="">-- Selecciona un espacio --</option>
+                  {% for c in configuraciones %}
+                  <option value="{{ c.id }}"
+                          data-salon="{{ c.salon.nombre }}"
+                          data-tipo="{{ c.get_tipo_configuracion_display }}"
+                          data-cap="{{ c.capacidad_efectiva_max }}"
+                          data-cap-display="{{ c.capacidad_display }}"
+                          data-precio-particular-4h="{{ c.precio_particular_4h|floatformat:0 }}"
+                          data-precio-particular-8h="{{ c.precio_particular_8h|default_if_none:c.precio_particular_4h|floatformat:0 }}"
+                          data-precio-socio-4h="{{ c.precio_socio_4h|floatformat:0 }}"
+                          data-precio-socio-8h="{{ c.precio_socio_8h|default_if_none:c.precio_socio_4h|floatformat:0 }}"
+                          {% if form_dict.configuracion_id|stringformat:'s' == c.id|stringformat:'s' %}selected{% endif %}>
+                    {{ c.salon.nombre }} — {{ c.get_tipo_configuracion_display }} ({{ c.capacidad_display }} PAX)
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Fecha del evento</label>
+                <input type="date" name="fecha_evento" id="rmFecha" class="form-control" required value="{{ form_dict.fecha_evento|default:'' }}">
+                <label class="rm-override-check" for="rmForceMonday">
+                  <input type="checkbox" name="force_monday" id="rmForceMonday" value="1" {% if form_dict.force_monday == '1' %}checked{% endif %}>
+                  <span>Permitir lunes (Club cerrado por defecto)</span>
+                </label>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Hora de inicio</label>
+                <input type="time" name="hora_inicio" id="rmHora" class="form-control" value="{{ form_dict.hora_inicio|default:'' }}">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Duración</label>
+                <select name="duracion_horas" id="rmDuracion" class="form-select" required>
+                  <option value="4" {% if form_dict.duracion_horas == '4' or not form_dict.duracion_horas %}selected{% endif %}>4 horas</option>
+                  <option value="8" {% if form_dict.duracion_horas == '8' %}selected{% endif %}>8 horas</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Tiempo de decoración (h)</label>
+                <select name="tiempo_decoracion" class="form-select">
+                  {% for h in '0123' %}
+                  <option value="{{ h }}" {% if form_dict.tiempo_decoracion == h %}selected{% endif %}>{{ h }} h</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Número de personas</label>
+                <input type="number" name="num_personas" id="rmPersonas" class="form-control" min="1" required value="{{ form_dict.num_personas|default:'' }}">
+                <label class="rm-override-check" for="rmForceCapacity">
+                  <input type="checkbox" name="force_capacity" id="rmForceCapacity" value="1" {% if form_dict.force_capacity == '1' %}checked{% endif %}>
+                  <span>Permitir exceder capacidad</span>
+                </label>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Estado inicial</label>
+                <select name="estado" class="form-select" required>
+                  {% for e in estados %}
+                  <option value="{{ e }}" {% if form_dict.estado == e or not form_dict.estado and e == 'CONFIRMADA' %}selected{% endif %}>{{ e|title }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Precio y observaciones -->
+          <div class="rm-section">
+            <h6 class="rm-section-title"><i class="fa fa-cash-register"></i> Precio y notas</h6>
+            <p class="rm-section-hint">El precio se calcula automáticamente; déjalo vacío para usar la tarifa del salón.</p>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Precio manual (opcional)</label>
+                <input type="text" name="precio_override" id="rmPrecioOverride" class="form-control" value="{{ form_dict.precio_override|default:'' }}" placeholder="Dejar vacío para auto-calcular">
+              </div>
+              <div class="col-md-12">
+                <label class="form-label">Observaciones</label>
+                <textarea name="observaciones" class="form-control" rows="3" placeholder="Notas internas, requisitos especiales, etc.">{{ form_dict.observaciones|default:'' }}</textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DERECHA: resumen sticky -->
+      <div class="col-lg-4">
+        <div class="rm-summary">
+          <h6><i class="fa fa-clipboard-list" style="color:#1e3a8a;"></i> Resumen</h6>
+
+          <div class="rm-summary-row">
+            <span class="rm-label">Espacio</span>
+            <span class="rm-value" id="rmSumEspacio">—</span>
+          </div>
+          <div class="rm-summary-row">
+            <span class="rm-label">Capacidad</span>
+            <span class="rm-value" id="rmSumCapacidad">—</span>
+          </div>
+          <div class="rm-summary-row">
+            <span class="rm-label">Fecha</span>
+            <span class="rm-value" id="rmSumFecha">—</span>
+          </div>
+          <div class="rm-summary-row">
+            <span class="rm-label">Hora / Duración</span>
+            <span class="rm-value" id="rmSumHora">—</span>
+          </div>
+          <div class="rm-summary-row">
+            <span class="rm-label">Personas</span>
+            <span class="rm-value" id="rmSumPersonas">—</span>
+          </div>
+          <div class="rm-summary-row">
+            <span class="rm-label">Tipo cliente</span>
+            <span class="rm-value" id="rmSumTipo">—</span>
+          </div>
+
+          <div class="rm-summary-total">
+            <span>Total estimado</span>
+            <strong id="rmSumTotal">$0</strong>
+          </div>
+
+          <p class="rm-summary-note">El total se calcula desde la tarifa del salón según el tipo de cliente y la duración. Si escribes un precio manual, se usará ese.</p>
+
+          <div class="mt-3">
+            <button type="submit" class="rm-btn-primary"><i class="fa fa-save me-1"></i> Crear reserva</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+  (function(){
+    var sel = document.getElementById('rmConfiguracion');
+    var dur = document.getElementById('rmDuracion');
+    var tipoSel = document.querySelector('select[name="tipo_cliente"]');
+    var personas = document.getElementById('rmPersonas');
+    var fecha = document.getElementById('rmFecha');
+    var hora = document.getElementById('rmHora');
+    var override = document.getElementById('rmPrecioOverride');
+    var sumEspacio = document.getElementById('rmSumEspacio');
+    var sumCap = document.getElementById('rmSumCapacidad');
+    var sumFecha = document.getElementById('rmSumFecha');
+    var sumHora = document.getElementById('rmSumHora');
+    var sumPersonas = document.getElementById('rmSumPersonas');
+    var sumTipo = document.getElementById('rmSumTipo');
+    var sumTotal = document.getElementById('rmSumTotal');
+
+    function formatMoney(n) {
+      n = parseInt(n) || 0;
+      return '$' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    function getSelectedPrice() {
+      var opt = sel.options[sel.selectedIndex];
+      if (!opt || !opt.value) return 0;
+      var isSocio = (tipoSel.value === 'SOCIO');
+      var is8 = (dur.value === '8');
+      var attr;
+      if (isSocio) attr = is8 ? 'precio-socio-8h' : 'precio-socio-4h';
+      else attr = is8 ? 'precio-particular-8h' : 'precio-particular-4h';
+      return parseInt(opt.getAttribute('data-' + attr)) || 0;
+    }
+
+    function recalc() {
+      var opt = sel.options[sel.selectedIndex];
+      if (opt && opt.value) {
+        sumEspacio.textContent = (opt.getAttribute('data-salon') || '') + ' — ' + (opt.getAttribute('data-tipo') || '');
+        sumCap.textContent = (opt.getAttribute('data-cap-display') || '—') + ' personas';
+      } else {
+        sumEspacio.textContent = '—';
+        sumCap.textContent = '—';
+      }
+
+      if (fecha.value) {
+        try {
+          var p = fecha.value.split('-');
+          var d = new Date(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2]));
+          sumFecha.textContent = d.toLocaleDateString('es-CO', {weekday:'short', day:'2-digit', month:'short', year:'numeric'});
+        } catch(e) { sumFecha.textContent = fecha.value; }
+      } else { sumFecha.textContent = '—'; }
+
+      var horaTxt = hora.value || '—';
+      var durTxt = (dur.value === '8') ? '8 horas' : '4 horas';
+      sumHora.textContent = horaTxt + ' · ' + durTxt;
+
+      sumPersonas.textContent = personas.value ? (personas.value + (personas.value === '1' ? ' persona' : ' personas')) : '—';
+      sumTipo.textContent = tipoSel.value ? tipoSel.value.charAt(0) + tipoSel.value.slice(1).toLowerCase() : '—';
+
+      var ovrRaw = (override.value || '').replace(/[^0-9]/g, '');
+      var ovr = parseInt(ovrRaw);
+      if (ovr && ovr > 0) {
+        sumTotal.textContent = formatMoney(ovr) + ' (manual)';
+      } else {
+        sumTotal.textContent = formatMoney(getSelectedPrice());
+      }
+    }
+
+    [sel, dur, tipoSel, personas, fecha, hora, override].forEach(function(el){
+      if (!el) return;
+      el.addEventListener('change', recalc);
+      el.addEventListener('input', recalc);
+    });
+    recalc();
+  })();
+</script>
+{% endblock %}

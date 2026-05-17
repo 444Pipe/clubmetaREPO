@@ -609,6 +609,199 @@ def admin(request):
 
     return render(request, 'admin.html', context)
 
+
+@staff_member_required
+def reserva_manual(request):
+    """Crear una reserva manualmente desde el panel administrativo.
+
+    A diferencia del flujo público (register), aquí el admin:
+      - elige el estado inicial (PENDIENTE/CONFIRMADA/COMPLETADA/CANCELADA)
+      - puede marcar el cliente como SOCIO sin pedir código
+      - puede forzar reservas en lunes o que excedan la capacidad
+        con un checkbox explícito (no por error)
+      - puede dejar el precio en auto o sobrescribirlo manualmente
+    """
+    configuraciones = (
+        ConfiguracionSalon.objects
+        .filter(salon__disponible=True)
+        .select_related('salon')
+        .order_by('salon__nombre', 'tipo_configuracion')
+    )
+
+    estados = [c[0] for c in Reserva.ESTADO_CHOICES]
+    tipos_cliente = [c[0] for c in Reserva.TIPO_CLIENTE_CHOICES]
+
+    if request.method == 'POST':
+        nombre_cliente = request.POST.get('nombre_cliente', '').strip()
+        email_cliente = request.POST.get('email_cliente', '').strip()
+        telefono_cliente = request.POST.get('telefono_cliente', '').strip()
+        nombre_entidad = request.POST.get('nombre_entidad', '').strip()
+        tipo_cliente = request.POST.get('tipo_cliente', 'PARTICULAR').strip()
+        configuracion_id = request.POST.get('configuracion_id', '').strip()
+        fecha_evento_str = request.POST.get('fecha_evento', '').strip()
+        hora_inicio_str = request.POST.get('hora_inicio', '').strip()
+        duracion_horas = request.POST.get('duracion_horas', '4').strip()
+        tiempo_decoracion = request.POST.get('tiempo_decoracion', '0').strip()
+        num_personas = request.POST.get('num_personas', '').strip()
+        estado = request.POST.get('estado', 'PENDIENTE').strip()
+        observaciones = request.POST.get('observaciones', '').strip()
+        precio_override = request.POST.get('precio_override', '').strip()
+        force_monday = request.POST.get('force_monday') == '1'
+        force_capacity = request.POST.get('force_capacity') == '1'
+
+        errors = []
+        warnings = []
+
+        # Validaciones básicas
+        if not nombre_cliente or len(nombre_cliente) < 2:
+            errors.append('Nombre del cliente inválido.')
+        if not email_cliente or '@' not in email_cliente:
+            errors.append('Email inválido.')
+        if not telefono_cliente or len(telefono_cliente) < 7:
+            errors.append('Teléfono inválido.')
+        if tipo_cliente not in tipos_cliente:
+            errors.append('Tipo de cliente inválido.')
+        if estado not in estados:
+            errors.append('Estado de la reserva inválido.')
+
+        # Configuración
+        configuracion = None
+        try:
+            configuracion = configuraciones.filter(id=int(configuracion_id)).first()
+            if not configuracion:
+                errors.append('Espacio seleccionado inválido.')
+        except (ValueError, TypeError):
+            errors.append('Espacio seleccionado inválido.')
+
+        # Personas
+        try:
+            personas_i = int(num_personas)
+            if personas_i <= 0:
+                errors.append('Número de personas inválido.')
+        except (ValueError, TypeError):
+            personas_i = 0
+            errors.append('Número de personas inválido.')
+
+        # Fecha
+        fecha_evento_obj = None
+        try:
+            fecha_evento_obj = datetime.strptime(fecha_evento_str, '%Y-%m-%d').date()
+            if fecha_evento_obj.weekday() == 0 and not force_monday:
+                errors.append('La fecha cae en lunes (el Club está cerrado). Marca "Forzar lunes" si realmente quieres registrarla.')
+            elif fecha_evento_obj.weekday() == 0 and force_monday:
+                warnings.append('Reserva forzada en lunes (el Club está cerrado normalmente).')
+        except ValueError:
+            errors.append('Formato de fecha inválido.')
+
+        # Duración
+        try:
+            duracion_i = int(duracion_horas)
+            if duracion_i not in (4, 8):
+                errors.append('Duración inválida (debe ser 4 u 8 horas).')
+        except (ValueError, TypeError):
+            duracion_i = 4
+            errors.append('Duración inválida.')
+
+        # Hora
+        hora_inicio_obj = None
+        if hora_inicio_str:
+            try:
+                hp = hora_inicio_str.split(':')
+                hora_inicio_obj = dt.time(int(hp[0]), int(hp[1]))
+            except Exception:
+                errors.append('Hora de inicio inválida.')
+
+        # Tiempo de decoración
+        try:
+            tiempo_decoracion_i = max(0, int(tiempo_decoracion))
+        except (ValueError, TypeError):
+            tiempo_decoracion_i = 0
+
+        # Capacidad (con override admin)
+        if configuracion and personas_i > 0:
+            cap_max = configuracion.capacidad_efectiva_max
+            if personas_i > cap_max and not force_capacity:
+                errors.append(f'El salón soporta máximo {cap_max} personas. Marca "Forzar capacidad" si quieres registrarla igual.')
+            elif personas_i > cap_max and force_capacity:
+                warnings.append(f'Reserva forzada por encima de la capacidad ({personas_i} > {cap_max}).')
+
+        # Bloqueos del salón (solo informar, no bloquear — admin decide)
+        if configuracion and fecha_evento_obj:
+            bloqueos = BloqueoEspacio.objects.filter(
+                salon=configuracion.salon,
+                activo=True,
+                fecha_inicio__lte=fecha_evento_obj,
+                fecha_fin__gte=fecha_evento_obj,
+            )
+            if bloqueos.exists():
+                b = bloqueos.first()
+                warnings.append(
+                    f'Aviso: el salón {configuracion.salon.nombre} tiene un bloqueo activo '
+                    f'({b.get_motivo_display()}) entre {b.fecha_inicio:%d/%m/%Y} y {b.fecha_fin:%d/%m/%Y}.'
+                )
+
+        if errors:
+            return render(request, 'reserva_manual.html', {
+                'configuraciones': configuraciones,
+                'estados': estados,
+                'tipos_cliente': tipos_cliente,
+                'errors': errors,
+                'warnings': warnings,
+                'form_dict': request.POST.dict(),
+            })
+
+        # Crear la reserva. precio_total=0 hace que el model.save() calcule
+        # automáticamente desde la configuración y el tipo de cliente.
+        try:
+            reserva = Reserva.objects.create(
+                configuracion_salon=configuracion,
+                nombre_cliente=nombre_cliente,
+                email_cliente=email_cliente,
+                telefono_cliente=telefono_cliente,
+                tipo_cliente=tipo_cliente,
+                nombre_entidad=nombre_entidad or None,
+                fecha_evento=fecha_evento_obj,
+                hora_inicio=hora_inicio_obj,
+                duracion='4H' if duracion_i == 4 else '8H',
+                tiempo_decoracion=tiempo_decoracion_i,
+                numero_personas=personas_i,
+                precio_total=0,  # auto-calc en model.save()
+                estado=estado,
+                observaciones=observaciones,
+            )
+            # Sobrescribir precio si el admin lo especificó
+            if precio_override:
+                try:
+                    pov = int(str(precio_override).replace(',', '').replace('.', '').replace('$', '').strip())
+                    if pov >= 0:
+                        reserva.precio_total = pov
+                        reserva.save()
+                except (ValueError, TypeError):
+                    warnings.append('No se pudo aplicar el precio manual (formato inválido); se mantuvo el precio automático.')
+
+            for w in warnings:
+                messages.warning(request, w)
+            messages.success(request, f'Reserva manual #{reserva.id} creada para {nombre_cliente}.')
+            return redirect('reservas:panel')
+        except Exception as e:
+            messages.error(request, f'Error al crear la reserva: {e}')
+            return render(request, 'reserva_manual.html', {
+                'configuraciones': configuraciones,
+                'estados': estados,
+                'tipos_cliente': tipos_cliente,
+                'errors': [f'Error al crear la reserva: {e}'],
+                'warnings': warnings,
+                'form_dict': request.POST.dict(),
+            })
+
+    # GET
+    return render(request, 'reserva_manual.html', {
+        'configuraciones': configuraciones,
+        'estados': estados,
+        'tipos_cliente': tipos_cliente,
+    })
+
+
 @login_required
 def logout_view(request):
     """Logout seguro solo vía POST para evitar 405 en algunos navegadores y extensiones."""
