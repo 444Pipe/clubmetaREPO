@@ -16,13 +16,7 @@
       </a>
     </div>
 
-    <!-- Mobile-only visible Inicio button (keeps header minimal on small screens) -->
-    {% if request.path != '/' %}
-    <a href="{% url 'reservas:index' %}" class="mobile-home-btn" aria-label="Inicio">
-      <i class="bi bi-house-door"></i>
-      <span class="mobile-home-label">Inicio</span>
-    </a>
-    {% endif %}
+    <!-- Boton Inicio movil removido: el logo (.brand-link) ya navega al inicio -->
 
     <button class="nav-toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="Abrir menú">
       <span class="hamburger"></span>
