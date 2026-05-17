@@ -26,10 +26,10 @@
   </div>
 </section>
 
-<section class="container py-4">
+<section class="container py-4 instalaciones-cards">
   <div class="row g-4">
     <!-- Jardines Card -->
-    <div class="col-md-4">
+    <div class="col-12 col-md-6 col-lg-4">
       <div class="card shadow-sm h-100">
         <div class="card-body">
           <h5 class="card-title text-primary fw-bold mb-3"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f33f.svg" width="28" class="me-2">Jardines</h5>
@@ -54,7 +54,7 @@
       </div>
     </div>
     <!-- Áreas Sociales Card -->
-    <div class="col-md-4">
+    <div class="col-12 col-md-6 col-lg-4">
       <div class="card shadow-sm h-100">
         <div class="card-body">
           <h5 class="card-title text-primary fw-bold mb-3"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f3e2.svg" width="28" class="me-2">Áreas Sociales</h5>
@@ -82,7 +82,7 @@
       </div>
     </div>
     <!-- Áreas Deportivas Card -->
-    <div class="col-md-4">
+    <div class="col-12 col-md-6 col-lg-4">
       <div class="card shadow-sm h-100">
         <div class="card-body">
           <h5 class="card-title text-primary fw-bold mb-3"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/26bd.svg" width="28" class="me-2">Áreas Deportivas</h5>
@@ -103,4 +103,33 @@
     </div>
   </div>
 </section>
+
+<style>
+  /* Instalaciones: unify carousel image heights so cards don't jump as slides change */
+  .instalaciones-cards .carousel-inner img {
+    height: 260px !important;
+    width: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .instalaciones-cards .card { transition: transform .22s ease, box-shadow .22s ease; }
+  .instalaciones-cards .card-title { display: flex; align-items: center; gap: 8px; font-size: clamp(1.05rem, 2.2vw, 1.25rem); }
+  .instalaciones-cards .card-title img { flex-shrink: 0; }
+
+  @media (max-width: 991.98px) {
+    .instalaciones-cards .carousel-inner img { height: 240px !important; }
+  }
+  @media (max-width: 575.98px) {
+    .instalaciones-cards .carousel-inner img { height: 200px !important; }
+    .instalaciones-cards .card-body { padding: 1rem; }
+    .instalaciones-hero h1 { font-size: clamp(1.7rem, 6vw, 2.4rem) !important; }
+    .instalaciones-hero p { font-size: 1.05rem !important; margin-bottom: 1rem !important; }
+  }
+
+  /* Carousel controls easier to tap on touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    .instalaciones-cards .carousel-control-prev,
+    .instalaciones-cards .carousel-control-next { opacity: 0.85; }
+  }
+</style>
 {% endblock %}

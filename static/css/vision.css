@@ -117,41 +117,76 @@
   letter-spacing: 0.2px;
   text-shadow: 0 1px 6px rgba(30,58,138,0.04);
 }
-@media (max-width: 600px) {
+/* Tablet breakpoint: keep the card readable but reduce paddings vs. desktop */
+@media (min-width: 601px) and (max-width: 991px) {
   .vision-section-bg {
-    padding: 16px 0 8px 0;
-    min-height: 100vh;
+    padding: 36px 12px;
+    min-height: auto;
   }
   .vision-card {
-    padding: 10px 2px 18px 2px;
-    border-radius: 16px;
-    max-width: 98vw;
-    margin: 0 1vw;
+    padding: 36px 24px 28px;
+    max-width: 92vw;
+    border-radius: 24px;
   }
   .vision-title {
-    font-size: 1.25rem;
-    margin-bottom: 12px;
+    font-size: 2.1rem;
+    margin-bottom: 16px;
+  }
+  .vision-img {
+    width: 220px;
+    margin-bottom: 18px;
+  }
+  .vision-text {
+    font-size: 1.08rem;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 600px) {
+  .vision-section-bg {
+    padding: 28px 10px 16px;
+    min-height: auto;
+  }
+  .vision-card {
+    padding: 28px 16px 22px;
+    border-radius: 18px;
+    max-width: 96vw;
+    margin: 0 auto;
+  }
+  .vision-title {
+    font-size: 1.55rem;
+    margin-bottom: 14px;
+    letter-spacing: 1px;
   }
   .vision-img {
     width: 100%;
-    max-width: 98vw;
-    border-radius: 10px;
-    margin-bottom: 14px;
+    max-width: 92vw;
+    border-radius: 12px;
+    margin-bottom: 16px;
   }
   .vision-text {
-    font-size: 1.01rem;
-    padding: 0 2vw;
-    line-height: 1.45;
+    font-size: 1rem;
+    padding: 0 4px;
+    line-height: 1.55;
   }
   .vision-ribbon {
-    font-size: 0.89rem;
-    padding: 6px 10px 6px 28px;
+    font-size: 0.88rem;
+    padding: 6px 14px 6px 30px;
     border-radius: 12px 12px 12px 0;
-    top: -22px;
+    top: -20px;
+    max-width: 92%;
+    text-align: center;
+    justify-content: center;
   }
   .vision-ribbon img {
-    height: 20px;
-    width: 20px;
+    height: 22px;
+    width: 22px;
     margin-left: -10px;
+  }
+  /* Disable hover transforms on touch — they get stuck after tap */
+  .vision-img:hover {
+    transform: none;
+    border-color: #e0e7ff;
+    box-shadow: 0 8px 32px rgba(30,58,138,0.15);
   }
 }

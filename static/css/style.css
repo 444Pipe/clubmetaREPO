@@ -306,4 +306,160 @@ a.theme-link{color:var(--accent-500);font-weight:600}
   }
 }
 
+/* =====================================================================
+   GLOBAL RESPONSIVE & UX ENHANCEMENTS (additive — does not override logic)
+   ===================================================================== */
+
+/* Prevent accidental horizontal scroll caused by overflowing children */
+html, body { overflow-x: hidden; }
+
+/* Smooth scroll for in-page anchors */
+html { scroll-behavior: smooth; }
+
+/* Images: never overflow their container by default */
+img { max-width: 100%; height: auto; }
+
+/* Iframes (Google Maps, etc.) shouldn't overflow on narrow screens */
+iframe { max-width: 100%; }
+
+/* Comfortable tap targets on touch devices (44x44 is Apple's HIG minimum) */
+@media (hover: none) and (pointer: coarse) {
+  .btn, .nav-link-custom, .nav-link-logout,
+  .menu-info-list > li > a,
+  .menu-info-list .submenu a,
+  .nav-links a,
+  .footer a, footer a {
+    min-height: 44px;
+  }
+  .btn { padding-top: 0.6rem; padding-bottom: 0.6rem; }
+  /* Disable hover lift animations on touch — they get "stuck" after tap */
+  .card:hover,
+  .event-card:hover,
+  .info-box-enhanced:hover,
+  .contact-layout__map-box:hover {
+    transform: none !important;
+  }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Fluid typography for common headings (kept inside safe min/max) */
+h1, .h1 { font-size: clamp(1.55rem, 4vw, 2.5rem); }
+h2, .h2 { font-size: clamp(1.35rem, 3.2vw, 2rem); }
+h3, .h3 { font-size: clamp(1.15rem, 2.6vw, 1.6rem); }
+.display-4 { font-size: clamp(1.9rem, 5vw, 3.2rem); }
+.display-5 { font-size: clamp(1.6rem, 4vw, 2.6rem); }
+
+/* Better focus visibility (keyboard accessibility) without changing colors */
+:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.7);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Bootstrap container: tighter side padding on small screens */
+@media (max-width: 575.98px) {
+  .container, .container-fluid { padding-left: 14px; padding-right: 14px; }
+}
+
+/* Cards: avoid excessive padding on narrow phones */
+@media (max-width: 575.98px) {
+  .card-body { padding: 1rem; }
+}
+
+/* ----- TABLET (576px – 991px) layout fixes ----- */
+@media (min-width: 576px) and (max-width: 991.98px) {
+  /* Footer becomes 2x2 grid then centered last col on tablet */
+  footer .col-md-4 { text-align: center !important; }
+  footer .col-md-4.text-md-end { text-align: center !important; }
+  footer .row { row-gap: 1.5rem; }
+  footer p { justify-content: center; }
+  /* Stack hero buttons side-by-side but never let them touch edges */
+  .hero .mt-4 { flex-wrap: wrap; }
+  .hero-btn { min-width: 220px; }
+  /* Events grid: keep two columns on tablet but with smaller gap */
+  .events-grid { gap: 20px; }
+  /* Why-choose: image carousel needs a sensible height */
+  .carousel-img, .carousel-inner img { height: 320px !important; }
+}
+
+/* ----- MOBILE (<576px) layout polish ----- */
+@media (max-width: 575.98px) {
+  /* Footer is fully centered, cleaner spacing */
+  footer { padding-top: 2.5rem !important; padding-bottom: 2.5rem !important; }
+  footer .col-md-4 { text-align: center !important; margin-bottom: 1.5rem; }
+  footer .row { row-gap: 1.25rem; }
+  footer h5 { margin-bottom: 0.6rem !important; }
+  footer p { justify-content: center; display: block; }
+  footer .ms-4 { margin-left: 0 !important; }
+  /* Social row stays comfortable */
+  footer .social-link { width: 42px !important; height: 42px !important; font-size: 1.15rem !important; }
+  /* Floating message bubble: keep within viewport with safe padding */
+  .alert.alert-dismissible { font-size: 0.92rem; }
+}
+
+/* Floating messages container: adapt for narrow viewports */
+@media (max-width: 480px) {
+  /* The base.html messages container uses inline styles, target the alert inside */
+  body > div[style*="position: fixed"][style*="top: 80px"] {
+    left: 12px !important;
+    right: 12px !important;
+    max-width: none !important;
+  }
+}
+
+/* Modal dialogs should never exceed viewport */
+.modal-dialog { max-width: min(92vw, 800px); }
+
+/* WhatsApp / accent buttons: don't break their pill shape on long labels */
+.whatsapp-btn, .btn-whatsapp-enhanced { white-space: nowrap; }
+@media (max-width: 420px) {
+  .whatsapp-btn, .btn-whatsapp-enhanced { white-space: normal; text-align: center; }
+  .whatsapp-btn .btn-arrow, .btn-whatsapp-enhanced .btn-arrow { display: none; }
+}
+
+/* Tables (if any) become horizontally scrollable on small screens */
+@media (max-width: 767.98px) {
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+/* Generic micro-interaction: links in content get a subtle underline-slide */
+main a:not(.btn):not(.nav-link-custom):not(.nav-link-logout):not(.brand-link):not(.mobile-brand):not(.nav-links a):not(.menu-info-list a):not(.staff-access-link):not(.social-link) {
+  transition: color 0.18s ease;
+}
+
+/* Cards: lighten box shadow slightly on small screens (less heavy feel) */
+@media (max-width: 575.98px) {
+  .card, .event-card, .info-box-enhanced { box-shadow: 0 4px 14px rgba(16, 24, 40, 0.06) !important; }
+}
+
+/* Prevent over-wide carousel control buttons swallowing taps on mobile */
+@media (max-width: 575.98px) {
+  .carousel-control-prev, .carousel-control-next { width: 12% !important; }
+  .carousel-control-prev-icon, .carousel-control-next-icon { width: 1.5rem; height: 1.5rem; }
+}
+
+/* Section spacing: tighter on phones to avoid huge gaps between sections */
+@media (max-width: 575.98px) {
+  section.py-5, section.my-5, .py-5 { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+  .my-5 { margin-top: 1.5rem !important; margin-bottom: 1.5rem !important; }
+}
+
+/* Forms (used in reservation flow / login / register) need bigger inputs on touch */
+@media (max-width: 575.98px) {
+  .form-control, .form-select, .input-group .form-control {
+    font-size: 16px; /* prevents iOS Safari zoom on focus */
+    min-height: 44px;
+  }
+  .btn { font-size: 0.98rem; }
+}
+
 

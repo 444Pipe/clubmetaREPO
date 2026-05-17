@@ -2,10 +2,38 @@
 {% load static %}
 {% block title %}Junta Directiva - CLUB EL META{% endblock %}
 {% block content %}
+<style>
+  /* Junta directiva: make member cards scale fluidly across breakpoints
+     and override the per-image inline width/height to keep the photo
+     proportional to the card. Keeps existing layout intact. */
+  .junta-grid .card { transition: transform .2s ease, box-shadow .2s ease; }
+  .junta-grid .card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(30,58,138,0.18); }
+  .junta-grid .card img {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 130px;
+    max-height: 130px;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    margin: 0 auto;
+  }
+  .junta-grid .card .small.text-muted {
+    font-size: clamp(0.8rem, 2vw, 0.95rem);
+    line-height: 1.3;
+  }
+  @media (max-width: 575.98px) {
+    .junta-grid .card { padding: 0.75rem !important; }
+    .junta-grid .card img { max-width: 90px; max-height: 90px; }
+  }
+  @media (min-width: 992px) {
+    .junta-grid .card img { max-width: 110px; max-height: 110px; }
+  }
+</style>
+
 <div class="container py-5">
   <h1 class="mb-3">Junta Directiva</h1>
 
-  <div class="row gx-4 gy-4">
+  <div class="row gx-4 gy-4 junta-grid">
     {# Espera una lista `members` en el contexto. Cada `member` debe tener `photo` y `role`. #}
     {% for member in members %}
       <div class="col-6 col-sm-4 col-md-3 col-lg-2">
