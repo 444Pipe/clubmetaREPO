@@ -164,19 +164,28 @@ def espacios(request):
         configuraciones = salon.configuraciones.all()
         
         if configuraciones.exists():
-            # Usar la primera configuración para mostrar precio/capacidad de referencia
-            primera_config = configuraciones.first()
-            
+            # Calcular agregados para mostrar en la card del salón:
+            #   - capacidad mostrada = la MAYOR de todas las configuraciones
+            #   - precio "desde"     = el MENOR de todas las configuraciones
+            configs_list = list(configuraciones)
+            max_capacidad = max(c.capacidad_efectiva_max for c in configs_list)
+            min_precio_particular_4h = min(int(c.precio_particular_4h) for c in configs_list if c.precio_particular_4h is not None)
+            min_precio_socio_4h = min(int(c.precio_socio_4h) for c in configs_list if c.precio_socio_4h is not None)
+            precios_part_8h = [int(c.precio_particular_8h) for c in configs_list if c.precio_particular_8h]
+            precios_socio_8h = [int(c.precio_socio_8h) for c in configs_list if c.precio_socio_8h]
+            min_precio_particular_8h = min(precios_part_8h) if precios_part_8h else min_precio_particular_4h
+            min_precio_socio_8h = min(precios_socio_8h) if precios_socio_8h else min_precio_socio_4h
+
             rooms.append({
                 'id': salon.id,
                 'name': salon.nombre,
                 'desc': salon.descripcion,
-                'price_particular_4h': int(primera_config.precio_particular_4h),
-                'price_particular_8h': int(primera_config.precio_particular_8h or primera_config.precio_particular_4h),
-                'price_socio_4h': int(primera_config.precio_socio_4h),
-                'price_socio_8h': int(primera_config.precio_socio_8h or primera_config.precio_socio_4h),
-                'capacity': primera_config.capacidad_display,
-                'capacity_max': primera_config.capacidad_efectiva_max,
+                'price_particular_4h': min_precio_particular_4h,
+                'price_particular_8h': min_precio_particular_8h,
+                'price_socio_4h': min_precio_socio_4h,
+                'price_socio_8h': min_precio_socio_8h,
+                'capacity': str(max_capacidad),
+                'capacity_max': max_capacidad,
                 'type': 'social',
                 'images': get_salon_images(salon),
                 'configuraciones': [
@@ -185,7 +194,7 @@ def espacios(request):
                         'tipo': c.get_tipo_configuracion_display(),
                         'capacidad': c.capacidad_display,
                         'montaje_image': c.imagen_montaje
-                    } for c in configuraciones
+                    } for c in configs_list
                 ]
                 ,
                 'medidas': salon.medidas_dict()
