@@ -6,19 +6,26 @@
 {% block title %}Espacios Disponibles - CLUB EL META{% endblock %}
 {% block content %}
 
-<section class="hero-secondary py-5" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); position: relative; overflow: hidden;">
-  <!-- Elementos decorativos -->
-  <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%; backdrop-filter: blur(20px);"></div>
-  <div style="position: absolute; bottom: -30px; left: -30px; width: 150px; height: 150px; background: rgba(255,255,255,0.08); border-radius: 50%; backdrop-filter: blur(20px);"></div>
-  
-  <div class="container" style="position: relative; z-index: 2;">
-    <div style="text-align: center; max-width: 700px; margin: 0 auto;">
-      <h2 style="color: white; font-size: 2.5rem; font-weight: 700; margin-bottom: 15px; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">
-        Nuestros Espacios Disponibles
-      </h2>
-      <p style="color: rgba(255,255,255,0.95); font-size: 1.2rem; font-weight: 500; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 12px 24px; border-radius: 50px; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-        Encuentra el espacio perfecto para tu evento
+<section class="hero-secondary espacios-hero" style="background: linear-gradient(135deg, #0c2a5e 0%, #1e3a8a 70%, #1e40af 100%); position: relative; overflow: hidden;">
+  <!-- Pattern decorativo -->
+  <div class="espacios-hero-pattern" aria-hidden="true"></div>
+  <!-- Orbes glass -->
+  <div class="espacios-hero-orb espacios-hero-orb-1" aria-hidden="true"></div>
+  <div class="espacios-hero-orb espacios-hero-orb-2" aria-hidden="true"></div>
+
+  <div class="container espacios-hero-inner">
+    <div class="espacios-hero-content">
+      <span class="espacios-hero-eyebrow">ESPACIOS PARA EVENTOS</span>
+      <h2 class="espacios-hero-title">Nuestros Espacios Disponibles</h2>
+      <p class="espacios-hero-lead">
+        Salones versátiles para celebraciones sociales, eventos corporativos y reuniones familiares.
+        Elige el espacio ideal y reserva en minutos.
       </p>
+      <div class="espacios-hero-meta">
+        <span class="espacios-hero-chip"><i class="bi bi-grid-3x3-gap-fill"></i> {{ rooms|length }} {% if rooms|length == 1 %}espacio{% else %}espacios{% endif %}</span>
+        <span class="espacios-hero-chip"><i class="bi bi-shield-check"></i> Pago seguro</span>
+        <span class="espacios-hero-chip"><i class="bi bi-headset"></i> Asesoría personalizada</span>
+      </div>
     </div>
   </div>
 </section>
@@ -41,77 +48,75 @@
   <div class="row" id="spacesList">
     {% for r in rooms %}
     <div class="col-md-6 col-lg-6 mb-5 space-card" data-capacity="{{ r.capacity_max|default:r.capacity }}" data-price="{{ r.price_particular_4h }}" data-type="{{ r.type }}">
-      <div class="card h-100 shadow-sm hover-card">
-        
-        <!-- Carrusel de Imágenes -->
-        {% if r.images %}
-        <div id="carousel{{ r.id }}" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-          <div class="carousel-inner">
-            {% for img in r.images %}
-            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-              <img src="{% static 'img/' %}{{ img }}" class="d-block w-100" alt="{{ r.name }}" style="height: 250px; object-fit: cover;">
+      <div class="card h-100 hover-card espacio-card">
+
+        <!-- Imagen con overlay badges -->
+        <div class="espacio-card-media">
+          {% if r.images %}
+          <div id="carousel{{ r.id }}" class="carousel slide espacio-card-carousel" data-bs-ride="carousel" data-bs-interval="3500">
+            <div class="carousel-inner">
+              {% for img in r.images %}
+              <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img src="{% static 'img/' %}{{ img }}" class="d-block w-100 espacio-card-img" alt="{{ r.name }}">
+              </div>
+              {% endfor %}
             </div>
-            {% endfor %}
-          </div>
-          
-          <!-- Controles si hay más de una imagen -->
-          {% if r.images|length > 1 %}
-          <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ r.id }}" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Anterior</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ r.id }}" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Siguiente</span>
-          </button>
-          
-          <!-- Indicadores -->
-          <div class="carousel-indicators">
-            {% for img in r.images %}
-            <button type="button" data-bs-target="#carousel{{ r.id }}" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %} aria-label="Imagen {{ forloop.counter }}"></button>
-            {% endfor %}
+
+            {% if r.images|length > 1 %}
+            <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ r.id }}" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ r.id }}" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Siguiente</span>
+            </button>
+
+            <div class="carousel-indicators espacio-card-indicators">
+              {% for img in r.images %}
+              <button type="button" data-bs-target="#carousel{{ r.id }}" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %} aria-label="Imagen {{ forloop.counter }}"></button>
+              {% endfor %}
+            </div>
+            {% endif %}
           </div>
           {% endif %}
+
+          <!-- Badges flotantes sobre la imagen -->
+          <div class="espacio-card-badges">
+            <span class="espacio-card-cap-chip" title="Capacidad máxima">
+              <i class="bi bi-people-fill"></i> Hasta {{ r.capacity }}
+            </span>
+          </div>
+          <div class="espacio-card-price-chip">
+            <span class="espacio-card-price-label">DESDE</span>
+            <strong>${{ r.price_particular_4h|floatformat:0|intcomma }}</strong>
+            <span class="espacio-card-price-unit">/ 4 hrs</span>
+          </div>
         </div>
-        {% endif %}
 
-        <div class="card-body d-flex flex-column p-3">
-          <h5 class="card-title text-primary mb-2" style="font-size: 1.1rem;">{{ r.name }}</h5>
-          <p class="card-text small text-muted mb-2" style="line-height: 1.3;">{{ r.desc }}</p>
-          
-          <div class="info-badges mb-2">
-            <span class="badge bg-light text-dark">
-              <i class="bi bi-people-fill"></i> {{ r.capacity }} personas
-            </span>
-            <span class="badge bg-light text-dark">
-              <i class="bi bi-calendar-event"></i> {{ r.type|title }}
-            </span>
+        <!-- Cuerpo -->
+        <div class="card-body espacio-card-body">
+          <h5 class="espacio-card-title">{{ r.name }}</h5>
+          <p class="espacio-card-desc">{{ r.desc }}</p>
+
+          <!-- Servicios incluidos (chips) -->
+          <div class="espacio-card-features">
+            <span class="espacio-feature" title="Wifi"><i class="bi bi-wifi"></i></span>
+            <span class="espacio-feature" title="Sistema de audio"><i class="bi bi-music-note-beamed"></i></span>
+            <span class="espacio-feature" title="Parking"><i class="bi bi-car-front"></i></span>
+            <span class="espacio-feature" title="Restaurante"><i class="bi bi-cup-straw"></i></span>
+            {% if r.num_configuraciones %}
+            <span class="espacio-feature espacio-feature-text" title="Configuraciones disponibles"><i class="bi bi-grid-3x3-gap-fill"></i> {{ r.num_configuraciones }} montajes</span>
+            {% endif %}
           </div>
 
-          <!-- Precios -->
-          <div class="price-section mb-3">
-            <div class="mb-2" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border-radius: 12px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-              <div class="d-flex align-items-center mb-2">
-                <div>
-                  <div class="text-muted" style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;">Desde</div>
-                  <div class="text-primary fw-bold" style="font-size: 1.3rem; line-height: 1;">${{ r.price_particular_4h|floatformat:0|intcomma }}</div>
-                  <div class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-clock"></i> 4 hrs</div>
-                </div>
-              </div>
-              <div class="border-top pt-2 mt-1">
-                <small class="text-muted d-block" style="font-size: 0.65rem; font-style: italic;">
-                  <i class="bi bi-info-circle"></i> El precio varía de acuerdo al tipo de montaje y la cantidad de personas.
-                </small>
-              </div>
-            </div>
-          </div>
-
-          <div class="d-flex gap-2 mt-auto">
-            <button type="button" class="btn btn-sm btn-outline-primary flex-grow-1" data-bs-toggle="modal" data-bs-target="#detalleModal{{ r.id }}">
-              Detalles
+          <!-- CTAs -->
+          <div class="espacio-card-actions">
+            <button type="button" class="espacio-btn espacio-btn-secondary" data-bs-toggle="modal" data-bs-target="#detalleModal{{ r.id }}">
+              <i class="bi bi-info-circle"></i> Ver detalles
             </button>
-            <a href="{% url 'reservas:register' %}?espacio_id={{ r.id }}" class="btn btn-sm btn-primary flex-grow-1">
-              Reservar
+            <a href="{% url 'reservas:register' %}?espacio_id={{ r.id }}" class="espacio-btn espacio-btn-primary">
+              <i class="bi bi-calendar-check"></i> Reservar
             </a>
           </div>
         </div>
@@ -1379,6 +1384,320 @@
     .salon-modal-footer { padding: 14px 16px !important; flex-direction: column; align-items: stretch; }
     .salon-modal-footer-actions { width: 100%; }
     .salon-modal-footer-actions a { flex: 1; justify-content: center; }
+  }
+
+  /* =====================================================================
+     HERO ESPACIOS — premium con eyebrow, pattern y chips de confianza
+     ===================================================================== */
+  .espacios-hero { padding: 5rem 0 4.5rem !important; }
+  .espacios-hero-pattern {
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.06) 0, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(217,119,6,0.10) 0, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .espacios-hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .espacios-hero-orb-1 { width: 320px; height: 320px; top: -110px; right: -90px; }
+  .espacios-hero-orb-2 { width: 200px; height: 200px; bottom: -70px; left: -60px; background: rgba(217, 119, 6, 0.08); }
+  .espacios-hero-inner { position: relative; z-index: 2; }
+  .espacios-hero-content { max-width: 760px; margin: 0 auto; text-align: center; }
+  .espacios-hero-eyebrow {
+    display: inline-block;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 0.78rem;
+    letter-spacing: 0.32em;
+    font-weight: 700;
+    padding: 6px 16px;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.20);
+    border-radius: 999px;
+    backdrop-filter: blur(8px);
+    margin-bottom: 1.25rem;
+  }
+  .espacios-hero-title {
+    color: #fff !important;
+    font-size: clamp(1.8rem, 4vw, 2.75rem) !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+    margin-bottom: 0.85rem !important;
+    text-shadow: 0 2px 30px rgba(0, 0, 0, 0.18);
+  }
+  .espacios-hero-lead {
+    color: rgba(255, 255, 255, 0.92);
+    font-size: clamp(1rem, 1.7vw, 1.12rem);
+    line-height: 1.6;
+    max-width: 620px;
+    margin: 0 auto 1.5rem;
+    text-shadow: 0 1px 16px rgba(0, 0, 0, 0.18);
+  }
+  .espacios-hero-meta {
+    display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap;
+  }
+  .espacios-hero-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    backdrop-filter: blur(8px);
+  }
+  .espacios-hero-chip i { color: #fbbf24; }
+
+  /* =====================================================================
+     ESPACIOS CARDS — overlay badges, hover zoom, body limpio
+     ===================================================================== */
+  .espacio-card {
+    border: 1px solid rgba(15, 23, 42, 0.06) !important;
+    border-radius: 20px !important;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 8px 24px rgba(15, 23, 42, 0.06) !important;
+    transition: transform 0.32s cubic-bezier(.22,.61,.36,1), box-shadow 0.32s cubic-bezier(.22,.61,.36,1), border-color 0.22s ease;
+  }
+  .espacio-card:hover {
+    transform: translateY(-8px) !important;
+    border-color: rgba(30, 58, 138, 0.25) !important;
+    box-shadow: 0 18px 44px rgba(15, 23, 42, 0.14) !important;
+  }
+
+  /* Media (imagen + overlays) */
+  .espacio-card-media {
+    position: relative;
+    overflow: hidden;
+    background: #0c2a5e;
+  }
+  .espacio-card-img {
+    width: 100% !important;
+    height: 280px !important;
+    object-fit: cover !important;
+    display: block;
+    transition: transform 0.55s cubic-bezier(.22,.61,.36,1), filter 0.4s ease;
+  }
+  .espacio-card:hover .espacio-card-img {
+    transform: scale(1.06);
+    filter: brightness(1.04);
+  }
+  /* Gradient sutil para mejorar legibilidad de los chips */
+  .espacio-card-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.18) 0%, transparent 30%, transparent 60%, rgba(0,0,0,0.35) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Badge de capacidad (top-left) */
+  .espacio-card-badges {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 3;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .espacio-card-cap-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px;
+    background: rgba(15, 23, 42, 0.78);
+    color: #fff;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+  }
+  .espacio-card-cap-chip i { color: #fbbf24; }
+
+  /* Chip de precio (bottom-right) */
+  .espacio-card-price-chip {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    z-index: 3;
+    background: #ffffff;
+    color: #0c2a5e;
+    padding: 8px 14px;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.28);
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+  }
+  .espacio-card-price-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-right: 2px;
+  }
+  .espacio-card-price-chip strong {
+    color: #0c2a5e;
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .espacio-card-price-unit { color: #64748b; font-size: 0.72rem; font-weight: 600; }
+
+  /* Indicadores del carrusel */
+  .espacio-card-indicators { bottom: 64px; margin: 0; z-index: 4; }
+  .espacio-card-indicators button {
+    width: 6px !important; height: 6px !important; border-radius: 50%;
+    background: rgba(255, 255, 255, 0.65) !important;
+    margin: 0 3px; border: 0 !important;
+    transition: background 0.18s ease, transform 0.18s ease;
+  }
+  .espacio-card-indicators button.active {
+    background: #ffffff !important; transform: scale(1.4);
+  }
+  .espacio-card .carousel-control-prev,
+  .espacio-card .carousel-control-next {
+    width: 12% !important;
+    opacity: 0;
+    transition: opacity 0.22s ease;
+    z-index: 2;
+  }
+  .espacio-card:hover .carousel-control-prev,
+  .espacio-card:hover .carousel-control-next { opacity: 0.78; }
+
+  /* Body */
+  .espacio-card-body {
+    padding: 1.5rem 1.4rem 1.4rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .espacio-card-title {
+    color: #0c2a5e !important;
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.5rem !important;
+  }
+  .espacio-card-desc {
+    color: #475569;
+    font-size: 0.93rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Features chips */
+  .espacio-card-features {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    padding-bottom: 1.1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px dashed rgba(15, 23, 42, 0.10);
+  }
+  .espacio-feature {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.08), rgba(59, 130, 246, 0.04));
+    color: #1e3a8a;
+    font-size: 0.9rem;
+    border: 1px solid rgba(30, 58, 138, 0.10);
+    transition: background 0.16s ease, transform 0.16s ease;
+  }
+  .espacio-feature:hover {
+    background: rgba(30, 58, 138, 0.14);
+    transform: translateY(-2px);
+  }
+  .espacio-feature-text {
+    width: auto;
+    padding: 0 10px;
+    gap: 5px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #1e3a8a;
+  }
+  .espacio-feature-text i { font-size: 0.85rem; }
+
+  /* CTAs */
+  .espacio-card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+  }
+  .espacio-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex: 1;
+    padding: 11px 16px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    letter-spacing: 0.005em;
+    text-decoration: none;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease, border-color 0.18s ease, filter 0.18s ease;
+  }
+  .espacio-btn-secondary {
+    background: #ffffff;
+    color: #1e3a8a;
+    border-color: rgba(30, 58, 138, 0.30);
+  }
+  .espacio-btn-secondary:hover {
+    background: rgba(30, 58, 138, 0.06);
+    border-color: #1e3a8a;
+    transform: translateY(-2px);
+  }
+  .espacio-btn-primary {
+    background: linear-gradient(135deg, #1e3a8a, #2456a8);
+    color: #ffffff !important;
+    box-shadow: 0 6px 14px rgba(30, 58, 138, 0.28);
+  }
+  .espacio-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(30, 58, 138, 0.38);
+    filter: brightness(1.06);
+    color: #ffffff !important;
+  }
+
+  /* Responsive */
+  @media (max-width: 991.98px) {
+    .espacios-hero { padding: 3.5rem 0 3rem !important; }
+    .espacio-card-img { height: 240px !important; }
+  }
+  @media (max-width: 575.98px) {
+    .espacios-hero { padding: 2.5rem 0 2.25rem !important; }
+    .espacios-hero-orb-1 { width: 200px; height: 200px; top: -70px; right: -50px; }
+    .espacios-hero-orb-2 { display: none; }
+    .espacios-hero-eyebrow { font-size: 0.68rem; padding: 5px 12px; letter-spacing: 0.22em; }
+    .espacios-hero-lead { font-size: 0.95rem; }
+    .espacios-hero-chip { font-size: 0.78rem; padding: 5px 12px; }
+    .espacio-card { border-radius: 16px !important; }
+    .espacio-card-img { height: 220px !important; }
+    .espacio-card-body { padding: 1.2rem !important; }
+    .espacio-card-title { font-size: 1.1rem !important; }
+    .espacio-card-cap-chip { font-size: 0.7rem; padding: 5px 10px; }
+    .espacio-card-price-chip { padding: 6px 11px; }
+    .espacio-card-price-chip strong { font-size: 0.95rem; }
+    .espacio-card-actions { flex-direction: column; }
+    .espacio-btn { padding: 12px 16px; }
   }
 </style>
 
