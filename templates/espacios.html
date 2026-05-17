@@ -2,6 +2,7 @@
 {% load static %}
 {% load custom_filters %}
 {% load humanize %}
+{% load montaje_icons %}
 {% block title %}Espacios Disponibles - CLUB EL META{% endblock %}
 {% block content %}
 
@@ -250,11 +251,9 @@
                     <tr>
                       <td>
                         <div class="salon-config-name">
-                          {% if m.montaje_image %}
-                          <img src="{% static 'img/' %}{{ m.montaje_image }}" alt="{{ m.tipo }}" class="salon-config-thumb">
-                          {% else %}
-                          <span class="salon-config-thumb salon-config-thumb-placeholder"><i class="bi bi-grid"></i></span>
-                          {% endif %}
+                          <span class="salon-config-thumb salon-config-thumb-svg">
+                            {% montaje_icon m.tipo %}
+                          </span>
                           <span>{{ m.tipo }}</span>
                         </div>
                       </td>
@@ -299,22 +298,21 @@
             </section>
             {% endif %}
 
-            <!-- Galería de montajes (thumbnails grandes, clic = lightbox) -->
+            <!-- Galería de montajes (iconos SVG dinámicos por tipo) -->
             {% if r.configuraciones %}
             <section class="salon-section">
-              <h6 class="salon-section-title"><i class="bi bi-images"></i> Galería de montajes</h6>
-              <p class="salon-section-hint">Haz clic en una imagen para verla en grande.</p>
-              <div class="montaje-grid">
+              <h6 class="salon-section-title"><i class="bi bi-images"></i> Tipos de montaje</h6>
+              <p class="salon-section-hint">Diagramas esquemáticos de cada distribución disponible.</p>
+              <div class="montaje-icon-grid">
                 {% for m in r.configuraciones %}
-                  <div class="montaje-item">
-                    {% if m.montaje_image %}
-                      <div class="montaje-thumb-wrap">
-                        <img src="{% static 'img/' %}{{ m.montaje_image }}" alt="{{ m.tipo }}" class="montaje-thumb" data-full="{% static 'img/' %}{{ m.montaje_image }}">
-                      </div>
-                      <div class="montaje-caption" title="{{ m.tipo }}">{{ m.tipo }}</div>
-                    {% else %}
-                      <div class="montaje-placeholder">{{ m.tipo }}</div>
-                    {% endif %}
+                  <div class="montaje-icon-item">
+                    <div class="montaje-icon-box">
+                      {% montaje_icon m.tipo %}
+                    </div>
+                    <div class="montaje-icon-caption">
+                      <span class="montaje-icon-name">{{ m.tipo }}</span>
+                      <span class="montaje-icon-cap"><i class="bi bi-people"></i> {{ m.capacidad }}</span>
+                    </div>
                   </div>
                 {% endfor %}
               </div>
@@ -1170,6 +1168,86 @@
     justify-content: center;
     color: #94a3b8;
     font-size: 1rem;
+  }
+  /* SVG icon dentro de la tabla comparativa */
+  .salon-config-thumb-svg {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    background: linear-gradient(135deg, #f8fafc, #eef2ff);
+    border: 1px solid rgba(30, 58, 138, 0.10);
+  }
+  .salon-config-thumb-svg .montaje-svg {
+    width: 100%;
+    height: 100%;
+    max-width: 32px;
+    max-height: 32px;
+  }
+
+  /* Galería de iconos de montaje (sección dedicada) */
+  .montaje-icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 14px;
+  }
+  .montaje-icon-item {
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 14px;
+    padding: 14px 12px;
+    text-align: center;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .montaje-icon-item:hover {
+    border-color: rgba(30, 58, 138, 0.30);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+  }
+  .montaje-icon-box {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 10px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 100%);
+    border: 1px solid rgba(30, 58, 138, 0.10);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+  .montaje-icon-box .montaje-svg {
+    width: 100%;
+    height: 100%;
+    max-width: 60px;
+    max-height: 60px;
+  }
+  .montaje-icon-caption {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .montaje-icon-name {
+    font-weight: 700;
+    color: #0c2a5e;
+    font-size: 0.88rem;
+    letter-spacing: -0.005em;
+  }
+  .montaje-icon-cap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: #64748b;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+  .montaje-icon-cap i { color: #1e3a8a; font-size: 0.85rem; }
+
+  @media (max-width: 575.98px) {
+    .montaje-icon-grid { grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; }
+    .montaje-icon-box { width: 64px; height: 64px; padding: 8px; }
+    .montaje-icon-box .montaje-svg { max-width: 48px; max-height: 48px; }
   }
   .salon-cap-badge {
     display: inline-flex;
