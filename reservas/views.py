@@ -175,14 +175,15 @@ def espacios(request):
                 'price_particular_8h': int(primera_config.precio_particular_8h or primera_config.precio_particular_4h),
                 'price_socio_4h': int(primera_config.precio_socio_4h),
                 'price_socio_8h': int(primera_config.precio_socio_8h or primera_config.precio_socio_4h),
-                'capacity': primera_config.capacidad,
+                'capacity': primera_config.capacidad_display,
+                'capacity_max': primera_config.capacidad_efectiva_max,
                 'type': 'social',
                 'images': get_salon_images(salon),
                 'configuraciones': [
                     {
                         'id': c.id,
                         'tipo': c.get_tipo_configuracion_display(),
-                        'capacidad': c.capacidad,
+                        'capacidad': c.capacidad_display,
                         'montaje_image': c.imagen_montaje
                     } for c in configuraciones
                 ]
@@ -226,13 +227,14 @@ def register(request):
             'id': config.id,
             'salon_id': config.salon.id,
             'name': f"{config.salon.nombre} - {config.get_tipo_configuracion_display()}",
-            'desc': f"{config.capacidad} personas",
+            'desc': f"{config.capacidad_display} personas",
             'price': precio_texto,  # Texto completo del precio
             'price_particular_4h': int(config.precio_particular_4h),
             'price_particular_8h': int(config.precio_particular_8h or config.precio_particular_4h),
             'price_socio_4h': int(config.precio_socio_4h),
             'price_socio_8h': int(config.precio_socio_8h or config.precio_socio_4h),
-            'capacity': config.capacidad,
+            'capacity': config.capacidad_display,
+            'capacity_max': config.capacidad_efectiva_max,
             'type': 'social',
             'images': get_salon_images(config.salon),
             'montaje_image': config.imagen_montaje
@@ -324,9 +326,10 @@ def register(request):
                     fecha_fin_str = bloqueo.fecha_fin.strftime('%d/%m/%Y')
                     errors.append(f"El salón {configuracion.salon.nombre} no está disponible para la fecha {fecha_evento}. Motivo: {bloqueo.get_motivo_display()}. Bloqueado desde {fecha_inicio_str} hasta {fecha_fin_str}.")
             
-            # Validar capacidad del salón
-            if personas_i > configuracion.capacidad:
-                errors.append(f"El salón soporta máximo {configuracion.capacidad} personas. Solicitaste {personas_i}.")
+            # Validar capacidad del salón (usa el tope máximo si la configuración tiene intervalo)
+            cap_max = configuracion.capacidad_efectiva_max
+            if personas_i > cap_max:
+                errors.append(f"El salón soporta máximo {cap_max} personas. Solicitaste {personas_i}.")
             
             # Validar código de socio si se marcó como socio
             es_socio = request.POST.get('es_socio', 'no')
@@ -1216,7 +1219,8 @@ def check_availability(request):
             'salon_id': config.salon.id,
             'salon_nombre': config.salon.nombre,
             'configuracion': config.get_tipo_configuracion_display(),
-            'capacidad': config.capacidad,
+            'capacidad': config.capacidad_display,
+            'capacidad_max': config.capacidad_efectiva_max,
             'disponible': not esta_bloqueado,
         }
         

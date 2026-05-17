@@ -61,18 +61,23 @@ class ConfiguracionSalon(models.Model):
     
     salon = models.ForeignKey(Salon, on_delete=models.CASCADE, related_name='configuraciones')
     tipo_configuracion = models.CharField(max_length=20, choices=TIPO_CONFIGURACION_CHOICES)
-    capacidad = models.IntegerField(validators=[MinValueValidator(1)], help_text="Capacidad máxima en esta configuración")
-    
+    capacidad = models.IntegerField(validators=[MinValueValidator(1)], help_text="Capacidad (o capacidad mínima si se define un intervalo)")
+    capacidad_max = models.IntegerField(
+        null=True, blank=True,
+        validators=[MinValueValidator(1)],
+        help_text="Opcional. Si esta configuración admite un intervalo de personas (ej: 200–500), indica aquí el máximo. Déjalo vacío si la capacidad es un único valor."
+    )
+
     # Precios para socios
     precio_socio_4h = models.DecimalField(max_digits=10, decimal_places=2, help_text="Precio para socios (4 horas)")
     precio_socio_8h = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, help_text="Precio para socios (8 horas)")
-    
+
     # Precios para particulares
     precio_particular_4h = models.DecimalField(max_digits=10, decimal_places=2, help_text="Precio para particulares (4 horas)")
     precio_particular_8h = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, help_text="Precio para particulares (8 horas)")
     # Ruta relativa a la imagen del montaje dentro de `static/img/` (ej: "montajes/mi_llanura/auditorio.jpg")
     imagen_montaje = models.CharField(max_length=300, blank=True, help_text="Ruta relativa en static/img/ para la imagen de este montaje")
-    
+
     class Meta:
         verbose_name = "Configuración de Salón"
         verbose_name_plural = "Configuraciones de Salones"
@@ -81,9 +86,28 @@ class ConfiguracionSalon(models.Model):
         permissions = (
             ("can_modify_prices", "Puede modificar precios y parámetros del sistema"),
         )
-    
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        if self.capacidad_max is not None and self.capacidad_max < self.capacidad:
+            raise ValidationError({
+                'capacidad_max': 'La capacidad máxima no puede ser menor que la capacidad (mínima).'
+            })
+
+    @property
+    def capacidad_efectiva_max(self):
+        """Tope real de personas que admite esta configuración."""
+        return self.capacidad_max if self.capacidad_max else self.capacidad
+
+    @property
+    def capacidad_display(self):
+        """Texto legible: '200 - 500' si hay intervalo, '100' si es valor único."""
+        if self.capacidad_max and self.capacidad_max != self.capacidad:
+            return f"{self.capacidad} - {self.capacidad_max}"
+        return str(self.capacidad)
+
     def __str__(self):
-        return f"{self.salon.nombre} - {self.get_tipo_configuracion_display()} ({self.capacidad} PAX)"
+        return f"{self.salon.nombre} - {self.get_tipo_configuracion_display()} ({self.capacidad_display} PAX)"
 
 
 class Reserva(models.Model):

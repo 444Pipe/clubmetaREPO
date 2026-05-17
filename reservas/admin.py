@@ -172,17 +172,18 @@ class SalonAdmin(admin.ModelAdmin):
 class ConfiguracionSalonInline(admin.TabularInline):
     model = ConfiguracionSalon
     extra = 1
-    fields = ('tipo_configuracion', 'capacidad', 'imagen_montaje', 'precio_socio_4h', 'precio_particular_4h', 'precio_socio_8h', 'precio_particular_8h')
+    fields = ('tipo_configuracion', 'capacidad', 'capacidad_max', 'imagen_montaje', 'precio_socio_4h', 'precio_particular_4h', 'precio_socio_8h', 'precio_particular_8h')
 
 
 @admin.register(ConfiguracionSalon)
 class ConfiguracionSalonAdmin(admin.ModelAdmin):
-    list_display = ('salon', 'tipo_configuracion', 'capacidad', 'precio_socio_4h_display', 'precio_particular_4h_display')
+    list_display = ('salon', 'tipo_configuracion', 'capacidad_display_col', 'precio_socio_4h_display', 'precio_particular_4h_display')
     list_filter = ('salon', 'tipo_configuracion')
     search_fields = ('salon__nombre',)
     fieldsets = (
         ('Información General', {
-            'fields': ('salon', 'tipo_configuracion', 'capacidad', 'imagen_montaje')
+            'fields': ('salon', 'tipo_configuracion', ('capacidad', 'capacidad_max'), 'imagen_montaje'),
+            'description': 'Si la capacidad varía dentro de un intervalo (ej: 200 a 500 personas), llena <b>Capacidad</b> con el mínimo y <b>Capacidad max</b> con el máximo. Si es un valor único, deja vacío el campo <b>Capacidad max</b>.'
         }),
         ('Precios para Socios', {
             'fields': ('precio_socio_4h', 'precio_socio_8h')
@@ -191,6 +192,11 @@ class ConfiguracionSalonAdmin(admin.ModelAdmin):
             'fields': ('precio_particular_4h', 'precio_particular_8h')
         }),
     )
+
+    def capacidad_display_col(self, obj):
+        return obj.capacidad_display
+    capacidad_display_col.short_description = 'Capacidad'
+    capacidad_display_col.admin_order_field = 'capacidad'
 
     def precio_socio_4h_display(self, obj):
         return money_format(obj.precio_socio_4h)

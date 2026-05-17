@@ -39,7 +39,7 @@
 <section class="container espacios mb-5">
   <div class="row" id="spacesList">
     {% for r in rooms %}
-    <div class="col-md-6 col-lg-6 mb-5 space-card" data-capacity="{{ r.capacity }}" data-price="{{ r.price_particular_4h }}" data-type="{{ r.type }}">
+    <div class="col-md-6 col-lg-6 mb-5 space-card" data-capacity="{{ r.capacity_max|default:r.capacity }}" data-price="{{ r.price_particular_4h }}" data-type="{{ r.type }}">
       <div class="card h-100 shadow-sm hover-card">
         
         <!-- Carrusel de Imágenes -->
