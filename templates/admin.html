@@ -187,7 +187,7 @@
       <h5 class="mb-0">Listado de Reservas</h5>
       <div class="ms-auto d-flex gap-2">
         <a class="btn btn-sm btn-outline-light" href="{% url 'reservas:export_csv' %}?estado={{ f_estado }}&tipo={{ f_tipo }}&salon={{ f_salon }}&desde={{ f_desde }}&hasta={{ f_hasta }}"><i class="fa fa-download"></i> Exportar CSV</a>
-        <button class="btn btn-sm btn-danger" onclick="if(confirm('¿Seguro que deseas borrar TODAS las reservas? Esta acción no se puede deshacer.')) { document.getElementById('deleteAllForm').submit(); }"><i class="fa fa-trash"></i> Borrar Todas</button>
+        <button class="btn btn-sm btn-danger" onclick="if(confirm('¿Seguro que deseas eliminar TODAS las reservas? Esta acción no se puede deshacer.')) { document.getElementById('deleteAllForm').submit(); }"><i class="fa fa-trash"></i> Eliminar Todas</button>
       </div>
     </div>
     <div class="card-body p-0">

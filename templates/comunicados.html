@@ -163,7 +163,7 @@
       {% for img in imagenes %}
         {% if img.imagen %}
           <div class="comunicado-item">
-            <img src="{{ img.imagen.url }}" alt="" />
+            <img src="{{ img.imagen.url }}" alt="{{ img.titulo|default:'Imagen del comunicado' }}" />
           </div>
         {% endif %}
       {% endfor %}
@@ -179,7 +179,7 @@
             {% for img in c.images.all %}
               {% if img.imagen %}
                 <div class="comunicado-item">
-                  <img src="{{ img.imagen.url }}" alt="" />
+                  <img src="{{ img.imagen.url }}" alt="{{ c.titulo|default:'Imagen del comunicado' }}" />
                 </div>
               {% endif %}
             {% endfor %}

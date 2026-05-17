@@ -1461,11 +1461,9 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 {% endif %}
 
-{% endblock %}
-{% endblock %}
-
+<!-- Bloquear seleccion de lunes (la Corporacion no trabaja los lunes).
+     ESTABA HUERFANO FUERA DEL BLOCK SCRIPTS y por eso no se ejecutaba. -->
 <script>
-  // Deshabilitar selección de lunes (la Corporación no trabaja los lunes)
   document.addEventListener('DOMContentLoaded', function(){
     var fechaInput = document.getElementById('fechaEvento');
     var availability = document.getElementById('availabilityStatus');
@@ -1542,3 +1540,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 </script>
+
+{% endblock %}
+{% endblock %}
