@@ -272,9 +272,15 @@
       if(!preloader) return;
       var bar = document.getElementById('preloaderBar');
       var pct = document.getElementById('preloaderPercent');
-      var imgs = Array.prototype.slice.call(document.images || []);
+      // Ignorar imagenes con loading="lazy": no se descargan hasta
+      // hacer scroll, no tiene sentido esperarlas en el preloader.
+      var imgs = Array.prototype.slice.call(document.images || []).filter(function(img){
+        return img.getAttribute('loading') !== 'lazy';
+      });
       var total = imgs.length;
+      var threshold = total > 0 ? Math.max(1, Math.ceil(total / 2)) : 0;
       var loaded = 0;
+      var hidden = false;
       var minDisplayMs = 600;
       var startedAt = Date.now();
 
@@ -285,6 +291,8 @@
       }
 
       function hidePreloader(){
+        if(hidden) return;
+        hidden = true;
         var elapsed = Date.now() - startedAt;
         var wait = Math.max(0, minDisplayMs - elapsed);
         setProgress(100);
@@ -299,9 +307,10 @@
 
       function bump(){
         loaded++;
-        var p = total > 0 ? (loaded / total) * 100 : 100;
+        // Progreso respecto al umbral (mitad), no al total.
+        var p = threshold > 0 ? (loaded / threshold) * 100 : 100;
         setProgress(p);
-        if(loaded >= total) hidePreloader();
+        if(loaded >= threshold) hidePreloader();
       }
 
       if(total === 0){
