@@ -1,24 +1,44 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load cdn_tags %}
-{% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/vision.css' %}">
-{% endblock %}
-
-{% block extra_js %}
-  <script src="{% static 'js/vision.js' %}"></script>
-{% endblock %}
+{% block title %}Misión - CLUB EL META{% endblock %}
 
 {% block content %}
-<div class="vision-section-bg">
-  <div class="vision-card">
-    <div class="vision-ribbon">
-      <img src="{% cdn_static 'img/logo.webp' transforms='f_auto,q_auto' %}" alt="Logo Club El Meta" decoding="async">
-      CLUB EL META
-    </div>
-    <div class="vision-title">Misión</div>
-    <img src="{% cdn_static 'img/carru4.webp' transforms='c_fill,w_900,h_600,f_auto,q_auto' %}" alt="Misión" class="vision-img" loading="lazy" decoding="async">
-    <p class="vision-text">Brindar a propios y visitantes un exclusivo ambiente atendido por personal idóneo y calificado, en cómodas y bellas instalaciones, ofreciendo productos de primera línea, satisfaciendo plenamente las expectativas de excelencia, descanso y esparcimiento.</p>
+<section class="pg-hero">
+  <div class="pg-hero-pattern" aria-hidden="true"></div>
+  <div class="pg-hero-orb pg-hero-orb-1" aria-hidden="true"></div>
+  <div class="pg-hero-orb pg-hero-orb-2" aria-hidden="true"></div>
+  <div class="container pg-hero-inner">
+    <span class="pg-hero-eyebrow"><i class="bi bi-bullseye"></i> NUESTRA MISIÓN</span>
+    <h1 class="pg-hero-title">Misión</h1>
+    <p class="pg-hero-lead">El propósito que guía cada día nuestro servicio a propios y visitantes.</p>
   </div>
-</div>
+</section>
+
+<section class="pg-content">
+  <div class="container">
+    <article class="pg-card">
+      <div class="pg-card-media">
+        <img src="{% cdn_static 'img/carru4.webp' transforms='c_fill,w_1600,h_900,f_auto,q_auto' %}" alt="Misión Club El Meta" loading="lazy" decoding="async">
+        <div class="pg-card-media-overlay"></div>
+        <h2 class="pg-card-media-title"><i class="bi bi-bullseye"></i> Excelencia</h2>
+      </div>
+      <div class="pg-card-body">
+        <span class="pg-card-eyebrow">Propósito institucional</span>
+        <h3 class="pg-card-title">Exclusividad, calidad y excelencia</h3>
+        <p class="pg-card-text">
+          Brindar a propios y visitantes un exclusivo ambiente atendido por personal idóneo y calificado,
+          en cómodas y bellas instalaciones, ofreciendo productos de primera línea, satisfaciendo plenamente
+          las expectativas de excelencia, descanso y esparcimiento.
+        </p>
+
+        <ul class="pg-info-list">
+          <li><i class="bi bi-award-fill"></i> Personal idóneo y calificado</li>
+          <li><i class="bi bi-building-fill"></i> Instalaciones cómodas y bellas</li>
+          <li><i class="bi bi-gem"></i> Productos de primera línea</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
 {% endblock %}

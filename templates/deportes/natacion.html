@@ -2,118 +2,80 @@
 {% load static %}
 {% load cdn_tags %}
 {% block title %}Natación - CLUB EL META{% endblock %}
+
 {% block content %}
-<div class="container py-5">
-  <div class="deporte-card shadow-lg rounded-4 overflow-hidden mb-5 animate__animated animate__fadeIn">
-    <div class="deporte-carousel-wrapper position-relative">
-      <div id="natacionCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img loading="lazy" src="{% cdn_static 'img/natacion/nata1.avif' transforms='c_fill,w_1200,h_700,f_auto,q_auto' %}" class="deporte-img" alt="Natación 1">
+<section class="pg-hero">
+  <div class="pg-hero-pattern" aria-hidden="true"></div>
+  <div class="pg-hero-orb pg-hero-orb-1" aria-hidden="true"></div>
+  <div class="pg-hero-orb pg-hero-orb-2" aria-hidden="true"></div>
+  <div class="container pg-hero-inner">
+    <span class="pg-hero-eyebrow"><i class="bi bi-trophy-fill"></i> ÁREAS DEPORTIVAS</span>
+    <h1 class="pg-hero-title">Natación</h1>
+    <p class="pg-hero-lead">Piscina amplia y cuidada para nado libre, recreación familiar y bienestar.</p>
+  </div>
+</section>
+
+<section class="pg-content">
+  <div class="container">
+    <article class="pg-card">
+      <div class="pg-card-media">
+        <div id="natacionCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active"><img src="{% cdn_static 'img/natacion/nata1.avif' transforms='c_fill,w_1600,h_900,f_auto,q_auto' %}" alt="Piscina 1" loading="lazy" decoding="async"></div>
+            <div class="carousel-item"><img src="{% cdn_static 'img/natacion/nata2.avif' transforms='c_fill,w_1600,h_900,f_auto,q_auto' %}" alt="Piscina 2" loading="lazy" decoding="async"></div>
+            <div class="carousel-item"><img src="{% cdn_static 'img/natacion/nata3.avif' transforms='c_fill,w_1600,h_900,f_auto,q_auto' %}" alt="Piscina 3" loading="lazy" decoding="async"></div>
+            <div class="carousel-item"><img src="{% cdn_static 'img/natacion/nata4.avif' transforms='c_fill,w_1600,h_900,f_auto,q_auto' %}" alt="Piscina 4" loading="lazy" decoding="async"></div>
+            <div class="carousel-item"><img src="{% cdn_static 'img/natacion/nata5.avif' transforms='c_fill,w_1600,h_900,f_auto,q_auto' %}" alt="Piscina 5" loading="lazy" decoding="async"></div>
+            <div class="carousel-item"><img src="{% cdn_static 'img/natacion/nata6.avif' transforms='c_fill,w_1600,h_900,f_auto,q_auto' %}" alt="Piscina 6" loading="lazy" decoding="async"></div>
+            <div class="carousel-item"><img src="{% cdn_static 'img/natacion/nata7.avif' transforms='c_fill,w_1600,h_900,f_auto,q_auto' %}" alt="Piscina 7" loading="lazy" decoding="async"></div>
           </div>
-          <div class="carousel-item">
-            <img loading="lazy" src="{% cdn_static 'img/natacion/nata2.avif' transforms='c_fill,w_1200,h_700,f_auto,q_auto' %}" class="deporte-img" alt="Natación 2">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#natacionCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Imagen 1"></button>
+            <button type="button" data-bs-target="#natacionCarousel" data-bs-slide-to="1" aria-label="Imagen 2"></button>
+            <button type="button" data-bs-target="#natacionCarousel" data-bs-slide-to="2" aria-label="Imagen 3"></button>
+            <button type="button" data-bs-target="#natacionCarousel" data-bs-slide-to="3" aria-label="Imagen 4"></button>
+            <button type="button" data-bs-target="#natacionCarousel" data-bs-slide-to="4" aria-label="Imagen 5"></button>
+            <button type="button" data-bs-target="#natacionCarousel" data-bs-slide-to="5" aria-label="Imagen 6"></button>
+            <button type="button" data-bs-target="#natacionCarousel" data-bs-slide-to="6" aria-label="Imagen 7"></button>
           </div>
-          <div class="carousel-item">
-            <img loading="lazy" src="{% cdn_static 'img/natacion/nata3.avif' transforms='c_fill,w_1200,h_700,f_auto,q_auto' %}" class="deporte-img" alt="Natación 3">
-          </div>
-          <div class="carousel-item">
-            <img loading="lazy" src="{% cdn_static 'img/natacion/nata4.avif' transforms='c_fill,w_1200,h_700,f_auto,q_auto' %}" class="deporte-img" alt="Natación 4">
-          </div>
-          <div class="carousel-item">
-            <img loading="lazy" src="{% cdn_static 'img/natacion/nata5.avif' transforms='c_fill,w_1200,h_700,f_auto,q_auto' %}" class="deporte-img" alt="Natación 5">
-          </div>
-          <div class="carousel-item">
-            <img loading="lazy" src="{% cdn_static 'img/natacion/nata6.avif' transforms='c_fill,w_1200,h_700,f_auto,q_auto' %}" class="deporte-img" alt="Natación 6">
-          </div>
-          <div class="carousel-item">
-            <img loading="lazy" src="{% cdn_static 'img/natacion/nata7.avif' transforms='c_fill,w_1200,h_700,f_auto,q_auto' %}" class="deporte-img" alt="Natación 7">
-          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#natacionCarousel" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Anterior</span></button>
+          <button class="carousel-control-next" type="button" data-bs-target="#natacionCarousel" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Siguiente</span></button>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#natacionCarousel" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Anterior</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#natacionCarousel" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Siguiente</span>
-        </button>
-        <div class="deporte-overlay">
-          <h1 class="deporte-title">Natación</h1>
+        <div class="pg-card-media-overlay"></div>
+        <h2 class="pg-card-media-title"><i class="bi bi-water"></i> Natación</h2>
+      </div>
+      <div class="pg-card-body">
+        <span class="pg-card-eyebrow">Recreación y bienestar</span>
+        <h3 class="pg-card-title">Nado libre, descanso y diversión</h3>
+        <p class="pg-card-text">
+          Piscina amplia y cuidada para nado libre, recreación y bienestar familiar. Un espacio cómodo y
+          seguro para relajarte, nadar por carriles o compartir con tus invitados, siempre con ambientes
+          limpios y agradables.
+        </p>
+        <p class="pg-card-text">
+          El agua templada y las zonas de descanso permiten sesiones tranquilas o entrenamientos personales,
+          mientras que el deck perimetral facilita estiramientos y pausas sin perder de vista la piscina.
+        </p>
+
+        <ul class="pg-info-list">
+          <li><i class="bi bi-water"></i> Agua templada</li>
+          <li><i class="bi bi-arrows-fullscreen"></i> Piscina amplia</li>
+          <li><i class="bi bi-umbrella-fill"></i> Zonas de descanso</li>
+          <li><i class="bi bi-shield-check"></i> Ambiente seguro y limpio</li>
+        </ul>
+      </div>
+    </article>
+
+    <section class="pg-cta mt-4">
+      <div class="pg-cta-inner">
+        <h2>¿Listo para nadar?</h2>
+        <p>Ven con tu familia o invitados y disfruta de la piscina.</p>
+        <div class="pg-cta-actions">
+          <a href="{% url 'reservas:register' %}" class="pg-btn pg-btn-primary"><i class="bi bi-calendar-check"></i> Reservar</a>
+          <a href="https://wa.me/573507016630" target="_blank" rel="noopener" class="pg-btn pg-btn-ghost"><i class="bi bi-whatsapp"></i> WhatsApp</a>
         </div>
       </div>
-    </div>
-    <div class="deporte-desc p-4">
-      <p class="fs-5 text-dark">
-        Disfruta una piscina amplia y cuidada para nado libre, recreación y bienestar familiar. Un espacio cómodo y seguro para relajarte, nadar por carriles o compartir con tus invitados, siempre con ambientes limpios y agradables. El agua templada y las zonas de descanso permiten sesiones tranquilas o entrenamientos personales, mientras que el deck perimetral facilita estiramientos y pausas sin perder de vista la piscina.
-      </p>
-    </div>
+    </section>
   </div>
-</div>
-<style>
-  .deporte-card {
-    background: linear-gradient(135deg, #e3f0ff 0%, #f9f9f9 100%);
-    border-radius: 2rem;
-    box-shadow: 0 8px 32px rgba(30,58,138,0.12);
-    overflow: hidden;
-    margin-bottom: 2rem;
-  }
-  .deporte-carousel-wrapper {
-    position: relative;
-    min-height: 350px;
-    background: #0c4a6e;
-  }
-  .deporte-img {
-    width: 100%;
-    height: 350px;
-    object-fit: cover;
-    filter: brightness(0.95);
-    transition: transform 0.4s;
-    border-bottom: 4px solid #0ea5e9;
-  }
-  .deporte-card:hover .deporte-img {
-    transform: scale(1.04);
-    filter: brightness(1);
-  }
-  .deporte-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-start;
-    pointer-events: none;
-    background: linear-gradient(0deg, rgba(14,165,233,0.22) 60%, transparent 100%);
-  }
-  .deporte-title {
-    font-size: 2.8rem;
-    font-weight: 800;
-    color: #fff;
-    margin: 0 0 2rem 2rem;
-    text-shadow: 0 4px 24px rgba(14,165,233,0.35);
-    letter-spacing: 1px;
-    background: linear-gradient(90deg, #0ea5e9 0%, #38bdf8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .deporte-desc {
-    background: #fff;
-    border-radius: 0 0 2rem 2rem;
-    box-shadow: 0 2px 8px rgba(14,165,233,0.08);
-  }
-
-  /* Mobile tweaks */
-  @media (max-width: 767px) {
-    .deporte-carousel-wrapper { min-height: 220px; }
-    .deporte-img { height: 220px; object-fit: cover; }
-    .deporte-title { font-size: 1.8rem; margin-bottom: 1rem; margin-left: 1rem; }
-    .deporte-card { border-radius: 1rem; }
-    .deporte-desc { padding: 1rem; }
-    .deporte-card:hover .deporte-img { transform: none; }
-    .deporte-desc .fs-5 { font-size: 1rem; line-height:1.45; }
-  }
-</style>
+</section>
 {% endblock %}

@@ -3,27 +3,30 @@
 {% load cdn_tags %}
 {% block title %}Nuestro Menú - CLUB EL META{% endblock %}
 {% block content %}
-<div class="container py-5">
-  <div class="d-flex align-items-start justify-content-between mb-3">
-    <div>
-      <h1 class="mb-1">Nuestro Menú</h1>
-      <p class="fs-5 mb-0">Presentamos una selección representativa de opciones gastronómicas disponibles para eventos y consumo en el club. Para consultar el menú completo y solicitar cotización, por favor contacta al restaurante: <a href="tel:+573108824473">310 882 4473</a>.</p>
-    </div>
-    <div class="ms-3">
-      <a id="btn-download-top" href="{% static 'pdf/MENU_CLUB_META_2026.pdf' %}" download class="btn btn-lg btn-primary d-none d-md-inline-flex">
-        <i class="bi bi-download me-2"></i> Descargar Menú (PDF)
-      </a>
+<section class="pg-hero">
+  <div class="pg-hero-pattern" aria-hidden="true"></div>
+  <div class="pg-hero-orb pg-hero-orb-1" aria-hidden="true"></div>
+  <div class="pg-hero-orb pg-hero-orb-2" aria-hidden="true"></div>
+  <div class="container pg-hero-inner">
+    <span class="pg-hero-eyebrow"><i class="bi bi-cup-hot-fill"></i> GASTRONOMÍA</span>
+    <h1 class="pg-hero-title">Nuestro Menú</h1>
+    <p class="pg-hero-lead">Una selección representativa de la oferta gastronómica del Club. Para el menú completo o cotización, escríbenos al restaurante.</p>
+    <div class="pg-cta-actions mt-3">
+      <a href="{% static 'pdf/MENU_CLUB_META_2026.pdf' %}" download class="pg-btn pg-btn-primary"><i class="bi bi-download"></i> Descargar menú (PDF)</a>
+      <a href="tel:+573108824473" class="pg-btn pg-btn-ghost"><i class="bi bi-telephone-fill"></i> 310 882 4473</a>
     </div>
   </div>
+</section>
 
-  <!-- Floating download button for mobile (small and unobtrusive) -->
-  <div class="floating-download d-md-none">
-    <a href="{% static 'pdf/MENU_CLUB_META_2026.pdf' %}" download class="btn btn-primary btn-lg" aria-label="Descargar menú">
-      <i class="bi bi-download"></i>
-    </a>
-  </div>
+<!-- Floating download button for mobile (small and unobtrusive) -->
+<div class="floating-download d-md-none">
+  <a href="{% static 'pdf/MENU_CLUB_META_2026.pdf' %}" download class="btn btn-primary btn-lg" aria-label="Descargar menú">
+    <i class="bi bi-download"></i>
+  </a>
+</div>
 
-  <h2 class="mt-4">Galería del Menú</h2>
+<div class="container py-4">
+  <h2 class="mt-2 menu-section-heading">Galería del Menú</h2>
 
   <!-- Toolbar removed per user request -->
 
@@ -88,6 +91,17 @@
   .btn-close-modal { position: absolute; right: 8px; top: 8px; z-index: 2010; background: rgba(255,255,255,0.9); border: none; width: 40px; height: 40px; border-radius: 8px; font-size: 20px; }
   .menu-modal-controls { display:flex; gap:8px; justify-content:flex-end; }
   .menu-modal-controls .btn { min-width: 46px; }
+
+  /* Heading de la galeria del menu */
+  .menu-section-heading {
+    color: #0c2a5e;
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  }
 
   /* Floating download for mobile */
   .floating-download { position: fixed; right: 14px; bottom: 16px; z-index: 2200; }

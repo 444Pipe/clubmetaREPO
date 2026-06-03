@@ -1,8 +1,61 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load cdn_tags %}
 {% block title %}Salones de eventos - CLUB EL META{% endblock %}
+
 {% block content %}
-<div class="container py-5">
-  <h1 class="mb-3">Salones de eventos</h1>
-  <p>Salones disponibles para eventos sociales y corporativos.</p>
-</div>
+<section class="pg-hero">
+  <div class="pg-hero-pattern" aria-hidden="true"></div>
+  <div class="pg-hero-orb pg-hero-orb-1" aria-hidden="true"></div>
+  <div class="pg-hero-orb pg-hero-orb-2" aria-hidden="true"></div>
+  <div class="container pg-hero-inner">
+    <span class="pg-hero-eyebrow"><i class="bi bi-bag-heart-fill"></i> GASTRONOMÍA Y EVENTOS</span>
+    <h1 class="pg-hero-title">Salones de eventos</h1>
+    <p class="pg-hero-lead">Espacios versionables para celebraciones sociales, eventos corporativos y reuniones familiares con servicio gastronómico integral.</p>
+  </div>
+</section>
+
+<section class="pg-content">
+  <div class="container">
+    <article class="pg-card">
+      <div class="pg-card-media">
+        <img src="{% cdn_static 'img/salon mi llanura/millanura.avif' transforms='c_fill,w_1600,h_900,f_auto,q_auto' %}" alt="Salones de eventos Club El Meta" loading="lazy" decoding="async">
+        <div class="pg-card-media-overlay"></div>
+        <h2 class="pg-card-media-title"><i class="bi bi-building-fill"></i> Tu evento, nuestro espacio</h2>
+      </div>
+      <div class="pg-card-body">
+        <span class="pg-card-eyebrow">Servicio integral</span>
+        <h3 class="pg-card-title">Salones para cada ocasión</h3>
+        <p class="pg-card-text">
+          Contamos con varios salones disponibles para eventos sociales, corporativos, matrimonios, grados,
+          galas, cumpleaños y mucho más. Cada espacio puede adaptarse a diferentes configuraciones de
+          montaje según la cantidad de invitados y el tipo de celebración.
+        </p>
+        <p class="pg-card-text">
+          Acompañamos tu evento con servicio de restaurante, soporte técnico y atención personalizada
+          desde la cotización hasta el día del evento. El precio se acuerda según las necesidades de cada
+          celebración.
+        </p>
+
+        <ul class="pg-info-list">
+          <li><i class="bi bi-grid-3x3-gap-fill"></i> Múltiples configuraciones de montaje</li>
+          <li><i class="bi bi-cup-hot-fill"></i> Servicio de restaurante</li>
+          <li><i class="bi bi-music-note-beamed"></i> Audio y sistemas técnicos</li>
+          <li><i class="bi bi-car-front-fill"></i> Parqueadero amplio</li>
+        </ul>
+      </div>
+    </article>
+
+    <section class="pg-cta mt-4">
+      <div class="pg-cta-inner">
+        <h2>Conoce nuestros espacios</h2>
+        <p>Mira cada salón con sus medidas, capacidades y tipos de montaje disponibles.</p>
+        <div class="pg-cta-actions">
+          <a href="{% url 'reservas:espacios' %}" class="pg-btn pg-btn-primary"><i class="bi bi-grid-3x3-gap-fill"></i> Ver espacios</a>
+          <a href="https://wa.me/573507016630" target="_blank" rel="noopener" class="pg-btn pg-btn-ghost"><i class="bi bi-whatsapp"></i> Cotizar por WhatsApp</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
 {% endblock %}

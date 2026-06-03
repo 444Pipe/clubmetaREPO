@@ -2,24 +2,43 @@
 {% load static %}
 {% load cdn_tags %}
 {% block title %}Visión - CLUB EL META{% endblock %}
-{% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/vision.css' %}">
-{% endblock %}
-
-{% block extra_js %}
-  <script src="{% static 'js/vision.js' %}"></script>
-{% endblock %}
 
 {% block content %}
-<div class="vision-section-bg">
-  <div class="vision-card">
-    <div class="vision-ribbon">
-      <img src="{% cdn_static 'img/logo.webp' transforms='f_auto,q_auto' %}" alt="Logo Club El Meta" decoding="async">
-      CLUB EL META
-    </div>
-    <div class="vision-title">Visión</div>
-    <img src="{% cdn_static 'img/fondin.webp' transforms='c_fill,w_1920,h_1080,f_auto,q_auto' %}" alt="Visión" class="vision-img" loading="lazy" decoding="async">
-    <p class="vision-text">En el 2026 El Club Meta estará consolidado como una corporación líder en calidad de la prestación de servicios de recreación y esparcimiento a la familia llanera; igualmente como centro de negocios para empresarios nacionales y extranjeras.</p>
+<section class="pg-hero">
+  <div class="pg-hero-pattern" aria-hidden="true"></div>
+  <div class="pg-hero-orb pg-hero-orb-1" aria-hidden="true"></div>
+  <div class="pg-hero-orb pg-hero-orb-2" aria-hidden="true"></div>
+  <div class="container pg-hero-inner">
+    <span class="pg-hero-eyebrow"><i class="bi bi-eye-fill"></i> NUESTRA VISIÓN</span>
+    <h1 class="pg-hero-title">Visión</h1>
+    <p class="pg-hero-lead">Hacia dónde camina la Corporación Club El Meta y qué queremos lograr para nuestra comunidad llanera.</p>
   </div>
-</div>
+</section>
+
+<section class="pg-content">
+  <div class="container">
+    <article class="pg-card">
+      <div class="pg-card-media">
+        <img src="{% cdn_static 'img/fondin.webp' transforms='c_fill,w_1600,h_900,f_auto,q_auto' %}" alt="Visión Club El Meta" loading="lazy" decoding="async">
+        <div class="pg-card-media-overlay"></div>
+        <h2 class="pg-card-media-title"><i class="bi bi-stars"></i> 2026</h2>
+      </div>
+      <div class="pg-card-body">
+        <span class="pg-card-eyebrow">Proyección institucional</span>
+        <h3 class="pg-card-title">Líderes en recreación y centro de negocios</h3>
+        <p class="pg-card-text">
+          En el 2026 el Club El Meta estará consolidado como una corporación líder en calidad de la prestación
+          de servicios de recreación y esparcimiento a la familia llanera; igualmente como centro de negocios
+          para empresarios nacionales y extranjeros.
+        </p>
+
+        <ul class="pg-info-list">
+          <li><i class="bi bi-trophy-fill"></i> Liderazgo en calidad de servicios</li>
+          <li><i class="bi bi-people-fill"></i> Recreación familiar llanera</li>
+          <li><i class="bi bi-briefcase-fill"></i> Centro de negocios empresarial</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
 {% endblock %}
