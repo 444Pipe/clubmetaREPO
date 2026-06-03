@@ -247,25 +247,25 @@
       <h3 class="section-title-animated">¿Por qué elegir Club El Meta?</h3>
       <ul class="list-unstyled features-list">
         <li class="mb-3 feature-item" data-index="0">
-          <span class="feature-icon">✓</span>
+          <span class="feature-icon"><i class="bi bi-check-lg"></i></span>
           <span class="feature-content">
             <strong>Espacios Diversos:</strong> Zonas recreativas, salones con disponibilidad para eventos con amplio parqueadero.
           </span>
         </li>
         <li class="mb-3 feature-item" data-index="1">
-          <span class="feature-icon">✓</span>
+          <span class="feature-icon"><i class="bi bi-check-lg"></i></span>
           <span class="feature-content">
             <strong>Ubicación Exclusiva:</strong> Situados estratégicamente en un sector prestigioso de la ciudad, ofreciendo distinción y gran facilidad de acceso.
           </span>
         </li>
         <li class="mb-3 feature-item" data-index="2">
-          <span class="feature-icon">✓</span>
+          <span class="feature-icon"><i class="bi bi-check-lg"></i></span>
           <span class="feature-content">
             <strong>Seguridad:</strong> Entorno totalmente privado y seguro para su comodidad.
           </span>
         </li>
         <li class="mb-3 feature-item" data-index="3">
-          <span class="feature-icon">✓</span>
+          <span class="feature-icon"><i class="bi bi-check-lg"></i></span>
           <span class="feature-content">
             <strong>Servicio Integral:</strong> Salones, piscinas, parqueaderos, zonas deportivas y más a tu disposición, todo en un mismo lugar.
           </span>
@@ -385,7 +385,7 @@
         <div class="events-grid">
           <div class="card shadow-sm event-card reveal">
             <div class="card-body">
-              <h5 class="card-title fw-bold"><span class="emoji" aria-hidden="true">🎉</span>Eventos Sociales</h5>
+              <h5 class="card-title fw-bold"><span class="emoji" aria-hidden="true"><i class="bi bi-stars"></i></span>Eventos Sociales</h5>
               <ul class="event-list mb-0">
                 <li><span class="event-dot"></span><span>Matrimonios</span></li>
                 <li><span class="event-dot"></span><span>Galas</span></li>
@@ -403,7 +403,7 @@
 
           <div class="card shadow-sm event-card reveal">
             <div class="card-body">
-              <h5 class="card-title fw-bold"><span class="emoji" aria-hidden="true">💼</span>Eventos Empresariales y Corporativos</h5>
+              <h5 class="card-title fw-bold"><span class="emoji" aria-hidden="true"><i class="bi bi-briefcase-fill"></i></span>Eventos Empresariales y Corporativos</h5>
               <ul class="event-list mb-0">
                 <li><span class="event-dot"></span><span>Congresos</span></li>
                 <li><span class="event-dot"></span><span>Lanzamientos</span></li>
@@ -610,20 +610,43 @@
                   </div>
                 </div>
 
-                    <div class="ci-row mt-3">
-                      <i class="bi bi-clock text-primary me-2"></i>
-                      <div>
-                        <div class="ci-label">Horario de atención administrativa</div>
-                        <div class="ci-value"><br>Lunes a viernes<br>08:00 AM - 12:00 PM / 02:00 PM - 05:30 PM </div>
-                        <div class="ci-value"><br>Sábados:<br> 08:00 AM - 02:30 PM</div> 
-                        <div class="ci-label mt-2">Horario de servicio de eventos</div>
-                        <div class="ci-value">Martes a domingo: A convenir<br>Lunes: No hay servicio de eventos</div>
-                        <div class="ci-label mt-2">Servicio de restaurante</div>
-                        <div class="ci-value">09:00 AM - 07:00 PM</div>
-                        <div id="current-time-info" class="small text-muted mt-1">Hora actual: --:--:--</div>
-                        <div class="small text-muted mt-1">Nota: El club permanece cerrado al público los lunes (excepto para atención administrativa) y también los martes cuando el lunes anterior fue festivo.</div>
-                      </div>
-                    </div>
+                <!-- Horario general (destacado) -->
+                <div class="ci-row mt-3">
+                  <i class="bi bi-clock-fill text-primary me-2"></i>
+                  <div>
+                    <div class="ci-label">Horario general del club</div>
+                    <div class="ci-value"><strong>Martes a domingo</strong> · 08:00 AM – 07:00 PM</div>
+                    <div id="current-time-info" class="small text-muted mt-1">Hora actual: --:--:--</div>
+                  </div>
+                </div>
+
+                <!-- Restaurante -->
+                <div class="ci-row mt-3">
+                  <i class="bi bi-cup-hot-fill text-primary me-2"></i>
+                  <div>
+                    <div class="ci-label">Restaurante</div>
+                    <div class="ci-value">09:00 AM – 07:00 PM</div>
+                  </div>
+                </div>
+
+                <!-- Atención administrativa -->
+                <div class="ci-row mt-3">
+                  <i class="bi bi-briefcase-fill text-primary me-2"></i>
+                  <div>
+                    <div class="ci-label">Atención administrativa</div>
+                    <div class="ci-value">Lunes a viernes · 08:00 AM – 12:00 PM / 02:00 PM – 05:30 PM</div>
+                    <div class="ci-value">Sábados · 08:00 AM – 02:30 PM</div>
+                  </div>
+                </div>
+
+                <!-- Aviso destacado: lunes cerrado -->
+                <div class="ci-callout ci-callout-warning mt-3">
+                  <i class="bi bi-exclamation-triangle-fill"></i>
+                  <div>
+                    <strong>Los lunes el club permanece cerrado al público.</strong>
+                    Únicamente funciona el servicio de atención administrativa en los horarios indicados.
+                  </div>
+                </div>
 
                 <!-- phone numbers removed per request; keep only address, emails and WhatsApp CTA -->
 
@@ -650,7 +673,7 @@
                       </svg>
                     </span>
                     <span class="whatsapp-btn__text">Contactar por WhatsApp</span>
-                    <span class="btn-arrow ms-2" aria-hidden="true" style="font-size:1.1rem;">➜</span>
+                    <span class="btn-arrow ms-2" aria-hidden="true" style="font-size:1.1rem;"><i class="bi bi-arrow-right"></i></span>
                   </a>
                 </div>
               </div>
@@ -1550,6 +1573,33 @@
     display: inline-block;
     color: #1e3a8a !important;
     font-weight: 600;
+  }
+
+  /* Callout box: aviso destacado dentro de la columna de contacto */
+  .ci-callout {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(217, 119, 6, 0.30);
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.10), rgba(217, 119, 6, 0.06));
+    color: #78350f;
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+  .ci-callout i {
+    color: #d97706;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .ci-callout strong { color: #78350f; }
+  .ci-callout-warning {
+    border-left: 4px solid #d97706;
+  }
+  @media (max-width: 575.98px) {
+    .ci-callout { font-size: 0.82rem; padding: 10px 12px; }
   }
 
   /* =========================================================================
