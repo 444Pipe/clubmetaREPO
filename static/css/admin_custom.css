@@ -800,3 +800,370 @@ html[data-theme="dark"] .login #content-main {
     max-height: none !important;
   }
 }
+
+/* =====================================================================
+   DJANGO ADMIN — UX & RESPONSIVE COMPREHENSIVE ENHANCEMENT
+   Cobertura mobile + touch + UX polish para llevar el admin de
+   Django nativo a un nivel premium intuitivo.
+   ===================================================================== */
+
+/* --------- VARIABLES adicionales --------- */
+:root {
+  --cm-touch-min: 44px;          /* Apple HIG min */
+  --cm-ease-snap: cubic-bezier(.22, .61, .36, 1);
+  --cm-elevation-1: 0 1px 2px rgba(15,23,42,0.04), 0 2px 4px rgba(15,23,42,0.04);
+  --cm-elevation-2: 0 4px 12px rgba(15,23,42,0.06), 0 12px 24px rgba(15,23,42,0.06);
+  --cm-elevation-3: 0 8px 22px rgba(15,23,42,0.10), 0 22px 44px rgba(15,23,42,0.10);
+}
+
+/* --------- HEADER mejorado: backdrop blur en scroll --------- */
+#header {
+  position: sticky !important;
+  top: 0;
+  z-index: 1100;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* --------- BREADCRUMBS: sticky tambien --------- */
+div.breadcrumbs {
+  position: sticky;
+  top: 60px;
+  z-index: 1090;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.92) !important;
+}
+html[data-theme="dark"] div.breadcrumbs {
+  background: rgba(11, 18, 34, 0.92) !important;
+}
+
+/* --------- FILTROS: accordion en tablet/mobile, dejando ver la tabla --------- */
+@media (max-width: 991.98px) {
+  #changelist-filter {
+    margin-top: 12px !important;
+    /* Convertir en accordion: el h2 actua de trigger */
+  }
+  #changelist-filter h2 {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    padding-right: 36px !important;
+  }
+  #changelist-filter h2::after {
+    content: '\f282'; /* bi-chevron-down */
+    font-family: 'bootstrap-icons';
+    position: absolute;
+    right: 14px; top: 50%;
+    transform: translateY(-50%) rotate(0);
+    transition: transform 0.22s var(--cm-ease-snap);
+    font-size: 0.75rem;
+  }
+  /* Por defecto cerrado en mobile (state controlado via :has) */
+  #changelist-filter > *:not(h2) {
+    display: block;
+    max-height: 60vh;
+    overflow-y: auto;
+    transition: max-height 0.3s var(--cm-ease-snap), opacity 0.22s ease, padding 0.22s ease;
+  }
+  /* Estado "collapsed" — se aplica con :has() en navegadores modernos.
+     Caemos a JS-toggle abajo en navegadores antiguos. */
+  #changelist-filter.collapsed > *:not(h2) {
+    max-height: 0 !important;
+    opacity: 0;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    overflow: hidden;
+  }
+  #changelist-filter.collapsed h2::after { transform: translateY(-50%) rotate(-90deg); }
+}
+
+/* --------- LIST VIEW: transformacion a CARDS en mobile --------- */
+@media (max-width: 767.98px) {
+  #result_list {
+    border: none !important;
+    background: transparent !important;
+  }
+  #result_list thead { display: none; }
+  #result_list tbody tr {
+    display: block !important;
+    background: var(--body-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--cm-radius) !important;
+    box-shadow: var(--cm-elevation-1) !important;
+    margin-bottom: 12px;
+    padding: 6px 12px 12px !important;
+  }
+  #result_list tbody tr:hover { background: var(--body-bg) !important; }
+  #result_list tbody td {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0 !important;
+    border-bottom: 1px dashed var(--hairline-color, rgba(15,23,42,0.08)) !important;
+    text-align: right;
+  }
+  #result_list tbody td:last-child { border-bottom: none !important; }
+  /* Pseudo-label con el nombre de la columna usando data-attribute si lo
+     hubiera; si no, mostrar al menos los valores con padding */
+  #result_list tbody td.action-checkbox {
+    justify-content: flex-start;
+    padding: 6px 0 !important;
+  }
+  /* Acciones del listado: mas compactas */
+  #changelist .actions {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+}
+
+/* --------- FORMS: sticky save row siempre visible --------- */
+.submit-row {
+  position: sticky !important;
+  bottom: 0;
+  z-index: 100;
+  margin-left: -16px;
+  margin-right: -16px;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--border-color) !important;
+  border-radius: 0 0 var(--cm-radius) var(--cm-radius) !important;
+  box-shadow: 0 -6px 18px rgba(15, 23, 42, 0.06);
+}
+html[data-theme="dark"] .submit-row {
+  background: rgba(11, 18, 34, 0.95) !important;
+}
+@media (max-width: 575.98px) {
+  .submit-row {
+    margin: 0 !important;
+    border-radius: 0 !important;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .submit-row input, .submit-row a {
+    flex: 1 1 auto;
+    min-width: 120px;
+    text-align: center;
+  }
+}
+
+/* --------- TOUCH TARGETS: 44px minimo en mobile --------- */
+@media (hover: none) and (pointer: coarse) {
+  input[type="text"], input[type="email"], input[type="number"],
+  input[type="password"], input[type="search"], input[type="tel"],
+  input[type="date"], input[type="time"], input[type="datetime-local"],
+  textarea, select {
+    min-height: var(--cm-touch-min) !important;
+    font-size: 16px !important; /* prevenir zoom iOS */
+  }
+  .button, input[type=submit], input[type=button],
+  .submit-row input, a.button {
+    min-height: var(--cm-touch-min) !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+  #changelist-filter li a {
+    min-height: var(--cm-touch-min);
+    display: flex !important;
+    align-items: center;
+  }
+  .object-tools a { min-height: var(--cm-touch-min); }
+}
+
+/* --------- SEARCH: mas prominente y con icono --------- */
+#changelist-search {
+  position: relative;
+}
+#changelist-search input[type="text"] {
+  padding-left: 36px !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2364748b'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 12px center;
+  background-size: 16px 16px;
+}
+
+/* --------- EMPTY STATE friendlier para listas vacias --------- */
+#changelist .paginator + .paginator {}
+.change-list .results > p,
+.change-list .results > div:first-child:last-child {
+  text-align: center;
+  padding: 48px 24px !important;
+  color: var(--body-quiet-color) !important;
+}
+
+/* --------- TRANSICIONES suaves en hover de filas --------- */
+#result_list tbody tr {
+  transition: background 0.16s ease, transform 0.16s ease;
+}
+#result_list tbody tr:hover {
+  transform: translateX(2px);
+}
+
+/* --------- INLINE forms (TabularInline) responsive --------- */
+@media (max-width: 767.98px) {
+  .inline-group .tabular table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .inline-group .tabular tbody tr {
+    display: table-row !important;
+  }
+  .inline-group .tabular tbody td {
+    display: table-cell !important;
+    text-align: left !important;
+    border-bottom: 1px solid var(--border-color) !important;
+  }
+}
+
+/* --------- CHECKBOXES y RADIOS con mejor visual --------- */
+input[type="checkbox"], input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--primary, #1e3a8a);
+}
+input[type="checkbox"]:focus-visible,
+input[type="radio"]:focus-visible {
+  outline: 2px solid var(--primary, #1e3a8a);
+  outline-offset: 2px;
+}
+
+/* --------- FILA SELECCIONADA en list view --------- */
+#result_list tbody tr.selected {
+  background: rgba(245, 158, 11, 0.08) !important;
+  border-left: 3px solid var(--cm-gold-500) !important;
+}
+
+/* --------- ANIMACIONES DE ENTRADA --------- */
+@keyframes cmFadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.module, #content-main > .form-row, #changelist {
+  animation: cmFadeUp 0.32s var(--cm-ease-snap) both;
+}
+
+/* --------- USER TOOLS en mobile: stack vertical --------- */
+@media (max-width: 575.98px) {
+  #user-tools {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    padding: 8px 0 !important;
+    font-size: 11px;
+  }
+  #user-tools a, #user-tools form {
+    padding: 4px 8px !important;
+  }
+  .admin-header { padding: 8px 12px !important; }
+  .branding { padding: 4px 8px !important; }
+  .branding .admin-logo { height: 30px !important; width: 30px !important; }
+  .branding-title { font-size: 13px !important; }
+  .admin-quick-actions .qa-btn { padding: 5px 10px !important; font-size: 11px !important; }
+}
+
+/* --------- TOOLTIP / HELP TEXT mejorado --------- */
+.help, .helptext, p.help {
+  background: rgba(59, 130, 246, 0.04);
+  border-left: 3px solid rgba(59, 130, 246, 0.40);
+  padding: 6px 10px !important;
+  border-radius: 4px;
+  margin-top: 6px !important;
+}
+
+/* --------- FIELDSETS: mejor visual de seccion --------- */
+fieldset.module {
+  margin-bottom: 18px !important;
+}
+fieldset.module h2 {
+  border-bottom: 1px solid var(--border-color);
+}
+fieldset.module .form-row {
+  padding: 14px 16px !important;
+}
+fieldset.module .form-row + .form-row {
+  border-top: 1px solid var(--hairline-color, rgba(15,23,42,0.05));
+}
+
+/* --------- CALENDARIO/DATEPICKER nativo: mejor tamano --------- */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.7;
+  padding: 4px;
+}
+input[type="date"]:focus::-webkit-calendar-picker-indicator,
+input[type="time"]:focus::-webkit-calendar-picker-indicator {
+  opacity: 1;
+}
+
+/* --------- LINKS focus mejorado --------- */
+a:focus-visible {
+  outline: 2px solid var(--primary, #1e3a8a);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* --------- TOOLTIPS en filas eliminadas --------- */
+.errors, .errornote {
+  border-radius: var(--cm-radius-sm) !important;
+  padding: 12px 16px !important;
+  box-shadow: var(--cm-elevation-1);
+  border-left: 4px solid #dc2626 !important;
+}
+
+/* --------- IMAGEN PREVIEW (campos image y CloudinaryField) --------- */
+.field-imagen img, .file-upload img {
+  max-width: 200px !important;
+  max-height: 200px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  margin-top: 6px;
+}
+
+/* --------- ACTIONS dropdown mas visible --------- */
+.actions select {
+  border: 1.5px solid var(--border-color-strong, rgba(15,23,42,0.20)) !important;
+  border-radius: 8px !important;
+  padding: 7px 28px 7px 12px !important;
+  font-weight: 600;
+}
+.actions .button {
+  border-radius: 8px !important;
+  padding: 7px 16px !important;
+  font-weight: 700 !important;
+}
+
+/* --------- DARK MODE adjustments adicionales --------- */
+html[data-theme="dark"] #changelist-search input[type="text"] {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2394a3b8'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E");
+}
+html[data-theme="dark"] .help,
+html[data-theme="dark"] .helptext,
+html[data-theme="dark"] p.help {
+  background: rgba(59, 130, 246, 0.08);
+}
+
+/* --------- ACCESIBILIDAD: prefers-reduced-motion --------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* --------- IMPRESION friendly --------- */
+@media print {
+  #header, div.breadcrumbs, .object-tools, .submit-row,
+  #changelist-search, #changelist-filter, .admin-quick-actions {
+    display: none !important;
+  }
+  #content { padding: 0 !important; }
+}

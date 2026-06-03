@@ -6,7 +6,56 @@
 {% block extrahead %}
   {{ block.super }}
   <link rel="icon" type="image/png" href="{% static 'img/faviconlogo.png' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <link rel="stylesheet" href="{% static 'css/admin_custom.css' %}">
+  <script defer>
+    // Admin UX progressive enhancements
+    document.addEventListener('DOMContentLoaded', function(){
+      // Accordion del filter sidebar en mobile (<992px)
+      var f = document.getElementById('changelist-filter');
+      if (f && window.matchMedia('(max-width: 991.98px)').matches) {
+        var h2 = f.querySelector('h2');
+        if (h2) {
+          f.classList.add('collapsed');
+          h2.style.cursor = 'pointer';
+          h2.addEventListener('click', function(){
+            f.classList.toggle('collapsed');
+          });
+        }
+      }
+
+      // Auto-marcar fila como .selected al chequear su checkbox
+      document.querySelectorAll('#result_list .action-checkbox input[type=checkbox]').forEach(function(cb){
+        var row = cb.closest('tr');
+        if (!row) return;
+        function syncSel(){ row.classList.toggle('selected', cb.checked); }
+        cb.addEventListener('change', syncSel);
+        syncSel();
+      });
+
+      // Loading state visual al hacer submit (5s timeout safety)
+      document.querySelectorAll('form').forEach(function(form){
+        form.addEventListener('submit', function(){
+          var btn = form.querySelector('input[type=submit].default, button[type=submit]');
+          if (btn && !btn.dataset.loading) {
+            btn.dataset.loading = '1';
+            var orig = btn.value || btn.textContent;
+            if (btn.tagName === 'INPUT') btn.value = 'Procesando...';
+            else btn.textContent = 'Procesando...';
+            btn.style.opacity = '0.78';
+            btn.style.pointerEvents = 'none';
+            setTimeout(function(){
+              if (btn.tagName === 'INPUT') btn.value = orig;
+              else btn.textContent = orig;
+              btn.style.opacity = '';
+              btn.style.pointerEvents = '';
+              delete btn.dataset.loading;
+            }, 6000);
+          }
+        });
+      });
+    });
+  </script>
 {% endblock %}
 
 {% block branding %}
