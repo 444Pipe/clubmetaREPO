@@ -11,32 +11,34 @@ import csv
 from datetime import datetime
 import datetime as dt
 
-# Mapeo de imágenes por salón (hardcoded por ahora)
+# Mapeo de imagenes por salon. Rutas relativas a static/img/.
+# Todos los archivos listados aqui deben existir en disco y haberse
+# subido a Cloudinary con `manage.py upload_static_to_cloudinary`.
 SALON_IMAGES = {
     'Mi Llanura': [
-        "salon mi llanura/WhatsApp Image 2025-12-01 at 11.51.19 AM (1).jpeg",
-        "salon mi llanura/WhatsApp Image 2025-12-01 at 11.51.19 AM.jpeg",
-        "salon mi llanura/WhatsApp Image 2025-12-01 at 11.51.20 AM.jpeg",
-        "salon mi llanura/milanuraa.avif",
         "salon mi llanura/millanura.avif",
+        "salon mi llanura/milanuraa.avif",
         "salon mi llanura/millanuraaa.avif",
-        "salon mi llanura/mika.jpg"
+        "salon mi llanura/mika1.jpeg",
+        "salon mi llanura/mika2.jpeg",
+        "salon mi llanura/mika3.jpeg",
+        "salon mi llanura/yotas4.jpeg",
     ],
     'Salón Bar': [
         "salon bar/bar.jpg",
-        "salon bar/barsito.jpg"
+        "salon bar/barsito.jpg",
     ],
     'Salón Empresarial': [
-        "salon empresarial/salonempresarial.jpg",
-        "salon empresarial/salonempresarialxd.jpg",
-        "salon empresarial/WhatsApp Image 2025-12-01 at 11.50.32 AM (1).jpeg",
-        "salon empresarial/WhatsApp Image 2025-12-01 at 11.50.32 AM.jpeg"
+        "salon empresarial/empresario.jpeg",
+        "salon empresarial/empresarios.jpeg",
+        "salon empresarial/empresarin.jpg",
     ],
     'Terraza': [
         "salon terraza/terraza.jpg",
-        "salon terraza/WhatsApp Image 2025-12-01 at 11.51.01 AM (1).jpeg",
-        "salon terraza/WhatsApp Image 2025-12-01 at 11.51.01 AM.jpeg",
-        "salon terraza/1.jpg"
+        "salon terraza/1.jpg",
+        # Pendiente subir a Cloudinary cuando se libere el rate limit:
+        #   "salon terraza/holi.jpeg",
+        #   "salon terraza/yonose.jpeg",
     ],
     'Salón Kiosco': [
         "salon kiosco/kiosco.jpg",
@@ -44,9 +46,11 @@ SALON_IMAGES = {
         "salon kiosco/kioskoxd.jpg",
         "salon kiosco/kioskito.jpg",
         "salon kiosco/kioskito2.jpg",
-        "salon kiosco/kiskito1.jpg",
     ],
-    'Salón Presidente': ["salon presidente/presidente.jpg", "salon presidente/presidente1.jpg"]
+    'Salón Presidente': [
+        "salon presidente/presidente.jpg",
+        "salon presidente/presidente1.jpg",
+    ],
 }
 
 def get_salon_images(salon_or_name):
