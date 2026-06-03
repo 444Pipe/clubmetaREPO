@@ -75,141 +75,122 @@
           {% endif %}
 
           {% if success and registration %}
-          <!-- Confirmación de Reserva Profesional -->
-          <div id="successBox" style="background: #ffffff; border-radius: 8px; border: 1px solid #dee2e6;">
-            
-            <!-- Header Profesional -->
-            <div style="background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: white; padding: 25px; border-radius: 8px 8px 0 0; text-align: center;">
-              <i class="bi bi-check-circle-fill" style="font-size: 48px; margin-bottom: 10px; display: block;"></i>
-              <h4 style="margin: 0; font-weight: 600; font-size: 24px;">Reserva Registrada Correctamente</h4>
-              <p style="margin: 8px 0 0 0; font-size: 14px; opacity: 0.9;">Solicitud Número: #{{ registration.reserva_id }}</p>
-            </div>
+          <!-- Confirmacion de Reserva - rediseño con pasos claros -->
+          <div id="successBox" class="rs-success">
 
-            <!-- Detalles de la Reserva -->
-            <div style="padding: 30px; border-bottom: 1px solid #e5e7eb;">
-              <h5 style="color: #1f2937; font-weight: 600; margin-bottom: 20px; font-size: 18px;">
-                <i class="bi bi-file-text" style="color: #2563eb;"></i> Resumen de la Solicitud
-              </h5>
-              <div style="background: #f9fafb; padding: 20px; border-radius: 8px; border-left: 4px solid #2563eb;">
-                <table style="width: 100%; color: #374151; font-size: 15px; line-height: 2;">
-                  <tr>
-                    <td style="padding: 8px 0; font-weight: 500;">Espacio:</td>
-                    <td style="padding: 8px 0; text-align: right;">{{ registration.espacio_nombre }}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 8px 0; font-weight: 500;">Fecha del evento:</td>
-                    <td style="padding: 8px 0; text-align: right;">{{ registration.fecha_evento }}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 8px 0; font-weight: 500;">Hora de inicio:</td>
-                    <td style="padding: 8px 0; text-align: right;">{{ registration.hora_inicio }}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 8px 0; font-weight: 500;">Duración:</td>
-                    <td style="padding: 8px 0; text-align: right;">{{ registration.duracion_horas }} horas</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 8px 0; font-weight: 500;">Número de personas:</td>
-                    <td style="padding: 8px 0; text-align: right;">{{ registration.num_personas }}</td>
-                  </tr>
-                  <tr style="border-top: 2px solid #d1d5db;">
-                    <td style="padding: 15px 0 0 0; font-weight: 700; font-size: 18px; color: #1e3a8a;">Valor Total:</td>
-                    <td style="padding: 15px 0 0 0; text-align: right; font-weight: 700; font-size: 20px; color: #1e3a8a;">${{ registration.total_price|intcomma }}</td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-
-            <!-- Información de Confirmación -->
-            <div style="padding: 30px; background: #fffbeb; border-top: 3px solid #f59e0b;">
-              <h5 style="color: #92400e; font-weight: 600; margin-bottom: 15px; font-size: 17px;">
-                <i class="bi bi-info-circle-fill" style="color: #f59e0b;"></i> Proceso de Confirmación
-              </h5>
-              <!-- Nota de confirmación removida por solicitud del usuario -->
-              <hr style="border-color: rgba(245,158,11,0.12); margin: 12px 0;">
-              <p style="color: #78350f; font-size: 15px; line-height: 1.7; margin-bottom: 20px;">
-                <strong>Proceso de confirmación (política):</strong><br>
-                Para garantizar el evento se debe enviar confirmación por escrito donde se especifiquen los servicios reservados y realizar el anticipo del <strong>50 %</strong> del valor de la cotización, <strong>30 días antes</strong> del evento. El saldo deberá estar cancelado <strong>48 horas antes</strong> del evento. Los consumos y servicios adicionales fuera de esta reserva deberán ser cancelados al finalizar el evento.
+            <!-- HERO: confirmacion + numero de solicitud -->
+            <div class="rs-success-hero">
+              <span class="rs-success-icon"><i class="bi bi-check-lg"></i></span>
+              <h3 class="rs-success-title">¡Reserva enviada!</h3>
+              <p class="rs-success-subtitle">
+                Tu solicitud quedó registrada con el número <strong>#{{ registration.reserva_id }}</strong>.
+                Para confirmarla, sigue los pasos abajo.
               </p>
-              
-              <!-- Contacto -->
-              <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #fbbf24;">
-                <p style="color: #374151; font-weight: 600; margin-bottom: 12px; font-size: 15px;">
-                  <i class="bi bi-telephone-fill" style="color: #2563eb;"></i> Contacto para Confirmación:
-                </p>
-                <p style="margin: 10px 0; font-size: 15px;">
-                  <strong style="color: #1e3a8a;">WhatsApp:</strong> 
-                  <a href="https://wa.me/573507016630?text=Hola,%20quiero%20confirmar%20mi%20reserva%20%23{{ registration.reserva_id }}%20para%20{{ registration.espacio_nombre|urlencode }}%20el%20{{ registration.fecha_evento }}%20a%20las%20{{ registration.hora_inicio }}.%20Total:%20${{ registration.total_price }}.%20Debo%20abonar%20${{ registration.abono_50 }}%20(50%25).%20Datos:%20{{ registration.nombre_cliente|urlencode }}%20-%20{{ registration.telefono_cliente }}" 
-                     target="_blank" 
-                     style="color: #059669; font-weight: 600; text-decoration: none;">
-                    350 701 6630
-                  </a>
-                </p>
-                <div style="background: #fef3c7; padding: 12px; border-radius: 6px; margin-top: 15px;">
-                  <p style="margin: 0; color: #92400e; font-size: 15px;">
-                    <strong>Abono requerido:</strong> <span style="font-size: 20px; font-weight: 700; color: #b45309;">${{ registration.abono_50|intcomma }}</span>
-                    <span style="color: #78350f; font-size: 14px;"> (50% del total)</span>
-                  </p>
-                </div>
-              </div>
+            </div>
 
-              <!-- Formas de Pago -->
-              <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #e5e7eb;">
-                <h6 style="color: #1f2937; font-weight: 600; margin-bottom: 15px; font-size: 15px;">
-                  <i class="bi bi-credit-card" style="color: #2563eb;"></i> Formas de Pago Disponibles:
-                </h6>
-                
-                <div style="margin-bottom: 15px;">
-                  <p style="color: #4b5563; font-size: 14px; margin: 8px 0; line-height: 1.7;">
-                    <strong>• Pago Presencial:</strong> Efectivo o tarjeta débito/crédito en las instalaciones del Club El Meta.
-                  </p>
-                  <p style="color: #4b5563; font-size: 14px; margin: 8px 0; line-height: 1.7;">
-                    <strong>• Transferencia Bancaria:</strong> Consignación o transferencia electrónica.
-                  </p>
-                </div>
+            <!-- PROXIMOS PASOS (lo mas importante) -->
+            <div class="rs-success-section">
+              <h5 class="rs-success-section-title"><i class="bi bi-list-ol"></i> Próximos pasos</h5>
 
-                <div style="background: #f3f4f6; padding: 15px; border-radius: 6px; margin-top: 15px;">
-                  <p style="color: #1f2937; font-weight: 600; font-size: 14px; margin-bottom: 10px;">
-                    CORPORACIÓN CLUB META<br>
-                    <span style="font-weight: 400; color: #6b7280;">NIT: 892.000.682-1</span>
-                  </p>
-                  <table style="width: 100%; font-size: 13px; color: #374151; line-height: 1.8;">
-                    <tr>
-                      <td style="padding: 4px 0;"><strong>BANCOLOMBIA</strong></td>
-                      <td style="padding: 4px 0; text-align: right;">Cta. Corriente: <strong>05700068204</strong></td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 4px 0;"><strong>DAVIVIENDA</strong></td>
-                      <td style="padding: 4px 0; text-align: right;">Cta. Corriente: <strong>001802238592</strong></td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 4px 0;"><strong>DAVIVIENDA</strong></td>
-                      <td style="padding: 4px 0; text-align: right;">Cta. Ahorros: <strong>096470069368</strong></td>
-                    </tr>
-                  </table>
-                </div>
+              <ol class="rs-steps-list">
+                <li class="rs-step">
+                  <span class="rs-step-num">1</span>
+                  <div class="rs-step-body">
+                    <h6>Contáctanos por WhatsApp</h6>
+                    <p>Ahí <strong>cerramos el precio final</strong> de acuerdo a tu evento y te confirmamos disponibilidad. Es el paso más importante.</p>
+                    <a href="https://wa.me/573507016630?text=Hola,%20quiero%20confirmar%20mi%20reserva%20%23{{ registration.reserva_id }}%20para%20{{ registration.espacio_nombre|urlencode }}%20el%20{{ registration.fecha_evento }}%20a%20las%20{{ registration.hora_inicio }}.%20Datos:%20{{ registration.nombre_cliente|urlencode }}%20-%20{{ registration.telefono_cliente }}"
+                       target="_blank" rel="noopener" class="rs-wa-btn">
+                      <i class="bi bi-whatsapp"></i> Escribir al 350 701 6630
+                    </a>
+                  </div>
+                </li>
 
-                <p style="color: #6b7280; font-size: 13px; margin-top: 15px; line-height: 1.6;">
-                  <i class="bi bi-info-circle"></i> Para mayor información sobre el proceso de pago y confirmación de su reserva, 
-                  comuníquese con nuestro Departamento Administrativo a través de WhatsApp.
-                </p>
+                <li class="rs-step">
+                  <span class="rs-step-num">2</span>
+                  <div class="rs-step-body">
+                    <h6>Envía el anticipo del 50 %</h6>
+                    <p>Una vez acordemos el precio final, deberás abonar <strong>el 50 %</strong> al menos <strong>30 días antes</strong> del evento para garantizarlo.</p>
+                    <p class="rs-step-hint">Puedes pagar por transferencia o de forma presencial en el Club. Los datos bancarios están más abajo.</p>
+                  </div>
+                </li>
+
+                <li class="rs-step">
+                  <span class="rs-step-num">3</span>
+                  <div class="rs-step-body">
+                    <h6>Cancela el saldo 48 horas antes</h6>
+                    <p>El saldo restante se paga <strong>48 horas antes</strong> del evento. Los consumos y servicios adicionales se liquidan al finalizar.</p>
+                  </div>
+                </li>
+              </ol>
+            </div>
+
+            <!-- RESUMEN de la reserva (datos enviados) -->
+            <div class="rs-success-section rs-success-summary">
+              <h5 class="rs-success-section-title"><i class="bi bi-file-earmark-text"></i> Resumen de tu solicitud</h5>
+              <dl class="rs-summary-grid">
+                <div><dt>Espacio</dt><dd>{{ registration.espacio_nombre }}</dd></div>
+                <div><dt>Fecha</dt><dd>{{ registration.fecha_evento }}</dd></div>
+                <div><dt>Hora</dt><dd>{{ registration.hora_inicio }}</dd></div>
+                <div><dt>Duración</dt><dd>{{ registration.duracion_horas }} horas</dd></div>
+                <div><dt>Personas</dt><dd>{{ registration.num_personas }}</dd></div>
+              </dl>
+
+              <div class="rs-summary-price">
+                <div>
+                  <span class="rs-summary-price-label">Valor estimado</span>
+                  <span class="rs-summary-price-amount">${{ registration.total_price|intcomma }}</span>
+                </div>
+                <div class="rs-summary-price-note">
+                  <i class="bi bi-chat-dots-fill"></i>
+                  <span><strong>Negociable.</strong> Cerramos el precio final por WhatsApp.</span>
+                </div>
               </div>
             </div>
 
-            <!-- Botones de Acción -->
-            <div style="padding: 25px; background: #f9fafb; border-radius: 0 0 8px 8px; text-align: center;">
-              <a href="https://wa.me/573507016630?text=Hola,%20quiero%20confirmar%20mi%20reserva%20%23{{ registration.reserva_id }}%20para%20{{ registration.espacio_nombre|urlencode }}%20el%20{{ registration.fecha_evento }}%20a%20las%20{{ registration.hora_inicio }}.%20Total:%20${{ registration.total_price }}.%20Debo%20abonar%20${{ registration.abono_50 }}%20(50%25).%20Datos:%20{{ registration.nombre_cliente|urlencode }}%20-%20{{ registration.telefono_cliente }}" 
-                 target="_blank" 
-                 class="btn btn-success" 
-                 style="background: #059669; border: none; padding: 14px 35px; font-weight: 600; font-size: 16px; border-radius: 6px; margin-bottom: 15px; display: inline-block;">
+            <!-- DATOS BANCARIOS -->
+            <div class="rs-success-section">
+              <h5 class="rs-success-section-title"><i class="bi bi-bank"></i> Datos para el pago</h5>
+
+              <div class="rs-bank-header">
+                <strong>CORPORACIÓN CLUB META</strong>
+                <span>NIT 892.000.682-1</span>
+              </div>
+
+              <ul class="rs-bank-list">
+                <li>
+                  <span class="rs-bank-name">Bancolombia</span>
+                  <span class="rs-bank-type">Cta. Corriente</span>
+                  <span class="rs-bank-num">05700068204</span>
+                </li>
+                <li>
+                  <span class="rs-bank-name">Davivienda</span>
+                  <span class="rs-bank-type">Cta. Corriente</span>
+                  <span class="rs-bank-num">001802238592</span>
+                </li>
+                <li>
+                  <span class="rs-bank-name">Davivienda</span>
+                  <span class="rs-bank-type">Cta. Ahorros</span>
+                  <span class="rs-bank-num">096470069368</span>
+                </li>
+              </ul>
+
+              <p class="rs-success-hint">
+                <i class="bi bi-info-circle"></i>
+                También puedes pagar de forma presencial (efectivo o tarjeta) en las instalaciones del Club.
+              </p>
+            </div>
+
+            <!-- CTAs -->
+            <div class="rs-success-actions">
+              <a href="https://wa.me/573507016630?text=Hola,%20quiero%20confirmar%20mi%20reserva%20%23{{ registration.reserva_id }}%20para%20{{ registration.espacio_nombre|urlencode }}%20el%20{{ registration.fecha_evento }}%20a%20las%20{{ registration.hora_inicio }}.%20Datos:%20{{ registration.nombre_cliente|urlencode }}%20-%20{{ registration.telefono_cliente }}"
+                 target="_blank" rel="noopener" class="rs-wa-btn rs-wa-btn-lg">
                 <i class="bi bi-whatsapp"></i> Contactar por WhatsApp
               </a>
-              <div style="margin-top: 15px;">
-                <a href="{% url 'reservas:index' %}" class="btn btn-outline-secondary" style="margin: 0 5px; border-radius: 6px; padding: 10px 20px;">Ir al Inicio</a>
-                <a href="{% url 'reservas:espacios' %}" class="btn btn-outline-secondary" style="margin: 0 5px; border-radius: 6px; padding: 10px 20px;">Ver Espacios</a>
+              <div class="rs-success-secondary-actions">
+                <a href="{% url 'reservas:index' %}" class="rs-link-btn"><i class="bi bi-house-door"></i> Inicio</a>
+                <a href="{% url 'reservas:espacios' %}" class="rs-link-btn"><i class="bi bi-grid-3x3-gap"></i> Ver espacios</a>
               </div>
             </div>
-
           </div>
           {% endif %}
 
@@ -342,7 +323,7 @@
 
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Tiempo para Decoración <span class="badge bg-info">A Convenir</span></label>
+                  <label class="form-label">Tiempo para Decoración <span class="badge bg-info">De acuerdo a las circunstancias</span></label>
                   <select name="tiempo_decoracion" class="form-select">
                     <option value="0" selected>No necesito</option>
                     <option value="1">1 hora antes</option>
@@ -510,6 +491,18 @@
               <textarea name="note" class="form-control" rows="3" placeholder="Cuéntanos más sobre tu evento: tipo de celebración, decoración especial, necesidades particulares, etc."></textarea>
             </div>
 
+            <!-- Aviso destacado antes del submit: precio final negociable + WhatsApp post-reserva -->
+            <div class="reserva-pre-submit-callout mb-3">
+              <i class="bi bi-chat-dots-fill"></i>
+              <div>
+                <strong>El precio final es negociable.</strong>
+                Una vez envíes tu solicitud, contáctanos por WhatsApp para acordar la tarifa según tu evento y confirmar los detalles.
+                <a href="https://wa.me/573507016630" target="_blank" rel="noopener" class="reserva-pre-submit-wa">
+                  <i class="bi bi-whatsapp"></i> WhatsApp 350 701 6630
+                </a>
+              </div>
+            </div>
+
             <button id="submitBtn" type="submit" class="btn pm-btn-primary btn-lg w-100 py-3">
               <i class="bi bi-check-circle"></i> Confirmar Reserva
             </button>
@@ -579,7 +572,7 @@
 
             <p class="reserva-summary-note">
               <i class="bi bi-info-circle"></i>
-              Valor aproximado. Se confirma con el equipo de eventos del Club.
+              <strong>Precio final negociable.</strong> Después de enviar la reserva, contáctanos por WhatsApp para acordar la tarifa.
             </p>
 
             <a href="https://wa.me/573507016630" target="_blank" rel="noopener" class="reserva-help-link">
@@ -1279,6 +1272,382 @@
 
   /* Success box: keep functional, just remove harsh borders */
   #successBox { box-shadow: 0 10px 30px rgba(15, 23, 42, 0.10); }
+
+  /* ============================================================
+     REDISEÑO PANTALLA EXITO RESERVA
+     ============================================================ */
+  .rs-success {
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+  }
+  .rs-success-hero {
+    background: linear-gradient(135deg, #0c2a5e 0%, #1e3a8a 70%, #2456a8 100%);
+    color: #fff;
+    padding: 36px 24px 32px;
+    text-align: center;
+    position: relative;
+  }
+  .rs-success-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    color: #fff;
+    font-size: 2rem;
+    margin-bottom: 14px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+  }
+  .rs-success-title {
+    color: #fff;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    margin: 0 0 8px;
+  }
+  .rs-success-subtitle {
+    color: rgba(255, 255, 255, 0.92);
+    margin: 0;
+    font-size: 0.98rem;
+    line-height: 1.55;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  .rs-success-subtitle strong { color: #fbbf24; }
+
+  .rs-success-section {
+    padding: 24px 24px;
+    border-top: 1px solid rgba(15, 23, 42, 0.06);
+  }
+  .rs-success-section:first-of-type { border-top: none; }
+  .rs-success-section-title {
+    color: #0c2a5e;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: -0.005em;
+    margin: 0 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .rs-success-section-title i { color: #1e3a8a; font-size: 1.1rem; }
+
+  /* PASOS */
+  .rs-steps-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .rs-step {
+    display: flex;
+    gap: 16px;
+    padding: 16px 18px;
+    background: #f8fafc;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: 14px;
+    transition: border-color 0.18s ease, transform 0.18s ease;
+  }
+  .rs-step:hover { border-color: rgba(30, 58, 138, 0.20); transform: translateY(-1px); }
+  .rs-step:first-child {
+    background: linear-gradient(135deg, rgba(217, 119, 6, 0.10), rgba(245, 158, 11, 0.05));
+    border-color: rgba(217, 119, 6, 0.30);
+    border-left: 4px solid #d97706;
+  }
+  .rs-step-num {
+    flex-shrink: 0;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1e3a8a, #2456a8);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1rem;
+    box-shadow: 0 4px 10px rgba(30, 58, 138, 0.30);
+  }
+  .rs-step:first-child .rs-step-num {
+    background: linear-gradient(135deg, #d97706, #f59e0b);
+    box-shadow: 0 4px 10px rgba(217, 119, 6, 0.35);
+  }
+  .rs-step-body { flex: 1; min-width: 0; }
+  .rs-step-body h6 {
+    color: #0c2a5e;
+    font-weight: 800;
+    font-size: 1rem;
+    margin: 0 0 6px;
+    letter-spacing: -0.005em;
+  }
+  .rs-step-body p {
+    color: #475569;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    margin: 0 0 4px;
+  }
+  .rs-step-body .rs-step-hint {
+    color: #64748b;
+    font-size: 0.85rem;
+    font-style: italic;
+    margin-top: 4px;
+  }
+
+  /* Boton WhatsApp del paso 1 */
+  .rs-wa-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: #fff !important;
+    border-radius: 999px;
+    text-decoration: none !important;
+    font-weight: 700;
+    font-size: 0.92rem;
+    box-shadow: 0 6px 16px rgba(18, 140, 126, 0.32);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .rs-wa-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(18, 140, 126, 0.42);
+    color: #fff !important;
+  }
+  .rs-wa-btn i { font-size: 1.05rem; }
+  .rs-wa-btn-lg { padding: 14px 28px; font-size: 1rem; }
+
+  /* RESUMEN */
+  .rs-success-summary { background: #fafbfc; }
+  .rs-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 0 0 16px;
+  }
+  .rs-summary-grid > div {
+    background: #fff;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: 10px;
+    padding: 10px 14px;
+  }
+  .rs-summary-grid dt {
+    color: #64748b;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .rs-summary-grid dd {
+    color: #0f172a;
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin: 0;
+    word-wrap: break-word;
+  }
+  .rs-summary-price {
+    background: linear-gradient(135deg, #0c2a5e, #1e3a8a);
+    color: #fff;
+    border-radius: 12px;
+    padding: 16px 18px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .rs-summary-price-label {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.80);
+    margin-bottom: 4px;
+  }
+  .rs-summary-price-amount {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+  }
+  .rs-summary-price-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: rgba(245, 158, 11, 0.18);
+    border: 1px solid rgba(251, 191, 36, 0.45);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: #fff;
+    max-width: 300px;
+  }
+  .rs-summary-price-note i { color: #fbbf24; font-size: 1rem; flex-shrink: 0; }
+  .rs-summary-price-note strong { color: #fbbf24; }
+
+  /* BANCOS */
+  .rs-bank-header {
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.06), rgba(59, 130, 246, 0.03));
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+  }
+  .rs-bank-header strong { display: block; color: #0c2a5e; font-weight: 800; font-size: 0.98rem; }
+  .rs-bank-header span { color: #64748b; font-size: 0.82rem; }
+
+  .rs-bank-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .rs-bank-list li {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 14px;
+    align-items: center;
+    padding: 12px 16px;
+    background: #fff;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 10px;
+    font-size: 0.92rem;
+  }
+  .rs-bank-name { color: #0c2a5e; font-weight: 800; }
+  .rs-bank-type { color: #64748b; font-size: 0.8rem; }
+  .rs-bank-num {
+    color: #0c2a5e;
+    font-weight: 700;
+    font-family: 'Menlo', 'Consolas', monospace;
+    background: #f1f5f9;
+    padding: 4px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.02em;
+  }
+
+  .rs-success-hint {
+    color: #64748b;
+    font-size: 0.85rem;
+    margin: 14px 0 0;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .rs-success-hint i { color: #94a3b8; margin-top: 2px; flex-shrink: 0; }
+
+  /* ACCIONES FINALES */
+  .rs-success-actions {
+    padding: 22px 24px;
+    background: #f8fafc;
+    border-top: 1px solid rgba(15, 23, 42, 0.06);
+    text-align: center;
+  }
+  .rs-success-secondary-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .rs-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: #fff;
+    color: #1e3a8a !important;
+    border: 1.5px solid rgba(30, 58, 138, 0.25);
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-decoration: none !important;
+    transition: all 0.18s ease;
+  }
+  .rs-link-btn:hover {
+    background: rgba(30, 58, 138, 0.06);
+    border-color: #1e3a8a;
+    transform: translateY(-1px);
+    color: #0c2a5e !important;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 575.98px) {
+    .rs-success-hero { padding: 28px 16px 24px; }
+    .rs-success-icon { width: 56px; height: 56px; font-size: 1.6rem; }
+    .rs-success-section { padding: 20px 16px; }
+    .rs-step { padding: 14px 14px; gap: 12px; }
+    .rs-step-num { width: 32px; height: 32px; font-size: 0.92rem; }
+    .rs-step-body h6 { font-size: 0.95rem; }
+    .rs-summary-grid { grid-template-columns: 1fr 1fr; }
+    .rs-summary-price { flex-direction: column; align-items: stretch; }
+    .rs-bank-list li {
+      grid-template-columns: 1fr auto;
+      grid-template-areas: "name num" "type type";
+    }
+    .rs-bank-name { grid-area: name; }
+    .rs-bank-num { grid-area: num; }
+    .rs-bank-type { grid-area: type; }
+    .rs-success-actions { padding: 18px 16px; }
+  }
+
+  /* Callout encima del submit: precio negociable + WhatsApp post-reserva */
+  .reserva-pre-submit-callout {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(217, 119, 6, 0.10), rgba(245, 158, 11, 0.06));
+    border: 1px solid rgba(217, 119, 6, 0.30);
+    border-left: 4px solid #d97706;
+    color: #78350f;
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+  .reserva-pre-submit-callout > i {
+    color: #d97706;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .reserva-pre-submit-callout strong {
+    color: #78350f;
+    display: block;
+    margin-bottom: 2px;
+    font-weight: 800;
+    font-size: 0.98rem;
+  }
+  .reserva-pre-submit-wa {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 7px 14px;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: #fff !important;
+    border-radius: 999px;
+    text-decoration: none !important;
+    font-weight: 700;
+    font-size: 0.88rem;
+    box-shadow: 0 4px 12px rgba(18, 140, 126, 0.30);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .reserva-pre-submit-wa:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(18, 140, 126, 0.42);
+    color: #fff !important;
+  }
+  .reserva-pre-submit-wa i { font-size: 1rem; }
 </style>
 
 <script>
