@@ -56,7 +56,7 @@
 
           {% if not success %}
           <ol class="pm-steps mb-4" aria-label="Pasos de la reserva">
-            <li class="active"><span class="pm-step-num">1</span><span class="pm-step-label">Cliente</span></li>
+            <li class="active"><span class="pm-step-num">1</span><span class="pm-step-label">Tus datos</span></li>
             <li><span class="pm-step-num">2</span><span class="pm-step-label">Espacio</span></li>
             <li><span class="pm-step-num">3</span><span class="pm-step-label">Fecha y hora</span></li>
             <li><span class="pm-step-num">4</span><span class="pm-step-label">Servicios</span></li>
@@ -234,9 +234,9 @@
               </div>
             </div>
 
-            <!-- Sección: Información del Cliente -->
+            <!-- Sección: Tus datos -->
             <div class="mb-4">
-              <h5 class="text-primary mb-3"><i class="bi bi-person-circle"></i> Datos del Cliente</h5>
+              <h5 class="text-primary mb-3"><i class="bi bi-person-circle"></i> Tus datos</h5>
               <div class="row">
                 <div class="col-md-4 mb-3">
                   <label class="form-label">Nombre Completo</label>
@@ -497,7 +497,7 @@
                 <strong>No hay servicios adicionales cargados.</strong>
                 <div class="mt-2">Si eres administrador ejecuta en tu entorno de desarrollo:</div>
                 <pre class="mt-2" style="background:#f8f9fa;padding:10px;border-radius:6px;">python manage.py cargar_servicios</pre>
-                <small class="text-muted">Una vez creados los servicios aparecerán aquí para que el cliente pueda seleccionar cantidades.</small>
+                <small class="text-muted">Una vez creados los servicios aparecerán aquí para poder seleccionar cantidades.</small>
               </div>
             </div>
 
@@ -536,7 +536,7 @@
 
             <ul class="reserva-summary-list">
               <li>
-                <span class="rs-label"><i class="bi bi-person"></i> Cliente</span>
+                <span class="rs-label"><i class="bi bi-person"></i> Nombre</span>
                 <span id="summaryCliente" class="rs-value text-muted">—</span>
               </li>
               <li>
