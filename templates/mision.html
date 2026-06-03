@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load cdn_tags %}
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'css/vision.css' %}">
 {% endblock %}
@@ -12,11 +13,11 @@
 <div class="vision-section-bg">
   <div class="vision-card">
     <div class="vision-ribbon">
-      <img src="{% static 'img/logo.webp' %}" alt="Logo Club El Meta" decoding="async">
+      <img src="{% cdn_static 'img/logo.webp' transforms='f_auto,q_auto' %}" alt="Logo Club El Meta" decoding="async">
       CLUB EL META
     </div>
     <div class="vision-title">Misión</div>
-    <img src="{% static 'img/carru4.webp' %}" alt="Misión" class="vision-img" loading="lazy" decoding="async">
+    <img src="{% cdn_static 'img/carru4.webp' transforms='c_fill,w_900,h_600,f_auto,q_auto' %}" alt="Misión" class="vision-img" loading="lazy" decoding="async">
     <p class="vision-text">Brindar a propios y visitantes un exclusivo ambiente atendido por personal idóneo y calificado, en cómodas y bellas instalaciones, ofreciendo productos de primera línea, satisfaciendo plenamente las expectativas de excelencia, descanso y esparcimiento.</p>
   </div>
 </div>

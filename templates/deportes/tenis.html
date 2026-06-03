@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load cdn_tags %}
 {% block title %}Tenis - CLUB EL META{% endblock %}
 {% block content %}
 <div class="container py-5">
@@ -8,16 +9,16 @@
       <div id="tenisCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <img loading="lazy" src="{% static 'img/tenis/tenis1.avif' %}" class="deporte-img" alt="Tenis 1">
+            <img loading="lazy" src="{% cdn_static 'img/tenis/tenis1.avif' transforms='c_fill,w_1200,h_700,f_auto,q_auto' %}" class="deporte-img" alt="Tenis 1">
           </div>
           <div class="carousel-item">
-            <img loading="lazy" src="{% static 'img/tenis/tenis2.avif' %}" class="deporte-img" alt="Tenis 2">
+            <img loading="lazy" src="{% cdn_static 'img/tenis/tenis2.avif' transforms='c_fill,w_1200,h_700,f_auto,q_auto' %}" class="deporte-img" alt="Tenis 2">
           </div>
           <div class="carousel-item">
-            <img loading="lazy" src="{% static 'img/tenis/tenis3.avif' %}" class="deporte-img" alt="Tenis 3">
+            <img loading="lazy" src="{% cdn_static 'img/tenis/tenis3.avif' transforms='c_fill,w_1200,h_700,f_auto,q_auto' %}" class="deporte-img" alt="Tenis 3">
           </div>
           <div class="carousel-item">
-            <img loading="lazy" src="{% static 'img/tenis/tenis4.avif' %}" class="deporte-img" alt="Tenis 4">
+            <img loading="lazy" src="{% cdn_static 'img/tenis/tenis4.avif' transforms='c_fill,w_1200,h_700,f_auto,q_auto' %}" class="deporte-img" alt="Tenis 4">
           </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#tenisCarousel" data-bs-slide="prev">

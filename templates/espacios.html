@@ -58,7 +58,7 @@
             <div class="carousel-inner">
               {% for img in r.images %}
               <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                <img src="{% static "img/" %}{{ img }}" class="d-block w-100 espacio-card-img" alt="{{ r.name }}" loading="lazy" decoding="async">
+                {% with rel_path='img/'|add:img %}<img src="{% cdn_static rel_path transforms='c_fill,w_900,h_600,f_auto,q_auto' %}" class="d-block w-100 espacio-card-img" alt="{{ r.name }}" loading="lazy" decoding="async">{% endwith %}
               </div>
               {% endfor %}
             </div>
@@ -136,7 +136,7 @@
               <div class="carousel-inner">
                 {% for img in r.images %}
                 <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                  <img src="{% static "img/" %}{{ img }}" class="d-block w-100 salon-modal-img" alt="{{ r.name }}" loading="lazy" decoding="async">
+                  {% with rel_path='img/'|add:img %}<img src="{% cdn_static rel_path transforms='c_fill,w_1200,h_700,f_auto,q_auto' %}" class="d-block w-100 salon-modal-img" alt="{{ r.name }}" loading="lazy" decoding="async">{% endwith %}
                 </div>
                 {% endfor %}
               </div>
