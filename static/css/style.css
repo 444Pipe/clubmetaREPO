@@ -717,4 +717,200 @@ main a:not(.btn):not(.nav-link-custom):not(.nav-link-logout):not(.brand-link):no
   }
 }
 
+/* =====================================================================
+   RESPONSIVE COMPREHENSIVE FIXES — cobertura de gaps en redisenos recientes
+   (register form, comunicados, deportes, gastronomia, espacios, success
+   page, etc.). Tres breakpoints: tablet (<=991), movil (<=575),
+   movil-pequeno (<=380).
+   ===================================================================== */
+
+/* --------- GLOBAL: prevenir overflow horizontal en TODO el sitio --------- */
+html, body { max-width: 100%; overflow-x: hidden; }
+.container, .container-fluid { max-width: 100%; }
+img, video, iframe, picture, embed, object { max-width: 100%; height: auto; }
+table { max-width: 100%; }
+
+/* --------- MODALES: siempre dejar margen y nunca overflow --------- */
+.modal-dialog {
+  margin: 0.75rem auto !important;
+  max-width: min(95vw, 1100px);
+}
+.modal-content { max-width: 100%; }
+@media (max-width: 575.98px) {
+  .modal-dialog { margin: 0.5rem auto !important; max-width: 96vw; }
+  .modal-body { padding: 1rem !important; }
+  .modal-header { padding: 0.9rem 1rem !important; }
+  .modal-footer { padding: 0.9rem 1rem !important; flex-wrap: wrap; gap: 8px; }
+  .modal-footer > .btn,
+  .modal-footer > a.btn { flex: 1 1 auto; }
+}
+
+/* --------- TABLAS: scroll horizontal en lugar de romper layout --------- */
+.table-responsive,
+.results,
+#changelist .results {
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+}
+@media (max-width: 991.98px) {
+  table.table { font-size: 0.88rem; }
+  table.table th, table.table td { white-space: nowrap; padding: 0.55rem 0.45rem !important; }
+}
+@media (max-width: 575.98px) {
+  table.table { font-size: 0.82rem; }
+}
+
+/* --------- TIPOGRAFIA: clamp en headings para evitar overflow --------- */
+@media (max-width: 575.98px) {
+  h1 { font-size: clamp(1.4rem, 5vw, 1.8rem) !important; }
+  h2 { font-size: clamp(1.25rem, 4.5vw, 1.6rem) !important; }
+  h3 { font-size: clamp(1.1rem, 4vw, 1.4rem) !important; }
+  h4 { font-size: clamp(1rem, 3.5vw, 1.2rem) !important; }
+}
+
+/* --------- REGISTER FORM: ajustes en cards de seccion y callouts --------- */
+@media (max-width: 575.98px) {
+  /* Pre-submit callout: stack vertical y boton WA full-width */
+  .reserva-pre-submit-callout {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 14px 14px !important;
+  }
+  .reserva-pre-submit-wa {
+    align-self: stretch;
+    justify-content: center;
+    width: 100%;
+  }
+  /* Form sections: padding mas compacto */
+  .rs-form-section { padding: 14px 14px 2px !important; }
+  .rs-form-section-head { gap: 10px; margin-bottom: 12px; }
+  .rs-form-section-hint { font-size: 0.8rem; }
+  .rs-form-quick { flex-direction: column; align-items: flex-start; gap: 8px; }
+  /* Submit button con padding mayor para touch */
+  #submitBtn.btn-lg { padding: 14px 18px !important; font-size: 1rem !important; }
+  /* Override checkboxes mas compactos */
+  .rm-override-check { font-size: 0.8rem; padding: 8px 10px !important; }
+}
+
+/* --------- SUCCESS PAGE RESERVA --------- */
+@media (max-width: 575.98px) {
+  .rs-success-hero { padding: 26px 14px 22px !important; }
+  .rs-success-icon { width: 52px !important; height: 52px !important; font-size: 1.5rem !important; }
+  .rs-success-title { font-size: 1.35rem !important; }
+  .rs-success-subtitle { font-size: 0.9rem; }
+  .rs-step { padding: 14px 14px !important; }
+  .rs-step-body h6 { font-size: 0.95rem; }
+  .rs-step-body p { font-size: 0.88rem; }
+  .rs-wa-btn { padding: 10px 16px; font-size: 0.88rem; }
+  .rs-wa-btn-lg { padding: 12px 22px; font-size: 0.95rem; width: 100%; justify-content: center; }
+  .rs-summary-price { padding: 14px 16px !important; }
+  .rs-summary-price-amount { font-size: 1.25rem !important; }
+  .rs-success-secondary-actions { flex-direction: column; }
+  .rs-link-btn { justify-content: center; }
+}
+
+/* --------- COMUNICADOS: card y galeria responsive --------- */
+@media (max-width: 480px) {
+  .com-card { border-radius: 12px !important; }
+  .com-body { padding: 16px 16px !important; }
+  .com-date { font-size: 0.75rem; }
+  .com-title { font-size: 1.05rem !important; }
+  .com-text { font-size: 0.9rem !important; }
+  .com-empty { padding: 40px 16px !important; }
+}
+
+/* --------- ESPACIOS: card chips y price negociable --------- */
+@media (max-width: 480px) {
+  .espacio-card-cap-chip,
+  .espacio-card-price-chip { font-size: 0.7rem !important; padding: 5px 10px !important; }
+  .espacio-card-features { gap: 6px !important; }
+  .espacio-feature { width: 28px !important; height: 28px !important; font-size: 0.82rem !important; }
+}
+
+/* --------- MODAL DETALLE SALON --------- */
+@media (max-width: 991.98px) {
+  .salon-modal-stats { grid-template-columns: 1fr 1fr !important; }
+  .salon-stat-icon { width: 36px !important; height: 36px !important; font-size: 0.95rem !important; }
+  .salon-stat-value { font-size: 0.95rem !important; }
+  .salon-config-table-wrap { overflow-x: auto; }
+  .salon-modal-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .salon-modal-footer-actions { width: 100%; }
+  .salon-modal-footer-actions > a { flex: 1; justify-content: center; }
+}
+@media (max-width: 480px) {
+  .salon-modal-stats { grid-template-columns: 1fr !important; }
+}
+
+/* --------- DEPORTES / NUEVAS SECCIONES INTERNAS --------- */
+@media (max-width: 575.98px) {
+  .pg-hero { padding: 2.2rem 0 1.8rem !important; }
+  .pg-hero-eyebrow { font-size: 0.68rem !important; padding: 5px 12px !important; letter-spacing: 0.22em !important; }
+  .pg-hero-lead { font-size: 0.92rem !important; }
+  .pg-content { padding: 2rem 0 2.5rem !important; }
+  .pg-card-body { padding: 18px 16px 20px !important; }
+  .pg-card-title { font-size: 1.15rem !important; }
+  .pg-card-text { font-size: 0.92rem !important; line-height: 1.6 !important; }
+  .pg-card-media-title { font-size: 1.2rem !important; left: 14px !important; bottom: 12px !important; }
+  .pg-card-media-title i { font-size: 0.75em !important; }
+  .pg-info-list { grid-template-columns: 1fr !important; }
+  .pg-info-list li { font-size: 0.88rem; }
+  .pg-cta { padding: 22px 16px !important; border-radius: 14px !important; }
+  .pg-cta h2 { font-size: 1.2rem !important; }
+  .pg-cta p { font-size: 0.9rem; }
+  .pg-cta-actions { flex-direction: column; width: 100%; }
+  .pg-btn { width: 100%; justify-content: center; padding: 12px 18px !important; }
+}
+
+/* --------- HERO INDEX: chevron scroll indicator mas pequeño en movil --------- */
+@media (max-width: 575.98px) {
+  .hero-scroll-indicator { bottom: 10px !important; }
+  .hero-scroll-chevron { width: 30px !important; height: 30px !important; }
+  .hero-scroll-chevron i { font-size: 0.95rem !important; }
+}
+
+/* --------- NAVBAR: chips de info en mobile slide-out scrolleables --------- */
+@media (max-width: 575.98px) {
+  .mobile-menu-body { padding-bottom: 80px; }
+}
+
+/* --------- ADMIN PANEL --------- */
+@media (max-width: 991.98px) {
+  /* Header stats cards en grid 2 col en tablet, 1 en mobile pequeño */
+  .admin-layout .main-area .row > .col-md-2 { flex: 0 0 50%; max-width: 50%; }
+}
+@media (max-width: 575.98px) {
+  .admin-layout .main-area .row > .col-md-2 { flex: 0 0 100%; max-width: 100%; }
+  .admin-layout .main-area h2.fs-3 { font-size: 1.3rem !important; }
+}
+
+/* --------- BOTONES: full-width en movil para mejor touch --------- */
+@media (max-width: 480px) {
+  .btn-lg { padding: 12px 18px !important; font-size: 0.98rem !important; }
+  /* Grupos de botones que deberian apilarse en movil */
+  .d-flex.gap-2:has(.btn-sm + .btn-sm),
+  .d-flex.gap-1:has(.btn-sm + .btn-sm) {
+    flex-wrap: wrap;
+  }
+}
+
+/* --------- IMAGENES DENTRO DE TARJETAS: aspect-ratio uniforme --------- */
+@media (max-width: 575.98px) {
+  .pg-card-media { aspect-ratio: 16 / 10; }
+  .com-img-wrap { aspect-ratio: 16 / 10; }
+}
+
+/* --------- IMPRESION (extra polish, no responsive pero util) --------- */
+@media print {
+  .site-header, .navbar, .menu-info, footer,
+  .pg-cta, .reserva-pre-submit-callout,
+  .nav-toggle, .mobile-cta { display: none !important; }
+  a { color: inherit !important; text-decoration: none !important; }
+  .pg-hero { background: none !important; color: #000 !important; padding: 1rem 0 !important; }
+  .pg-hero-title, .pg-card-title { color: #000 !important; }
+  .pg-card { box-shadow: none !important; border: 1px solid #ccc !important; }
+}
+
 
