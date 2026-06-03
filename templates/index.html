@@ -610,32 +610,47 @@
                   </div>
                 </div>
 
-                <!-- Horario general (destacado) -->
+                <!-- General y eventos: horario + telefonos -->
                 <div class="ci-row mt-3">
                   <i class="bi bi-clock-fill text-primary me-2"></i>
                   <div>
-                    <div class="ci-label">Horario general del club</div>
+                    <div class="ci-label">General y eventos</div>
                     <div class="ci-value"><strong>Martes a domingo</strong> · 08:00 AM – 07:00 PM</div>
+                    <div class="ci-value ci-phones">
+                      <i class="bi bi-telephone-fill"></i>
+                      <a href="tel:+573507016630">350 701 6630</a>
+                      <span class="mx-1 text-muted">·</span>
+                      <a href="tel:+573134660698">313 466 0698</a>
+                    </div>
                     <div id="current-time-info" class="small text-muted mt-1">Hora actual: --:--:--</div>
                   </div>
                 </div>
 
-                <!-- Restaurante -->
+                <!-- Restaurante: horario + telefono -->
                 <div class="ci-row mt-3">
                   <i class="bi bi-cup-hot-fill text-primary me-2"></i>
                   <div>
                     <div class="ci-label">Restaurante</div>
                     <div class="ci-value">09:00 AM – 07:00 PM</div>
+                    <div class="ci-value ci-phones">
+                      <i class="bi bi-telephone-fill"></i>
+                      <a href="tel:+573108824473">310 882 4473</a>
+                    </div>
                   </div>
                 </div>
 
-                <!-- Atención administrativa -->
+                <!-- Atencion administrativa + contabilidad: horario + telefono -->
                 <div class="ci-row mt-3">
                   <i class="bi bi-briefcase-fill text-primary me-2"></i>
                   <div>
                     <div class="ci-label">Atención administrativa</div>
                     <div class="ci-value">Lunes a viernes · 08:00 AM – 12:00 PM / 02:00 PM – 05:30 PM</div>
                     <div class="ci-value">Sábados · 08:00 AM – 02:30 PM</div>
+                    <div class="ci-value ci-phones">
+                      <i class="bi bi-telephone-fill"></i>
+                      <span class="text-muted me-1">Contabilidad:</span>
+                      <a href="tel:+573124347893">312 434 7893</a>
+                    </div>
                   </div>
                 </div>
 
@@ -646,37 +661,6 @@
                     <strong>Importante:</strong> los <strong>lunes</strong> y los <strong>martes posteriores a un festivo</strong>
                     <strong>no hay servicio general del club</strong>. Únicamente funciona la <strong>atención administrativa</strong>
                     en los horarios indicados arriba.
-                  </div>
-                </div>
-
-                <!-- Espacios y eventos -->
-                <div class="ci-row mt-3">
-                  <i class="bi bi-telephone-fill text-primary me-2"></i>
-                  <div>
-                    <div class="ci-label">General y eventos</div>
-                    <div class="ci-value">
-                      <a href="tel:+573507016630">350 701 6630</a>
-                      <span class="mx-1 text-muted">·</span>
-                      <a href="tel:+573134660698">313 466 0698</a>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Restaurante -->
-                <div class="ci-row mt-3">
-                  <i class="bi bi-cup-hot text-primary me-2"></i>
-                  <div>
-                    <div class="ci-label">Restaurante</div>
-                    <div class="ci-value"><a href="tel:+573108824473">310 882 4473</a></div>
-                  </div>
-                </div>
-
-                <!-- Contabilidad -->
-                <div class="ci-row mt-3">
-                  <i class="bi bi-calculator-fill text-primary me-2"></i>
-                  <div>
-                    <div class="ci-label">Contabilidad</div>
-                    <div class="ci-value"><a href="tel:+573124347893">312 434 7893</a></div>
                   </div>
                 </div>
 
@@ -1604,6 +1588,22 @@
     color: #1e3a8a !important;
     font-weight: 600;
   }
+
+  /* Telefonos dentro de los bloques de contacto */
+  .ci-phones {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .ci-phones i.bi-telephone-fill {
+    color: #1e3a8a;
+    font-size: 0.85rem;
+    margin-right: 4px;
+  }
+  .ci-phones a { white-space: nowrap; }
 
   /* Callout box: aviso destacado dentro de la columna de contacto */
   .ci-callout {
