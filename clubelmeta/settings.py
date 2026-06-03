@@ -180,6 +180,22 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # ---------------------------
+# CLOUDINARY (fetch mode) — para acelerar carga de imagenes en produccion
+# ---------------------------
+# Modo "fetch": Cloudinary descarga las imagenes desde SITE_BASE_URL la
+# primera vez que se piden, las cachea y las sirve por CDN con auto-format
+# y auto-quality. No requiere subida manual ni API keys, solo el cloud name.
+# Se activa cuando CLOUDINARY_ENABLED=true en env (en produccion).
+CLOUDINARY_CLOUD_NAME = os.getenv("CLOUDINARY_CLOUD_NAME", "dxfgqsp8y")
+CLOUDINARY_ENABLED = os.getenv("CLOUDINARY_ENABLED", "false").lower() in ("1", "true", "yes")
+# Transformaciones por defecto. f_auto = formato moderno (webp/avif segun browser),
+# q_auto = calidad automatica. Puedes sobrescribir por imagen con el template tag.
+CLOUDINARY_DEFAULT_TRANSFORMS = os.getenv("CLOUDINARY_DEFAULT_TRANSFORMS", "f_auto,q_auto")
+# Base publica desde donde Cloudinary fetchea las imagenes (debe ser accesible).
+# En produccion debe coincidir con tu dominio real (clubelmeta.co).
+SITE_BASE_URL = os.getenv("SITE_BASE_URL", "https://www.clubelmeta.co").rstrip("/")
+
+# ---------------------------
 # MEDIA FILES
 # ---------------------------
 MEDIA_URL = "/media/"

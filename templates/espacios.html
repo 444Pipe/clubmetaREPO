@@ -3,6 +3,7 @@
 {% load custom_filters %}
 {% load humanize %}
 {% load montaje_icons %}
+{% load cdn_tags %}
 {% block title %}Espacios Disponibles - CLUB EL META{% endblock %}
 {% block content %}
 
@@ -57,7 +58,9 @@
             <div class="carousel-inner">
               {% for img in r.images %}
               <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                <img src="{% static 'img/' %}{{ img }}" class="d-block w-100 espacio-card-img" alt="{{ r.name }}">
+                {% with rel_path='img/'|add:img %}
+                <img src="{% cdn_static rel_path transforms='c_fill,w_900,h_600,f_auto,q_auto' %}" class="d-block w-100 espacio-card-img" alt="{{ r.name }}" loading="lazy" decoding="async">
+                {% endwith %}
               </div>
               {% endfor %}
             </div>
@@ -135,7 +138,9 @@
               <div class="carousel-inner">
                 {% for img in r.images %}
                 <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                  <img src="{% static 'img/' %}{{ img }}" class="d-block w-100 salon-modal-img" alt="{{ r.name }}">
+                  {% with rel_path='img/'|add:img %}
+                  <img src="{% cdn_static rel_path transforms='c_fill,w_1200,h_700,f_auto,q_auto' %}" class="d-block w-100 salon-modal-img" alt="{{ r.name }}" loading="lazy" decoding="async">
+                  {% endwith %}
                 </div>
                 {% endfor %}
               </div>
@@ -211,7 +216,7 @@
               </p>
               {% elif r.name == "Salón Empresarial" or r.name == "Salon Empresarial" or r.name == "Empresarial" or r.name == "Salón empresarial" or r.name == "Salon empresarial" %}
               <p class="salon-section-text">
-                Exclusivo salón con instalación independiente, diseñado para la realización de asambleas, desayunos, almuerzos y cenas de trabajo, jornadas de capacitación y exposiciones. Está orientado a eventos cuyo objetivo es generar beneficios empresariales, fortalecer la imagen institucional, captar clientes y apoyar acciones de marketing de bienes y servicios. Cuenta con infraestructura para montaje audiovisual, servicio de restaurante y apoyo logístico para eventos corporativos.
+                Exclusivo salón con instalación independiente, diseñado para la realización de asambleas, desayunos, almuerzos y cenas de trabajo, jornadas de capacitación y exposiciones. Está orientado a eventos cuyo objetivo es generar beneficios empresariales, fortalecer la imagen institucional y apoyar acciones de marketing de bienes y servicios. Cuenta con infraestructura para montaje audiovisual, servicio de restaurante y apoyo logístico para eventos corporativos.
               </p>
               {% elif r.name == "Kiosco" or r.name == "Kiosko" or r.name == "kiosco" or r.name == "kiosko" %}
               <p class="salon-section-text">
