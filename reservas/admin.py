@@ -152,14 +152,63 @@ class CustomUserAdmin(DjangoUserAdmin):
 
 admin.site.register(User, CustomUserAdmin)
 
+# ----- Widget + Field para subir multiples archivos desde el admin -----
+class MultipleFileInput(forms.ClearableFileInput):
+    """Widget que permite multiple=True y devuelve todos los archivos."""
+    allow_multiple_selected = True
+
+    def __init__(self, attrs=None):
+        attrs = dict(attrs or {})
+        attrs.setdefault('multiple', True)
+        super().__init__(attrs)
+
+    def value_from_datadict(self, data, files, name):
+        # Devolver TODOS los archivos seleccionados, no solo el primero
+        if hasattr(files, 'getlist'):
+            return files.getlist(name)
+        return files.get(name)
+
+
+class MultipleFileField(forms.FileField):
+    """Form field que acepta una lista de archivos."""
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('widget', MultipleFileInput())
+        kwargs.setdefault('required', False)
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single = super().clean
+        if isinstance(data, (list, tuple)):
+            return [single(d, initial) for d in data if d]
+        if data:
+            return [single(data, initial)]
+        return []
+
+
+class SalonAdminForm(forms.ModelForm):
+    imagenes_upload = MultipleFileField(
+        required=False,
+        label='Subir imágenes nuevas',
+        help_text='Selecciona uno o varios archivos desde tu equipo. Se guardarán en el sitio y, si Cloudinary está configurado en el servidor (CLOUDINARY_API_KEY/SECRET), se subirán al CDN automáticamente. Se añadirán al final del campo "Imagen".',
+    )
+
+    class Meta:
+        model = Salon
+        fields = '__all__'
+
+
 @admin.register(Salon)
 class SalonAdmin(admin.ModelAdmin):
+    form = SalonAdminForm
     list_display = ('nombre', 'disponible')
     list_filter = ('disponible',)
     search_fields = ('nombre', 'descripcion')
     list_editable = ('disponible',)
     fieldsets = (
-        (None, {'fields': ('nombre', 'descripcion', 'imagen', 'disponible')}),
+        (None, {
+            'fields': ('nombre', 'descripcion', 'imagen', 'imagenes_upload', 'disponible'),
+            'description': 'En "Imagen" puedes editar manualmente la lista (rutas separadas por comas). En "Subir imágenes nuevas" puedes seleccionar archivos desde tu computador.',
+        }),
         ('Medidas (metros)', {
             'fields': ('largo_m', 'ancho_m', 'alto_m', 'diametro_m')
         }),
@@ -167,6 +216,109 @@ class SalonAdmin(admin.ModelAdmin):
             'fields': ('tarima_largo_m', 'tarima_ancho_m', 'tarima_alto_m')
         }),
     )
+
+    def save_model(self, request, obj, form, change):
+        """Guarda el salon y procesa los archivos subidos:
+        1. Los persiste en static/img/<carpeta>/ (sirve en dev sin Cloudinary).
+        2. Si CLOUDINARY_API_KEY/SECRET estan configuradas, sube cada archivo
+           a Cloudinary con public_id = img/<carpeta>/<nombre_sin_ext>.
+        3. Append las rutas (formato '<carpeta>/<archivo>') al campo imagen.
+        """
+        super().save_model(request, obj, form, change)
+        archivos = form.cleaned_data.get('imagenes_upload') or []
+        if not archivos:
+            return
+
+        import os
+        from pathlib import Path
+        from django.conf import settings
+        from django.utils.text import slugify, get_valid_filename
+
+        # Carpeta destino: 'salon_<slug>' para evitar problemas con espacios
+        carpeta = f'salon_{slugify(obj.nombre)}' if obj.nombre else 'salon_sin_nombre'
+
+        # Cloudinary opcional: solo si las env vars estan configuradas
+        cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME') or getattr(settings, 'CLOUDINARY_CLOUD_NAME', '')
+        api_key = os.environ.get('CLOUDINARY_API_KEY', '')
+        api_secret = os.environ.get('CLOUDINARY_API_SECRET', '')
+        cloudinary_ready = bool(cloud_name and api_key and api_secret)
+        if cloudinary_ready:
+            try:
+                import cloudinary
+                import cloudinary.uploader
+                cloudinary.config(
+                    cloud_name=cloud_name,
+                    api_key=api_key,
+                    api_secret=api_secret,
+                    secure=True,
+                )
+            except ImportError:
+                cloudinary_ready = False
+
+        # Carpeta local destino (static/img/<carpeta>/)
+        static_dirs = getattr(settings, 'STATICFILES_DIRS', [])
+        static_base = Path(static_dirs[0]) if static_dirs else Path(settings.BASE_DIR) / 'static'
+        carpeta_local = static_base / 'img' / carpeta
+        try:
+            carpeta_local.mkdir(parents=True, exist_ok=True)
+        except Exception as e:
+            messages.error(request, f'No se pudo crear la carpeta local {carpeta_local}: {e}')
+            return
+
+        added = []
+        cloudinary_count = 0
+        for f in archivos:
+            try:
+                safe_name = get_valid_filename(f.name)
+                local_path = carpeta_local / safe_name
+                # Si ya existe, agregar sufijo numerico para no sobreescribir
+                stem = local_path.stem
+                ext = local_path.suffix
+                counter = 1
+                while local_path.exists() and counter <= 100:
+                    local_path = carpeta_local / f'{stem}_{counter}{ext}'
+                    counter += 1
+
+                # Persistir en disco
+                with open(local_path, 'wb') as outf:
+                    for chunk in f.chunks():
+                        outf.write(chunk)
+
+                # Subir a Cloudinary (no falla todo el save si Cloudinary falla)
+                if cloudinary_ready:
+                    try:
+                        public_id = f'img/{carpeta}/{local_path.stem}'
+                        cloudinary.uploader.upload(
+                            str(local_path),
+                            public_id=public_id,
+                            overwrite=True,
+                            resource_type='image',
+                            use_filename=False,
+                            unique_filename=False,
+                        )
+                        cloudinary_count += 1
+                    except Exception as e:
+                        messages.warning(request, f'{f.name}: guardado local pero falló la subida a Cloudinary: {e}')
+
+                # Path relativo a 'img/' para el campo imagen
+                added.append(f'{carpeta}/{local_path.name}')
+            except Exception as e:
+                messages.error(request, f'Error procesando {f.name}: {e}')
+
+        if added:
+            existing = (obj.imagen or '').strip()
+            current = [p.strip() for p in existing.split(',') if p.strip()]
+            current.extend(added)
+            obj.imagen = ','.join(current)
+            obj.save(update_fields=['imagen'])
+            if cloudinary_ready:
+                messages.success(request,
+                    f'{len(added)} imagen(es) guardada(s) localmente y {cloudinary_count} subida(s) a Cloudinary.')
+            else:
+                messages.warning(request,
+                    f'{len(added)} imagen(es) guardada(s) localmente. Cloudinary NO esta configurado en este servidor '
+                    '(faltan CLOUDINARY_API_KEY y/o CLOUDINARY_API_SECRET); las imagenes solo viven en /static/img/ '
+                    'hasta que las subas con `manage.py upload_static_to_cloudinary`.')
 
 
 class ConfiguracionSalonInline(admin.TabularInline):
