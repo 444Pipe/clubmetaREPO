@@ -329,25 +329,37 @@ class ReservaServicioAdicional(models.Model):
 
 
 class Comunicado(models.Model):
-    """Comunicados de Gerencia (para la sección pública)."""
-    titulo = models.CharField(max_length=255)
-    cuerpo = models.TextField(blank=True)
-    publicado = models.DateTimeField(null=True, blank=True)
-    activo = models.BooleanField(default=True)
+    """Comunicados de Gerencia (para la sección pública).
+
+    Soporta tres tipos de publicacion:
+      - Solo texto: titulo + cuerpo.
+      - Solo imagenes: añadir imagenes en el inline (sin titulo).
+      - Texto + imagenes (mixto).
+    """
+    titulo = models.CharField(max_length=255, blank=True,
+                              help_text='Opcional. Si lo dejas vacio el comunicado se mostrara solo con imagenes/cuerpo.')
+    cuerpo = models.TextField(blank=True,
+                              help_text='Opcional. HTML basico permitido (negritas, parrafos, etc).')
+    publicado = models.DateTimeField(null=True, blank=True,
+                                     help_text='Fecha en que se publico. Si la dejas vacia el comunicado no aparecera ordenado por fecha.')
+    activo = models.BooleanField(default=True,
+                                 help_text='Desactiva para ocultar del sitio sin borrar.')
 
     class Meta:
         verbose_name = 'Comunicado'
         verbose_name_plural = 'Comunicados'
-        ordering = ['-publicado']
+        ordering = ['-publicado', '-id']
 
     def __str__(self):
-        return self.titulo
+        return self.titulo or f'Comunicado #{self.id}'
 
 
 class ComunicadoImagen(models.Model):
+    """Imagen asociada a un Comunicado. Se sube a Cloudinary automaticamente."""
     comunicado = models.ForeignKey(Comunicado, on_delete=models.CASCADE, related_name='images')
-    imagen = models.ImageField(upload_to='comunicados/%Y/%m/%d/')
-    orden = models.PositiveSmallIntegerField(default=0)
+    imagen = CloudinaryField('imagen', folder='comunicados', resource_type='image')
+    orden = models.PositiveSmallIntegerField(default=0,
+                                             help_text='Posicion de la imagen dentro del comunicado (menor = primero).')
 
     class Meta:
         verbose_name = 'Imagen de Comunicado'
@@ -355,25 +367,8 @@ class ComunicadoImagen(models.Model):
         ordering = ['orden', 'id']
 
     def __str__(self):
-        return f"Imagen {self.id} - {self.comunicado.titulo[:30]}"
-
-
-class ImagenComunicado(models.Model):
-    """Imágenes generales para la sección de comunicados.
-
-    Este modelo no referencia a ningun comunicado; sirve solo para almacenar
-    archivos en MEDIA_ROOT/comunicados/ subidos desde el admin.
-    """
-    imagen = CloudinaryField('imagen')
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name = 'Imagen Comunicado'
-        verbose_name_plural = 'Imágenes Comunicados'
-        ordering = ['-uploaded_at']
-
-    def __str__(self):
-        return f"ImagenComunicado {self.id}"
+        titulo = self.comunicado.titulo or f'Comunicado #{self.comunicado_id}'
+        return f"Imagen {self.id} - {titulo[:30]}"
 
 
 class AnuncioFlotante(models.Model):

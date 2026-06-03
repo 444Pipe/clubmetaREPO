@@ -11,7 +11,6 @@ from .models import (
     ReservaServicioAdicional,
     Comunicado,
     ComunicadoImagen,
-    ImagenComunicado,
     AnuncioFlotante,
 )
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
@@ -40,24 +39,51 @@ except Exception:
 
 
 class ComunicadoImagenInline(admin.TabularInline):
+    """Inline para subir imagenes asociadas a un Comunicado. Las imagenes se
+    suben a Cloudinary automaticamente cuando CLOUDINARY_API_KEY/SECRET estan
+    configuradas en las env vars del servidor."""
     model = ComunicadoImagen
     extra = 1
-    readonly_fields = ()
+    fields = ('imagen', 'orden', 'preview')
+    readonly_fields = ('preview',)
+
+    def preview(self, obj):
+        if obj and obj.pk and obj.imagen:
+            try:
+                url = obj.imagen.url
+                return format_html('<img src="{}" style="max-height:80px; max-width:120px; border-radius:6px; border:1px solid rgba(15,23,42,0.10);">', url)
+            except Exception:
+                return '-'
+        return '-'
+    preview.short_description = 'Vista previa'
 
 
 @admin.register(Comunicado)
 class ComunicadoAdmin(admin.ModelAdmin):
-    list_display = ('titulo', 'publicado', 'activo')
-    list_filter = ('activo',)
+    list_display = ('titulo_display', 'publicado', 'num_imagenes', 'activo')
+    list_filter = ('activo', 'publicado')
     search_fields = ('titulo', 'cuerpo')
+    list_editable = ('activo',)
+    fieldsets = (
+        (None, {
+            'fields': ('titulo', 'cuerpo', 'publicado', 'activo'),
+            'description': (
+                'Puedes crear un comunicado solo con texto, solo con imágenes o ambos. '
+                'Para solo imágenes deja el título y el cuerpo vacíos y añade imágenes abajo. '
+                'Para programar la fecha de aparición usa el campo "Publicado".'
+            ),
+        }),
+    )
     inlines = [ComunicadoImagenInline]
 
+    def titulo_display(self, obj):
+        return obj.titulo or f'(Sin título) #{obj.id}'
+    titulo_display.short_description = 'Título'
+    titulo_display.admin_order_field = 'titulo'
 
-# Registro mínimo para que el administrador pueda subir imágenes generales
-@admin.register(ImagenComunicado)
-class ImagenComunicadoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'imagen', 'uploaded_at')
-    readonly_fields = ('uploaded_at',)
+    def num_imagenes(self, obj):
+        return obj.images.count()
+    num_imagenes.short_description = 'Imágenes'
 
 
 @admin.register(AnuncioFlotante)

@@ -1,195 +1,325 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Comunicados de Gerencia - CLUB EL META{% endblock %}
+
 {% block content %}
-<div class="comunicados-bg">
-  <div class="comunicados-overlay"></div>
-  <div class="container py-5" style="position:relative; z-index:2;">
-  <h1 class="mb-3 comunicados-titulo-blanco">Comunicados de Gerencia</h1>
-  <p class="comunicados-sub-blanco">Aquí publicamos comunicados oficiales de la gerencia para asociados y visitantes.</p>
-  <style>
-    .comunicados-titulo-blanco {
-      color: #fff !important;
-      background: rgba(0, 40, 120, 0.7);
-      display: inline-block;
-      padding: 0.2em 0.7em 0.2em 0.2em;
-      border-radius: 4px;
-      margin-bottom: 0.2em;
-    }
-    .comunicados-sub-blanco {
-      color: #fff !important;
-      background: rgba(0, 40, 120, 0.7);
-      display: inline-block;
-      padding: 0.1em 0.7em 0.1em 0.2em;
-      border-radius: 4px;
-      font-size: 1.05rem;
-    }
-    .comunicados-bg {
-      position: relative;
-      min-height: 100vh;
-      width: 100vw;
-      left: 50%;
-      right: 50%;
-      margin-left: -50vw;
-      margin-right: -50vw;
-      background: url('/static/img/fondin.webp') no-repeat center center fixed;
-      background-size: cover;
-      z-index: 0;
-      display: flow-root;
-      padding-bottom: 4rem; /* Evita choque con footer */
-    }
-    .comunicados-overlay {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 40, 120, 0.45);
-      z-index: 1;
-      pointer-events: none;
-    }
-    .container.py-5 {
-      position: relative;
-      z-index: 2;
-    }
-    .comunicados-gallery {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      justify-content: center;
-      margin-bottom: 2rem;
-    }
-    .comunicado-item {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(30,58,138,0.08);
-      padding: 1rem;
-      max-width: 350px;
-      min-width: 220px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: box-shadow 0.2s, transform 0.2s;
-    }
-    .comunicado-item:hover {
-      box-shadow: 0 8px 24px rgba(30,58,138,0.13);
-      transform: translateY(-4px) scale(1.03);
-    }
-    .comunicados-gallery img {
-      width: 100%;
-      height: 260px;
-      object-fit: cover;
-      border-radius: 8px;
-      box-shadow: 0 1px 4px rgba(30,58,138,0.10);
-      background: #f1f5f9;
-      transition: transform 0.2s;
-      cursor: pointer;
-    }
-    .comunicados-gallery img:hover {
-      transform: scale(1.04);
-    }
-    .mb-4 {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(30,58,138,0.08);
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
-      transition: box-shadow 0.2s, transform 0.2s;
-    }
-    .mb-4:hover {
-      box-shadow: 0 8px 24px rgba(30,58,138,0.13);
-      transform: translateY(-4px) scale(1.02);
-    }
-    .comunicado-titulo {
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: #1e40af;
-      margin-bottom: 0.2rem;
-    }
-    .comunicado-fecha {
-      font-size: 0.95rem;
-      color: #64748b;
-      margin-bottom: 0.5rem;
-    }
-    .comunicado-cuerpo {
-      font-size: 1.05rem;
-      color: #334155;
-      line-height: 1.6;
-      margin-top: 0.3rem;
-    }
-    @media (max-width: 700px) {
-      .mb-4 {
-        padding: 1rem;
-      }
-      .comunicados-gallery img {
-        height: 160px;
-      }
-    }
-  </style>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('.mb-4').forEach(function(card, i) {
-        card.style.animation = 'fadeInCard 0.7s';
-        card.style.animationDelay = (i * 0.12) + 's';
-      });
-      // Modal para imagen
-      document.querySelectorAll('.comunicados-gallery img').forEach(function(img) {
-        img.addEventListener('click', function() {
-          var modal = document.getElementById('imgModal');
-          var modalImg = document.getElementById('imgModalImg');
-          modal.style.display = 'flex';
-          modalImg.src = img.src;
-        });
-      });
-      document.getElementById('imgModal').addEventListener('click', function(e) {
-        if (e.target === this || e.target.classList.contains('close-modal')) {
-          this.style.display = 'none';
-        }
-      });
-    });
-  </script>
-  <style>
-    @keyframes fadeInCard {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
-  <!-- Modal para imagen completa -->
-  <div id="imgModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center;">
-    <span class="close-modal" style="position:absolute; top:30px; right:40px; font-size:2.5rem; color:#fff; cursor:pointer;">&times;</span>
-    <img id="imgModalImg" src="" style="max-width:90vw; max-height:90vh; border-radius:12px; box-shadow:0 4px 24px #000; background:#fff;" alt="Imagen completa" />
+<section class="com-hero">
+  <div class="com-hero-pattern" aria-hidden="true"></div>
+  <div class="com-hero-orb com-hero-orb-1" aria-hidden="true"></div>
+  <div class="com-hero-orb com-hero-orb-2" aria-hidden="true"></div>
+  <div class="container com-hero-inner">
+    <span class="com-hero-eyebrow"><i class="bi bi-megaphone-fill"></i> GERENCIA</span>
+    <h1 class="com-hero-title">Comunicados</h1>
+    <p class="com-hero-lead">Información oficial publicada por la gerencia para asociados y visitantes.</p>
   </div>
-  {% if imagenes %}
-    <div class="mt-3 comunicados-gallery">
-      {% for img in imagenes %}
-        {% if img.imagen %}
-          <div class="comunicado-item">
-            <img src="{{ img.imagen.url }}" alt="{{ img.titulo|default:'Imagen del comunicado' }}" />
-          </div>
-        {% endif %}
-      {% endfor %}
-    </div>
-  {% endif %}
+</section>
+
+<section class="container com-section">
   {% if comunicados %}
-    <div class="mt-4">
+    <div class="com-list">
       {% for c in comunicados %}
-        <div class="mb-4">
-          <h3>{{ c.titulo }}</h3>
-          <p class="text-muted">{% if c.publicado %}{{ c.publicado|date:"d M Y H:i" }}{% endif %}</p>
-          <div class="comunicados-gallery">
+      <article class="com-card {% if not c.titulo and not c.cuerpo %}com-card--images-only{% elif not c.images.all %}com-card--text-only{% endif %}">
+
+        {% if c.images.all %}
+          {# Galería de imágenes — 1 imagen full width, 2+ en grid #}
+          <div class="com-gallery {% if c.images.count == 1 %}com-gallery-single{% endif %}">
             {% for img in c.images.all %}
               {% if img.imagen %}
-                <div class="comunicado-item">
-                  <img src="{{ img.imagen.url }}" alt="{{ c.titulo|default:'Imagen del comunicado' }}" />
-                </div>
+              <button type="button" class="com-img-wrap" data-img-src="{{ img.imagen.url }}" data-img-alt="{{ c.titulo|default:'Imagen del comunicado' }}">
+                <img src="{{ img.imagen.url }}" alt="{{ c.titulo|default:'Imagen del comunicado' }}" loading="lazy" decoding="async">
+              </button>
               {% endif %}
             {% endfor %}
           </div>
-          <div class="mt-2">{{ c.cuerpo|safe }}</div>
-        </div>
+        {% endif %}
+
+        {% if c.titulo or c.cuerpo %}
+          <div class="com-body">
+            {% if c.publicado %}
+              <time class="com-date" datetime="{{ c.publicado|date:'c' }}">
+                <i class="bi bi-calendar3"></i> {{ c.publicado|date:'d M Y' }}
+              </time>
+            {% endif %}
+            {% if c.titulo %}
+              <h2 class="com-title">{{ c.titulo }}</h2>
+            {% endif %}
+            {% if c.cuerpo %}
+              <div class="com-text">{{ c.cuerpo|safe }}</div>
+            {% endif %}
+          </div>
+        {% elif c.publicado %}
+          <div class="com-body com-body-minimal">
+            <time class="com-date" datetime="{{ c.publicado|date:'c' }}">
+              <i class="bi bi-calendar3"></i> {{ c.publicado|date:'d M Y' }}
+            </time>
+          </div>
+        {% endif %}
+      </article>
       {% endfor %}
     </div>
-  {% endif %}
+  {% else %}
+    <div class="com-empty">
+      <i class="bi bi-megaphone"></i>
+      <h3>No hay comunicados disponibles</h3>
+      <p>Cuando la gerencia publique un nuevo comunicado aparecerá aquí.</p>
     </div>
-  </div>
+  {% endif %}
+</section>
+
+<!-- Lightbox para imágenes ampliadas -->
+<div id="comLightbox" class="com-lightbox" aria-hidden="true" hidden>
+  <button type="button" class="com-lightbox-close" aria-label="Cerrar">&times;</button>
+  <img id="comLightboxImg" src="" alt="">
 </div>
+
+<style>
+  /* ===== HERO ===== */
+  .com-hero {
+    background: linear-gradient(135deg, #0c2a5e 0%, #1e3a8a 70%, #1e40af 100%);
+    color: #fff;
+    padding: 4rem 0 3.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .com-hero-pattern {
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.06) 0, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(217,119,6,0.10) 0, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .com-hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .com-hero-orb-1 { width: 280px; height: 280px; top: -90px; right: -70px; }
+  .com-hero-orb-2 { width: 180px; height: 180px; bottom: -60px; left: -50px; background: rgba(217, 119, 6, 0.08); }
+  .com-hero-inner { position: relative; z-index: 2; text-align: center; }
+  .com-hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 0.78rem;
+    letter-spacing: 0.30em;
+    font-weight: 700;
+    padding: 6px 16px;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.20);
+    border-radius: 999px;
+    backdrop-filter: blur(8px);
+    margin-bottom: 1.1rem;
+  }
+  .com-hero-eyebrow i { color: #fbbf24; font-size: 0.85rem; }
+  .com-hero-title {
+    color: #fff;
+    font-weight: 800;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+    margin: 0 0 12px;
+    text-shadow: 0 2px 30px rgba(0, 0, 0, 0.18);
+  }
+  .com-hero-lead {
+    color: rgba(255, 255, 255, 0.92);
+    font-size: clamp(1rem, 1.7vw, 1.12rem);
+    line-height: 1.6;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  /* ===== SECCIÓN ===== */
+  .com-section { padding: 4rem 0 5rem; }
+  .com-list {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* ===== CARD ===== */
+  .com-card {
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+    transition: transform 0.22s cubic-bezier(.22,.61,.36,1), box-shadow 0.22s, border-color 0.22s;
+  }
+  .com-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(30, 58, 138, 0.18);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.10);
+  }
+
+  /* ===== GALERÍA ===== */
+  .com-gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    background: #0c2a5e;
+  }
+  .com-gallery-single { grid-template-columns: 1fr; }
+  .com-img-wrap {
+    border: 0;
+    padding: 0;
+    background: #0c2a5e;
+    cursor: zoom-in;
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 16/9;
+    display: block;
+  }
+  .com-gallery-single .com-img-wrap { aspect-ratio: 16/9; }
+  .com-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.45s cubic-bezier(.22,.61,.36,1), filter 0.3s ease;
+  }
+  .com-img-wrap:hover img { transform: scale(1.04); filter: brightness(1.05); }
+  /* 3+ imágenes: la primera ocupa todo el ancho, las demás en columna */
+  .com-gallery:not(.com-gallery-single) .com-img-wrap:first-child:nth-last-child(n+3) {
+    grid-column: 1 / -1;
+    aspect-ratio: 21/9;
+  }
+
+  /* ===== BODY ===== */
+  .com-body { padding: 22px 26px; }
+  .com-body-minimal { padding: 12px 26px; }
+  .com-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #64748b;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+  .com-date i { color: #1e3a8a; font-size: 0.85rem; }
+  .com-title {
+    color: #0c2a5e;
+    font-weight: 800;
+    font-size: clamp(1.15rem, 2.5vw, 1.35rem);
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    margin: 0 0 12px;
+  }
+  .com-text {
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+  .com-text p { margin: 0 0 0.75em; }
+  .com-text p:last-child { margin-bottom: 0; }
+  .com-text a { color: #1e3a8a; font-weight: 600; }
+
+  /* ===== TIPOS ESPECIALES ===== */
+  .com-card--images-only .com-gallery { background: transparent; }
+  .com-card--text-only { padding: 8px 0; }
+
+  /* ===== EMPTY STATE ===== */
+  .com-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #94a3b8;
+    background: #ffffff;
+    border: 1px dashed rgba(15, 23, 42, 0.12);
+    border-radius: 18px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  .com-empty i { font-size: 2.5rem; color: #cbd5e1; display: block; margin-bottom: 14px; }
+  .com-empty h3 { color: #475569; font-weight: 700; font-size: 1.1rem; margin: 0 0 6px; }
+  .com-empty p { color: #94a3b8; font-size: 0.92rem; margin: 0; }
+
+  /* ===== LIGHTBOX ===== */
+  .com-lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.92);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    cursor: zoom-out;
+    backdrop-filter: blur(4px);
+  }
+  .com-lightbox img {
+    max-width: 95vw;
+    max-height: 90vh;
+    border-radius: 8px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  }
+  .com-lightbox-close {
+    position: absolute;
+    top: 18px; right: 22px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #fff;
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.18s ease, transform 0.18s ease;
+  }
+  .com-lightbox-close:hover { background: rgba(255, 255, 255, 0.20); transform: scale(1.05); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 575.98px) {
+    .com-hero { padding: 2.5rem 0 2.25rem; }
+    .com-hero-orb-2 { display: none; }
+    .com-section { padding: 2.5rem 0 3rem; }
+    .com-list { gap: 22px; }
+    .com-card { border-radius: 14px; }
+    .com-gallery { grid-template-columns: 1fr; }
+    .com-gallery .com-img-wrap:first-child:nth-last-child(n+3) { aspect-ratio: 16/9; }
+    .com-body { padding: 18px 18px; }
+    .com-title { font-size: 1.1rem; }
+    .com-text { font-size: 0.92rem; }
+  }
+</style>
+
+<script>
+  // Lightbox simple para amplificar imágenes
+  (function(){
+    var lb = document.getElementById('comLightbox');
+    var lbImg = document.getElementById('comLightboxImg');
+    var closeBtn = lb ? lb.querySelector('.com-lightbox-close') : null;
+
+    function open(src, alt) {
+      if (!lb) return;
+      lbImg.src = src;
+      lbImg.alt = alt || '';
+      lb.hidden = false;
+      lb.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function close() {
+      if (!lb) return;
+      lb.hidden = true;
+      lb.setAttribute('aria-hidden', 'true');
+      lbImg.src = '';
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.com-img-wrap').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        open(this.dataset.imgSrc, this.dataset.imgAlt);
+      });
+    });
+    if (lb) lb.addEventListener('click', function(e){ if (e.target === lb || e.target === lbImg) close(); });
+    if (closeBtn) closeBtn.addEventListener('click', close);
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
+  })();
+</script>
 {% endblock %}

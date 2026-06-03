@@ -195,6 +195,18 @@ CLOUDINARY_DEFAULT_TRANSFORMS = os.getenv("CLOUDINARY_DEFAULT_TRANSFORMS", "f_au
 # En produccion debe coincidir con tu dominio real (clubelmeta.co).
 SITE_BASE_URL = os.getenv("SITE_BASE_URL", "https://www.clubelmeta.co").rstrip("/")
 
+# Configurar cloudinary SDK con las credenciales de env vars para que
+# CloudinaryField pueda SUBIR imagenes (comunicados, etc) directamente
+# al CDN. Si CLOUDINARY_API_KEY/SECRET no estan, falla silenciosamente
+# en upload (el form devolvera error claro).
+import cloudinary as _cloudinary
+_cloudinary.config(
+    cloud_name=CLOUDINARY_CLOUD_NAME,
+    api_key=os.getenv("CLOUDINARY_API_KEY", ""),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET", ""),
+    secure=True,
+)
+
 # ---------------------------
 # MEDIA FILES
 # ---------------------------
