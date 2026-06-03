@@ -89,9 +89,8 @@
             </span>
           </div>
           <div class="espacio-card-price-chip">
-            <span class="espacio-card-price-label">DESDE</span>
-            <strong>${{ r.price_particular_4h|floatformat:0|intcomma }}</strong>
-            <span class="espacio-card-price-unit">/ 4 hrs</span>
+            <i class="bi bi-chat-dots-fill"></i>
+            <strong>Precio negociable</strong>
           </div>
         </div>
 
@@ -183,10 +182,10 @@
               </div>
             </div>
             <div class="salon-stat">
-              <span class="salon-stat-icon"><i class="bi bi-cash-coin"></i></span>
+              <span class="salon-stat-icon"><i class="bi bi-chat-dots-fill"></i></span>
               <div>
-                <div class="salon-stat-value">${{ r.price_particular_4h|floatformat:0|intcomma }}</div>
-                <div class="salon-stat-label">desde · 4 hrs</div>
+                <div class="salon-stat-value">Negociable</div>
+                <div class="salon-stat-label">precio a convenir</div>
               </div>
             </div>
             {% if r.medidas.largo_m and r.medidas.ancho_m %}
@@ -242,14 +241,13 @@
             {% if r.configuraciones %}
             <section class="salon-section">
               <h6 class="salon-section-title"><i class="bi bi-list-check"></i> Configuraciones disponibles</h6>
-              <p class="salon-section-hint">Compara cada tipo de montaje, su capacidad y precio base (particular, 4 horas).</p>
+              <p class="salon-section-hint">Compara cada tipo de montaje y su capacidad.</p>
               <div class="salon-config-table-wrap">
                 <table class="salon-config-table">
                   <thead>
                     <tr>
                       <th>Montaje</th>
-                      <th>Capacidad</th>
-                      <th class="text-end">Precio 4 hrs</th>
+                      <th class="text-end">Capacidad</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -263,8 +261,7 @@
                           <span>{{ m.tipo }}</span>
                         </div>
                       </td>
-                      <td><span class="salon-cap-badge"><i class="bi bi-people"></i> {{ m.capacidad }}</span></td>
-                      <td class="text-end salon-config-price">${{ m.precio_particular_4h|floatformat:0|intcomma }}</td>
+                      <td class="text-end"><span class="salon-cap-badge"><i class="bi bi-people"></i> {{ m.capacidad }}</span></td>
                     </tr>
                     {% endfor %}
                   </tbody>
@@ -331,12 +328,14 @@
             </p>
           </div>
 
-          <!-- Footer sticky con CTA -->
+          <!-- Footer sticky con mensaje de precios negociables + CTAs -->
           <div class="modal-footer salon-modal-footer">
-            <div class="salon-modal-footer-price">
-              <span class="salon-modal-footer-label">DESDE</span>
-              <strong class="salon-modal-footer-amount">${{ r.price_particular_4h|floatformat:0|intcomma }}</strong>
-              <span class="salon-modal-footer-unit">/ 4 horas</span>
+            <div class="salon-modal-footer-price salon-modal-negotiable">
+              <i class="bi bi-chat-dots-fill"></i>
+              <div>
+                <strong>Precio negociable</strong>
+                <span>Acordamos la tarifa según tu evento</span>
+              </div>
             </div>
             <div class="salon-modal-footer-actions">
               <a href="https://wa.me/573507016630?text=Hola,%20me%20interesa%20el%20{{ r.name|urlencode }}%20del%20Club%20El%20Meta." target="_blank" rel="noopener" class="salon-modal-btn-secondary">
@@ -1321,6 +1320,34 @@
     align-items: baseline;
     gap: 8px;
   }
+  /* Mensaje destacado de precio negociable en el footer del modal */
+  .salon-modal-negotiable {
+    display: flex !important;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 14px;
+    background: linear-gradient(135deg, rgba(217, 119, 6, 0.10), rgba(245, 158, 11, 0.06));
+    border: 1px solid rgba(217, 119, 6, 0.30);
+    border-left: 4px solid #d97706;
+    border-radius: 10px;
+  }
+  .salon-modal-negotiable i {
+    color: #d97706;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+  .salon-modal-negotiable strong {
+    display: block;
+    color: #78350f;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: -0.005em;
+  }
+  .salon-modal-negotiable span {
+    color: #92400e;
+    font-size: 0.82rem;
+    display: block;
+  }
   .salon-modal-footer-label {
     color: #64748b;
     font-size: 0.7rem;
@@ -1526,37 +1553,27 @@
   }
   .espacio-card-cap-chip i { color: #fbbf24; }
 
-  /* Chip de precio (bottom-right) */
+  /* Chip "Precio negociable" (bottom-right) */
   .espacio-card-price-chip {
     position: absolute;
     bottom: 14px;
     right: 14px;
     z-index: 3;
-    background: #ffffff;
-    color: #0c2a5e;
-    padding: 8px 14px;
-    border-radius: 14px;
-    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.28);
+    background: linear-gradient(135deg, #d97706, #f59e0b);
+    color: #ffffff;
+    padding: 7px 14px;
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(217, 119, 6, 0.40);
     display: inline-flex;
-    align-items: baseline;
-    gap: 4px;
-    border: 1px solid rgba(15, 23, 42, 0.06);
-  }
-  .espacio-card-price-label {
-    font-size: 0.62rem;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.20);
     font-weight: 700;
-    color: #64748b;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    margin-right: 2px;
+    font-size: 0.85rem;
+    letter-spacing: 0.005em;
   }
-  .espacio-card-price-chip strong {
-    color: #0c2a5e;
-    font-size: 1.05rem;
-    font-weight: 800;
-    letter-spacing: -0.01em;
-  }
-  .espacio-card-price-unit { color: #64748b; font-size: 0.72rem; font-weight: 600; }
+  .espacio-card-price-chip i { color: #fff; font-size: 0.92rem; }
+  .espacio-card-price-chip strong { color: #ffffff; font-weight: 700; }
 
   /* Indicadores del carrusel */
   .espacio-card-indicators { bottom: 64px; margin: 0; z-index: 4; }
