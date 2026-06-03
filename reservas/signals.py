@@ -63,7 +63,7 @@ def reserva_pre_save(sender, instance, **kwargs):
 def reserva_post_save(sender, instance, created, **kwargs):
     """Enviar correos cuando se crea una reserva o cuando cambia a CONFIRMADA."""
 
-    # 🟦 COMPORTAMIENTO AL CREAR
+    # ===== COMPORTAMIENTO AL CREAR =====
     if created:
         context = {
             'reserva': instance,
@@ -78,7 +78,7 @@ def reserva_post_save(sender, instance, created, **kwargs):
         except Exception:
             pass
 
-        # 🟩 1. ENVÍO AL CLIENTE
+        # ----- 1. ENVIO AL CLIENTE -----
         if instance.email_cliente:
             subject = f"Confirmación de Reserva #{instance.id} - {instance.configuracion_salon.salon.nombre}"
             txt, html = _render_message(subject,
@@ -107,7 +107,7 @@ def reserva_post_save(sender, instance, created, **kwargs):
                 except Exception:
                     pass
 
-        # 🟨 2. SI ES SOCIO → NOTIFICAR
+        # ----- 2. SI ES SOCIO -> NOTIFICAR -----
         if instance.tipo_cliente == 'SOCIO':
             try:
                 from .models import Socio
@@ -140,7 +140,7 @@ def reserva_post_save(sender, instance, created, **kwargs):
             except Exception:
                 pass
 
-        # 🟥 3. COPIA AL ADMIN
+        # ----- 3. COPIA AL ADMIN -----
         admin_email = getattr(settings, 'ADMIN_EMAIL', None)
         if admin_email:
             try:
@@ -173,7 +173,7 @@ def reserva_post_save(sender, instance, created, **kwargs):
 
         return
 
-    # 🟦 COMPORTAMIENTO AL CONFIRMAR RESERVA
+    # ===== COMPORTAMIENTO AL CONFIRMAR RESERVA =====
     old_estado = getattr(instance, '_old_estado', None)
     if old_estado != instance.estado and instance.estado == 'CONFIRMADA':
 

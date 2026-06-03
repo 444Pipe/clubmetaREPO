@@ -85,9 +85,9 @@ class Command(BaseCommand):
             )
             
             if created:
-                self.stdout.write(f'✓ Creado salón: {salon.nombre}')
+                self.stdout.write(f'[OK] Creado salon: {salon.nombre}')
             else:
-                self.stdout.write(f'↻ Actualizado salón: {salon.nombre}')
+                self.stdout.write(f'[UPD] Actualizado salon: {salon.nombre}')
             
             for config_data in salon_data['configuraciones']:
                 config, created = ConfiguracionSalon.objects.update_or_create(
@@ -106,8 +106,8 @@ class Command(BaseCommand):
                     precio_display = 'Socio: ${:,} / Particular: ${:,}'.format(config_data['precio_s'], config_data['precio_p'])
                 
                 if created:
-                    self.stdout.write(f'  ✓ {config.get_tipo_configuracion_display()} ({config.capacidad} PAX) - {precio_display}')
+                    self.stdout.write(f'  [OK] {config.get_tipo_configuracion_display()} ({config.capacidad} PAX) - {precio_display}')
                 else:
-                    self.stdout.write(f'  ↻ {config.get_tipo_configuracion_display()} ({config.capacidad} PAX) - {precio_display}')
+                    self.stdout.write(f'  [UPD] {config.get_tipo_configuracion_display()} ({config.capacidad} PAX) - {precio_display}')
         
         self.stdout.write(self.style.SUCCESS(f'\n¡Completado! 6 salones cargados exitosamente.'))

@@ -116,7 +116,7 @@ class Command(BaseCommand):
             
             if created:
                 self.stdout.write(
-                    self.style.SUCCESS(f'✓ Servicio creado: {servicio.nombre} - ${servicio.precio_unitario:,.0f}')
+                    self.style.SUCCESS(f'[OK] Servicio creado: {servicio.nombre} - ${servicio.precio_unitario:,.0f}')
                 )
             else:
                 self.stdout.write(

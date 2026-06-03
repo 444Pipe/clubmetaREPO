@@ -115,7 +115,7 @@ def validate_socio_code(request):
             except Exception:
                 socio = None
 
-            return JsonResponse({'valid': True, 'message': 'Código válido ✓', 'socio': socio})
+            return JsonResponse({'valid': True, 'message': 'Código válido', 'socio': socio})
         else:
             return JsonResponse({'valid': False, 'message': 'Código inválido o inactivo'})
     

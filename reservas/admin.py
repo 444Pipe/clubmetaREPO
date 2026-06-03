@@ -603,7 +603,7 @@ class BloqueoEspacioAdmin(admin.ModelAdmin):
         count = queryset.count()
         queryset.delete()
         self.message_user(request, f'{count} bloqueo(s) eliminado(s) exitosamente.')
-    eliminar_bloqueos.short_description = "🗑️ Eliminar bloqueos seleccionados"
+    eliminar_bloqueos.short_description = "Eliminar bloqueos seleccionados"
     
     # Use a custom form with HTML5 time inputs so admins can set exact hours:minutes
     class BloqueoForm(forms.ModelForm):

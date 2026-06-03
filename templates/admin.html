@@ -232,7 +232,7 @@
                 {% if reserva.hora_inicio %}
                   <div class="text-muted" style="font-size:0.8rem;"><i class="fa fa-clock"></i> {{ reserva.hora_inicio|time:"H:i" }}</div>
                   {% if reserva.tiempo_decoracion > 0 %}
-                    <small class="text-muted" style="font-size:0.75rem;">🎨 +{{ reserva.tiempo_decoracion }}h dec.</small>
+                    <small class="text-muted" style="font-size:0.75rem;"><i class="bi bi-palette-fill"></i> +{{ reserva.tiempo_decoracion }}h dec.</small>
                   {% endif %}
                 {% else %}
                   <small class="text-muted">Sin hora</small>

@@ -794,7 +794,11 @@
         fetch('{% url "reservas:validate_socio_code" %}?code=' + encodeURIComponent(code))
           .then(response => response.json())
           .then(data => {
-            codigoFeedback.textContent = data.message;
+            // Icono Bootstrap (check para valido, x-circle para invalido)
+            var icon = data.valid
+              ? '<i class="bi bi-check-circle-fill me-1"></i>'
+              : '<i class="bi bi-x-circle-fill me-1"></i>';
+            codigoFeedback.innerHTML = icon + (data.message || '').replace(/[<>]/g, '');
             if (data.valid) {
               codigoFeedback.className = 'form-text text-success fw-bold';
               socioCodeInput.classList.remove('is-invalid');
