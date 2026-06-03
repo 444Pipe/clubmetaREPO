@@ -1,66 +1,107 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Estatutos - CLUB EL META{% endblock %}
 {% block content %}
-<div class="container py-5">
-  <h1 class="mb-4">Estatutos</h1>
-
-  {% load static %}
-
-  <h2>Información General</h2>
-  <p><strong>Nombre:</strong> Corporación Club El Meta, entidad privada sin ánimo de lucro.</p>
-
-  <p><strong>Domicilio:</strong> Villavicencio, Meta, Colombia.</p>
-
-  <p><strong>Duración:</strong> 100 años prorrogables desde la aprobación de la reforma de estatutos.</p>
-
-  <p><strong>Objeto:</strong> Fomentar actividades recreativas, sociales, culturales, deportivas y familiares para sus asociados y la comunidad.</p>
-
-  <p><strong>Patrimonio:</strong> Constituido por aportes y cuotas de asociados, así como bienes adquiridos. Estos bienes no son propiedad individual de los socios.</p>
-
-  <hr>
-  <div class="my-4">
-    <a class="btn btn-primary" href="{% static 'ESTATUTOS.pdf' %}" download>
-      Descargar estatutos completos
+<div class="container py-5 estatutos-page">
+  <div class="estatutos-card">
+    <div class="estatutos-icon">
+      <i class="bi bi-file-earmark-pdf-fill"></i>
+    </div>
+    <h1 class="estatutos-title">Estatutos del Club</h1>
+    <p class="estatutos-lead">
+      Documento oficial con la información completa: información general, categorías de asociados,
+      requisitos de ingreso, derechos y deberes, y régimen disciplinario.
+    </p>
+    <a class="estatutos-btn" href="{% static 'ESTATUTOS.pdf' %}" download>
+      <i class="bi bi-download"></i> Descargar estatutos (PDF)
     </a>
+    <p class="estatutos-hint">
+      <i class="bi bi-info-circle"></i> Si tienes dudas sobre el contenido, escríbenos por WhatsApp.
+    </p>
   </div>
-
-  <h2>Categorías de Asociados</h2>
-  <p>El número total de asociados activos, honorarios y vitalicios tiene un límite de 360 personas.</p>
-
-  <p><strong>Activos:</strong> Personas naturales mayores de edad con capacidad económica y buena conducta, o personas jurídicas.</p>
-
-  <p><strong>Honorarios:</strong> Personas reconocidas por la Asamblea por sus méritos excepcionales; están exentos de cuotas.</p>
-
-  <p><strong>Vitalicios:</strong> Quienes hayan sido socios activos ininterrumpidamente por 30 años; pagan el 50% de la cuota ordinaria.</p>
-
-  <p><strong>Asistentes:</strong> Hijos de asociados menores de 35 años y solteros.</p>
-
-  <hr>
-
-  <h2>Requisitos de Ingreso (Socio Activo)</h2>
-  <ul>
-    <li>Ser presentado por dos asociados activos, honorarios o vitalicios.</li>
-    <li>Aceptación unánime de la Junta Directiva en dos sesiones.</li>
-    <li>Pagar derechos de ingreso y cuotas correspondientes.</li>
-    <li>Firmar pagaré y carta de aceptación de estatutos.</li>
-  </ul>
-
-  <hr>
-
-  <h2>Derechos y Deberes</h2>
-  <p><strong>Derechos:</strong> Usar las instalaciones, participar en asambleas con voz y voto (para socios activos), presentar invitados y ceder derechos bajo condiciones específicas.</p>
-
-  <p><strong>Deberes:</strong> Cumplir los estatutos, pagar puntualmente las cuotas, vigilar los bienes del club y responder por la conducta de sus invitados.</p>
-
-  <hr>
-
-  <h2>Régimen Disciplinario</h2>
-  <p>El incumplimiento de las normas puede acarrear las siguientes sanciones:</p>
-  <ul>
-    <li><strong>Llamada de advertencia:</strong> Por faltas leves de disciplina.</li>
-    <li><strong>Suspensión:</strong> Por perturbar el orden, irrespeto o faltas graves (no exime del pago de cuotas).</li>
-    <li><strong>Exclusión:</strong> Por mora en pagos superior a cuatro meses.</li>
-    <li><strong>Expulsión:</strong> Por causales graves determinadas en los estatutos.</li>
-  </ul>
 </div>
+
+<style>
+  .estatutos-page {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .estatutos-card {
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    padding: 48px 36px;
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+  }
+  .estatutos-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(217, 119, 6, 0.12), rgba(245, 158, 11, 0.06));
+    color: #d97706;
+    margin: 0 auto 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    box-shadow: 0 8px 24px rgba(217, 119, 6, 0.15);
+  }
+  .estatutos-title {
+    color: #0c2a5e;
+    font-weight: 800;
+    font-size: clamp(1.5rem, 3.5vw, 1.9rem);
+    letter-spacing: -0.015em;
+    margin-bottom: 12px;
+  }
+  .estatutos-lead {
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 28px;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .estatutos-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #1e3a8a, #2456a8);
+    color: #fff !important;
+    text-decoration: none !important;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.005em;
+    box-shadow: 0 8px 22px rgba(30, 58, 138, 0.30);
+    transition: transform 0.22s cubic-bezier(.22,.61,.36,1), box-shadow 0.22s, filter 0.18s;
+  }
+  .estatutos-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(30, 58, 138, 0.42);
+    filter: brightness(1.06);
+    color: #fff !important;
+  }
+  .estatutos-btn i { font-size: 1.15rem; }
+  .estatutos-hint {
+    color: #94a3b8;
+    font-size: 0.82rem;
+    margin: 22px 0 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .estatutos-hint i { color: #cbd5e1; }
+  @media (max-width: 575.98px) {
+    .estatutos-card { padding: 36px 22px; border-radius: 16px; }
+    .estatutos-icon { width: 64px; height: 64px; font-size: 2rem; border-radius: 18px; }
+    .estatutos-btn { padding: 12px 22px; font-size: 0.95rem; }
+  }
+</style>
 {% endblock %}
