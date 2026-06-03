@@ -198,9 +198,11 @@
           <form id="reservationForm" class="pm-form" method="post" action="{% url 'reservas:register' %}">
             {% csrf_token %}
 
-            <!-- Sección: Socio (mover arriba para agilizar validación) -->
-            <div class="mb-3">
-              <label class="form-label">¿Eres Socio del Club?</label><br>
+            <!-- Pregunta inicial: Socio -->
+            <div class="rs-form-quick" data-section="socio">
+              <div class="rs-form-quick-label">
+                <i class="bi bi-person-badge"></i> ¿Eres Socio del Club?
+              </div>
               <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="es_socio" id="socio_si" value="si">
                 <label class="form-check-label" for="socio_si">Sí</label>
@@ -209,15 +211,21 @@
                 <input class="form-check-input" type="radio" name="es_socio" id="socio_no" value="no" checked>
                 <label class="form-check-label" for="socio_no">No</label>
               </div>
-              <div id="codigoSocioBox" class="mt-2" style="display:none;">
+              <div id="codigoSocioBox" class="mt-2 w-100" style="display:none;">
                 <input type="text" name="socio_code" id="socio_code" class="form-control" maxlength="20" placeholder="Ingresa tu código de socio">
                 <small id="codigoFeedback" class="form-text"></small>
               </div>
             </div>
 
-            <!-- Sección: Tus datos -->
-            <div class="mb-4">
-              <h5 class="text-primary mb-3"><i class="bi bi-person-circle"></i> Tus datos</h5>
+            <!-- Sección 1: Tus datos -->
+            <section class="rs-form-section" data-section="datos" data-step="1">
+              <header class="rs-form-section-head">
+                <span class="rs-form-section-num">1</span>
+                <div>
+                  <h5 class="rs-form-section-title">Tus datos</h5>
+                  <p class="rs-form-section-hint">Necesitamos información básica para identificarte y enviarte la confirmación.</p>
+                </div>
+              </header>
               <div class="row">
                 <div class="col-md-4 mb-3">
                   <label class="form-label">Nombre Completo</label>
@@ -256,13 +264,17 @@
                   <input type="text" name="nombre_entidad" id="nombre_entidad" class="form-control" placeholder="Ej: Empresa ABC S.A.S.">
                 </div>
               </div>
-            </div>
+            </section>
 
-            <hr>
-
-            <!-- Sección: Selección de Espacio -->
-            <div class="mb-4">
-              <h5 class="text-primary mb-3"><i class="bi bi-building"></i> Espacio y Disponibilidad</h5>
+            <!-- Sección 2: Espacio -->
+            <section class="rs-form-section" data-section="espacio" data-step="2">
+              <header class="rs-form-section-head">
+                <span class="rs-form-section-num">2</span>
+                <div>
+                  <h5 class="rs-form-section-title">Elige el espacio</h5>
+                  <p class="rs-form-section-hint">Selecciona el salón y su configuración. Verás aviso si tiene fechas bloqueadas.</p>
+                </div>
+              </header>
               <div class="mb-3">
                 <label class="form-label fw-bold">Selecciona el Espacio</label>
                 <select name="espacio_id" id="espacioSelect" class="form-select form-select-lg" required>
@@ -291,13 +303,17 @@
                   <ul id="bloqueosList" class="mb-0 mt-2"></ul>
                 </div>
               </div>
-            </div>
+            </section>
 
-            <hr>
-
-            <!-- Sección: Fecha y Horarios -->
-            <div class="mb-4">
-              <h5 class="text-primary mb-3"><i class="bi bi-calendar-event"></i> Fecha y Horarios</h5>
+            <!-- Sección 3: Fecha y horario -->
+            <section class="rs-form-section" data-section="fecha" data-step="3">
+              <header class="rs-form-section-head">
+                <span class="rs-form-section-num">3</span>
+                <div>
+                  <h5 class="rs-form-section-title">Fecha y horario</h5>
+                  <p class="rs-form-section-hint">Define cuándo será tu evento. No se permiten reservas los lunes.</p>
+                </div>
+              </header>
               <div class="row">
                 <div class="col-md-4 mb-3">
                   <label class="form-label fw-bold">Fecha del Evento</label>
@@ -338,9 +354,7 @@
                   </div>
                 </div>
               </div>
-            </div>
-
-            <hr>
+            </section>
 
             <!-- Resumen de Precio -->
             <div id="precioResumen" class="mb-4" style="display:none;">
@@ -358,13 +372,16 @@
               </div>
             </div>
 
-            <hr>
-
-            <!-- Servicios Adicionales -->
+            <!-- Sección 4: Servicios adicionales -->
             {% if servicios_adicionales %}
-            <div class="mb-4" id="serviciosAdicionalesSection">
-              <h5 class="text-primary mb-3"><i class="bi bi-stars"></i> Servicios Adicionales (Opcional)</h5>
-              <p class="text-muted mb-3">Complementa tu reserva con nuestros servicios adicionales</p>
+            <section class="rs-form-section rs-form-section-optional" id="serviciosAdicionalesSection" data-section="servicios" data-step="4">
+              <header class="rs-form-section-head">
+                <span class="rs-form-section-num">4</span>
+                <div>
+                  <h5 class="rs-form-section-title">Servicios adicionales <span class="rs-form-optional-badge">Opcional</span></h5>
+                  <p class="rs-form-section-hint">Mesero, decoración, estación de tinto y más. Solo si lo necesitas.</p>
+                </div>
+              </header>
               
               <!-- Selector para mostrar/ocultar servicios adicionales -->
               <div class="d-flex align-items-center mb-3">
@@ -470,26 +487,36 @@
               </div>
             </div>
 
-            <hr>
+            </section>
             {% else %}
-            <div class="mb-4" id="serviciosAdicionalesSection">
-              <h5 class="text-primary mb-3"><i class="bi bi-stars"></i> Servicios Adicionales (Opcional)</h5>
+            <section class="rs-form-section rs-form-section-optional" id="serviciosAdicionalesSection" data-section="servicios" data-step="4">
+              <header class="rs-form-section-head">
+                <span class="rs-form-section-num">4</span>
+                <div>
+                  <h5 class="rs-form-section-title">Servicios adicionales <span class="rs-form-optional-badge">Opcional</span></h5>
+                  <p class="rs-form-section-hint">Mesero, decoración, estación de tinto y más. Solo si lo necesitas.</p>
+                </div>
+              </header>
               <div class="alert alert-secondary">
                 <strong>No hay servicios adicionales cargados.</strong>
                 <div class="mt-2">Si eres administrador ejecuta en tu entorno de desarrollo:</div>
                 <pre class="mt-2" style="background:#f8f9fa;padding:10px;border-radius:6px;">python manage.py cargar_servicios</pre>
                 <small class="text-muted">Una vez creados los servicios aparecerán aquí para poder seleccionar cantidades.</small>
               </div>
-            </div>
-
-            <hr>
+            </section>
             {% endif %}
 
-            <!-- Sección: Detalles Adicionales -->
-            <div class="mb-4">
-              <h5 class="text-primary mb-3"><i class="bi bi-chat-dots"></i> Detalles Adicionales (Opcional)</h5>
+            <!-- Sección 5: Detalles adicionales -->
+            <section class="rs-form-section rs-form-section-optional" data-section="detalles" data-step="5">
+              <header class="rs-form-section-head">
+                <span class="rs-form-section-num">5</span>
+                <div>
+                  <h5 class="rs-form-section-title">Detalles del evento <span class="rs-form-optional-badge">Opcional</span></h5>
+                  <p class="rs-form-section-hint">Cualquier necesidad especial: decoración temática, requerimientos, alergias, etc.</p>
+                </div>
+              </header>
               <textarea name="note" class="form-control" rows="3" placeholder="Cuéntanos más sobre tu evento: tipo de celebración, decoración especial, necesidades particulares, etc."></textarea>
-            </div>
+            </section>
 
             <!-- Aviso destacado antes del submit: precio final negociable + WhatsApp post-reserva -->
             <div class="reserva-pre-submit-callout mb-3">
@@ -993,7 +1020,8 @@
     
     // Recalcular cuando cambie el espacio o duración
     espacioSelect.addEventListener('change', calcularTotales);
-    duracionSelect.addEventListener('change', calcularTotales);
+    var duracionSelect = document.querySelector('select[name="duracion_horas"]');
+    if (duracionSelect) duracionSelect.addEventListener('change', calcularTotales);
     socioSi.addEventListener('change', calcularTotales);
     socioNo.addEventListener('change', calcularTotales);
   });
@@ -1272,6 +1300,154 @@
 
   /* Success box: keep functional, just remove harsh borders */
   #successBox { box-shadow: 0 10px 30px rgba(15, 23, 42, 0.10); }
+
+  /* =============================================================
+     FORM SECTIONS — wrappers tipo card con numero, titulo y hint
+     ============================================================= */
+  .rs-form-section {
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: 14px;
+    padding: 20px 22px 8px;
+    margin-bottom: 18px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+    position: relative;
+  }
+  .rs-form-section:hover { border-color: rgba(30, 58, 138, 0.18); }
+  .rs-form-section.is-active {
+    border-color: rgba(30, 58, 138, 0.40);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.10), 0 6px 18px rgba(15, 23, 42, 0.06);
+  }
+  .rs-form-section.is-done { border-color: rgba(34, 197, 94, 0.30); }
+  .rs-form-section.is-done .rs-form-section-num {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    box-shadow: 0 4px 10px rgba(22, 163, 74, 0.30);
+    font-size: 0;
+  }
+  .rs-form-section.is-done .rs-form-section-num::after {
+    content: '';
+    width: 14px; height: 14px;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'><path d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z'/></svg>") center/contain no-repeat;
+    display: block;
+  }
+  .rs-form-section-optional { background: #fafbfc; }
+
+  .rs-form-section-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .rs-form-section-num {
+    flex-shrink: 0;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1e3a8a, #2456a8);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.95rem;
+    box-shadow: 0 3px 8px rgba(30, 58, 138, 0.25);
+    transition: background 0.22s ease, box-shadow 0.22s ease;
+  }
+  .rs-form-section-title {
+    color: #0c2a5e;
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: -0.005em;
+    margin: 0 0 4px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .rs-form-section-hint {
+    color: #64748b;
+    font-size: 0.85rem;
+    margin: 0;
+    line-height: 1.5;
+  }
+  .rs-form-optional-badge {
+    background: rgba(15, 23, 42, 0.06);
+    color: #64748b;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+
+  /* Pregunta inicial socio - card horizontal compacta */
+  .rs-form-quick {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px 18px;
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.05), rgba(59, 130, 246, 0.03));
+    border: 1px solid rgba(30, 58, 138, 0.15);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 18px;
+  }
+  .rs-form-quick-label {
+    font-weight: 700;
+    color: #0c2a5e;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+  }
+  .rs-form-quick-label i { color: #1e3a8a; }
+
+  /* Toggle si/no buttons (mostrar_servicios) mas claros */
+  .pm-form .btn-group .btn {
+    padding: 7px 18px !important;
+    font-weight: 700 !important;
+    border-radius: 999px !important;
+    font-size: 0.88rem !important;
+    border-width: 1.5px;
+  }
+  .pm-form .btn-check:checked + .btn { transform: scale(1.04); }
+
+  /* Submit button loading state */
+  .rs-submitting #submitBtn { pointer-events: none; opacity: 0.85; }
+  .rs-submit-spinner {
+    display: inline-block;
+    width: 1rem; height: 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: rsSpin 0.8s linear infinite;
+    margin-right: 8px;
+    vertical-align: -3px;
+  }
+  @keyframes rsSpin { to { transform: rotate(360deg); } }
+
+  /* Step indicator: estado dinámico */
+  .pm-steps li.done .pm-step-num {
+    background: linear-gradient(135deg, #16a34a, #15803d) !important;
+    border-color: #16a34a !important;
+    color: #fff;
+    font-size: 0;
+  }
+  .pm-steps li.done .pm-step-num::after {
+    content: '';
+    width: 12px; height: 12px;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'><path d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z'/></svg>") center/contain no-repeat;
+  }
+
+  /* Mobile: secciones más compactas */
+  @media (max-width: 575.98px) {
+    .rs-form-section { padding: 16px 16px 4px; border-radius: 12px; }
+    .rs-form-section-num { width: 30px; height: 30px; font-size: 0.85rem; }
+    .rs-form-section-title { font-size: 0.98rem; }
+    .rs-form-quick { padding: 12px 14px; }
+    .rs-form-quick-label { width: 100%; }
+  }
 
   /* ============================================================
      REDISEÑO PANTALLA EXITO RESERVA
@@ -1829,6 +2005,72 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 {% endif %}
+
+<!-- Dynamic step indicator + submit loading state -->
+<script>
+(function(){
+  document.addEventListener('DOMContentLoaded', function(){
+    var sections = Array.from(document.querySelectorAll('.rs-form-section[data-step]'));
+    var stepsItems = Array.from(document.querySelectorAll('.pm-steps li'));
+    var form = document.getElementById('reservationForm');
+    if (!form) return;
+
+    // Mapa step (1-5) -> array de campos required del DOM dentro de esa seccion
+    function isStepDone(section) {
+      var inputs = section.querySelectorAll('input[required], select[required], textarea[required]');
+      if (!inputs.length) return false;
+      for (var i = 0; i < inputs.length; i++) {
+        var v = (inputs[i].value || '').trim();
+        if (!v) return false;
+        // Para selects, ignorar la opcion vacia
+        if (inputs[i].tagName === 'SELECT' && !inputs[i].selectedOptions[0].value) return false;
+      }
+      return true;
+    }
+
+    function markStep(step, state) {
+      if (step < 1 || step > stepsItems.length) return;
+      var li = stepsItems[step - 1];
+      if (!li) return;
+      li.classList.remove('active', 'done');
+      if (state === 'done') li.classList.add('done');
+      else if (state === 'active') li.classList.add('active');
+    }
+
+    function refresh() {
+      var firstActiveSet = false;
+      sections.forEach(function(sec){
+        var step = parseInt(sec.getAttribute('data-step'), 10);
+        var done = isStepDone(sec);
+        sec.classList.toggle('is-done', done);
+        sec.classList.remove('is-active');
+        if (done) {
+          markStep(step, 'done');
+        } else if (!firstActiveSet) {
+          sec.classList.add('is-active');
+          markStep(step, 'active');
+          firstActiveSet = true;
+        }
+      });
+    }
+
+    form.addEventListener('input', refresh);
+    form.addEventListener('change', refresh);
+    refresh();
+
+    // Submit loading state
+    form.addEventListener('submit', function(){
+      var btn = document.getElementById('submitBtn');
+      if (!btn) return;
+      // Solo si pasa las validaciones nativas
+      if (!form.checkValidity()) return;
+      document.body.classList.add('rs-submitting');
+      btn.innerHTML = '<span class="rs-submit-spinner"></span> Enviando...';
+      btn.disabled = true;
+    });
+  });
+})();
+</script>
 
 <!-- Bloquear seleccion de lunes (la Corporacion no trabaja los lunes).
      ESTABA HUERFANO FUERA DEL BLOCK SCRIPTS y por eso no se ejecutaba. -->
