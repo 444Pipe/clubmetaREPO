@@ -53,13 +53,47 @@ SALON_IMAGES = {
     ],
 }
 
+# Lista temporal de imagenes que estan en disco pero AUN NO en Cloudinary
+# (rate limit hit durante el upload). Mientras no se suban, se filtran del
+# carrusel publico. Cuando se suban, vaciar esta lista.
+_PENDING_CLOUDINARY_UPLOAD = {
+    'salon terraza/holi.jpeg',
+    'salon terraza/yonose.jpeg',
+}
+
+
+def _filter_existing_images(paths):
+    """Filtra una lista de rutas para devolver solo las que:
+    1. Existen en disco bajo static/img/.
+    2. NO estan en la lista temporal de pendientes de subir a Cloudinary.
+
+    Asi evitamos referenciar archivos que se romperian visualmente.
+    """
+    from django.conf import settings
+    from pathlib import Path
+    static_dirs = getattr(settings, 'STATICFILES_DIRS', [])
+    base = Path(static_dirs[0]) if static_dirs else Path(settings.BASE_DIR) / 'static'
+    valid = []
+    for p in paths:
+        if not p:
+            continue
+        # Skip si esta marcada como pendiente de subir a Cloudinary
+        if p.strip() in _PENDING_CLOUDINARY_UPLOAD:
+            continue
+        full = base / 'img' / p
+        if full.is_file():
+            valid.append(p)
+    return valid
+
+
 def get_salon_images(salon_or_name):
     """Obtiene las imágenes del salón.
 
     Acepta tanto el nombre del salón (str) como una instancia de `Salon`.
-    - Si la instancia tiene el campo `imagen` y contiene una ruta (p. ej. 'carpeta/archivo.jpg'),
-      devuelve esa ruta como único elemento (uso por admin para imágenes individuales).
-    - Si no, intenta hacer match con las claves de `SALON_IMAGES` por nombre.
+    - Si la instancia tiene el campo `imagen` y contiene rutas validas
+      (archivos que existen en disco), devuelve esas rutas.
+    - Si el campo `imagen` esta vacio o todas sus rutas son invalidas,
+      cae a `SALON_IMAGES` por nombre.
     - Si no encuentra nada devuelve lista vacía.
     """
     # Si nos pasaron una instancia, intentar usar su campo imagen
@@ -74,22 +108,23 @@ def get_salon_images(salon_or_name):
 
     if imagen_attr and isinstance(imagen_attr, str):
         # Soportar múltiples rutas separadas por comas en el campo `imagen` del admin.
-        # Ejemplo: "salon mi llanura/mika.jpg, salon mi llanura/otra.jpg"
         parts = [p.strip() for p in imagen_attr.split(',') if p.strip()]
         if parts:
-            # Si todos los elementos contienen '/', tratarlos como rutas relativas dentro de static/img/
-            if all('/' in p for p in parts):
-                return parts
-            # Si sólo hay una entrada y contiene '/', devolverla como única imagen
-            if len(parts) == 1 and '/' in parts[0]:
-                return [parts[0]]
+            # FILTRAR: solo conservar archivos que existen en disco.
+            # Sin este filtro, una ruta vieja en BD (p.ej. WhatsApp Image ...)
+            # romperia el carrusel con slides vacios.
+            valid = _filter_existing_images(parts)
+            if valid:
+                return valid
+            # Si todas las rutas son invalidas, caer al fallback SALON_IMAGES
 
     # Determinar el nombre a usar para buscar en SALON_IMAGES
     nombre_buscar = nombre_attr or (salon_or_name if isinstance(salon_or_name, str) else '')
 
     for key in SALON_IMAGES.keys():
         if key in (nombre_buscar or ''):
-            return SALON_IMAGES[key]
+            # Filtrar tambien por si SALON_IMAGES tiene rutas obsoletas
+            return _filter_existing_images(SALON_IMAGES[key]) or SALON_IMAGES[key]
 
     return []
 

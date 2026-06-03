@@ -105,16 +105,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 3px solid #ffffff;
-    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.10);
-    padding: 12px;
+    border: 1px solid rgba(30, 58, 138, 0.10);
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.10),
+                inset 0 0 0 4px #ffffff;
+    overflow: hidden;
+    padding: 0;
   }
   .junta-avatar img {
-    width: 100% !important;
-    height: 100% !important;
-    max-width: 80px;
-    max-height: 80px;
+    width: 64px !important;
+    height: 64px !important;
+    max-width: 64px;
+    max-height: 64px;
     object-fit: contain !important;
+    display: block;
   }
   .junta-role {
     color: #d97706;
@@ -134,8 +137,8 @@
   @media (max-width: 575.98px) {
     .junta-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .junta-member { padding: 16px 12px; }
-    .junta-avatar { width: 80px; height: 80px; padding: 10px; }
-    .junta-avatar img { max-width: 60px; max-height: 60px; }
+    .junta-avatar { width: 80px; height: 80px; }
+    .junta-avatar img { width: 48px !important; height: 48px !important; max-width: 48px; max-height: 48px; }
     .junta-role { font-size: 0.7rem; }
     .junta-name { font-size: 0.85rem; }
   }
