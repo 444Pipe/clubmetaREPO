@@ -711,8 +711,24 @@ html[data-theme="dark"] .login #content-main {
   margin: 0 0 18px 0 !important;
   position: static !important;
   list-style: none;
+  width: 100%;
+  box-sizing: border-box;
 }
-.object-tools li { list-style: none; margin: 0; }
+.object-tools li { list-style: none; margin: 0; max-width: 100%; }
+.object-tools li > a, .object-tools > a {
+  max-width: 100%;
+  box-sizing: border-box;
+  white-space: normal;
+  word-break: break-word;
+  text-align: center;
+}
+@media (max-width: 575.98px) {
+  .object-tools { justify-content: stretch; }
+  .object-tools li, .object-tools > a {
+    width: 100%;
+  }
+  .object-tools li > a { width: 100%; display: block !important; }
+}
 /* En vistas con object-tools (add buttons) el changelist tenia top padding
    raro porque object-tools era posicionado absoluto. Resetear. */
 .change-list .object-tools,
@@ -816,26 +832,61 @@ html[data-theme="dark"] .login #content-main {
   --cm-elevation-3: 0 8px 22px rgba(15,23,42,0.10), 0 22px 44px rgba(15,23,42,0.10);
 }
 
-/* --------- HEADER mejorado: backdrop blur en scroll --------- */
-#header {
-  position: sticky !important;
-  top: 0;
-  z-index: 1100;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+/* --------- HEADER mejorado: backdrop blur en scroll (solo desktop) --------- */
+@media (min-width: 768px) {
+  #header {
+    position: sticky !important;
+    top: 0;
+    z-index: 1100;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  div.breadcrumbs {
+    position: sticky;
+    top: 60px;
+    z-index: 1090;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.92) !important;
+  }
+  html[data-theme="dark"] div.breadcrumbs {
+    background: rgba(11, 18, 34, 0.92) !important;
+  }
 }
 
-/* --------- BREADCRUMBS: sticky tambien --------- */
-div.breadcrumbs {
-  position: sticky;
-  top: 60px;
-  z-index: 1090;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  background: rgba(255, 255, 255, 0.92) !important;
-}
-html[data-theme="dark"] div.breadcrumbs {
-  background: rgba(11, 18, 34, 0.92) !important;
+/* --------- MOBILE HEADER: layout vertical limpio --------- */
+@media (max-width: 575.98px) {
+  #header {
+    padding: 10px 12px !important;
+    flex-wrap: wrap;
+  }
+  .admin-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+  .branding {
+    justify-content: center;
+    padding: 6px 12px !important;
+  }
+  .admin-quick-actions {
+    width: 100%;
+    justify-content: center !important;
+    margin-left: 0 !important;
+  }
+  .admin-quick-actions .qa-btn {
+    flex: 1;
+    text-align: center;
+    padding: 7px 12px !important;
+    font-size: 12px !important;
+  }
+  #user-tools {
+    width: 100%;
+    padding: 8px 0 0 0 !important;
+    justify-content: center;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
+  }
 }
 
 /* --------- FILTROS: accordion en tablet/mobile, dejando ver la tabla --------- */
@@ -859,23 +910,17 @@ html[data-theme="dark"] div.breadcrumbs {
     transition: transform 0.22s var(--cm-ease-snap);
     font-size: 0.75rem;
   }
-  /* Por defecto cerrado en mobile (state controlado via :has) */
-  #changelist-filter > *:not(h2) {
-    display: block;
-    max-height: 60vh;
-    overflow-y: auto;
-    transition: max-height 0.3s var(--cm-ease-snap), opacity 0.22s ease, padding 0.22s ease;
-  }
-  /* Estado "collapsed" — se aplica con :has() en navegadores modernos.
-     Caemos a JS-toggle abajo en navegadores antiguos. */
+  /* Cuando esta colapsado: ocultar TODOS los hijos no-h2 con display:none
+     para que el card se reduzca completamente al solo header. */
   #changelist-filter.collapsed > *:not(h2) {
-    max-height: 0 !important;
-    opacity: 0;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    overflow: hidden;
+    display: none !important;
   }
   #changelist-filter.collapsed h2::after { transform: translateY(-50%) rotate(-90deg); }
+  /* Cuando NO colapsado: scroll interno si hay muchos filtros */
+  #changelist-filter:not(.collapsed) > *:not(h2) {
+    max-height: 50vh;
+    overflow-y: auto;
+  }
 }
 
 /* --------- LIST VIEW: transformacion a CARDS en mobile --------- */
