@@ -1,11 +1,91 @@
 <!doctype html>
-<html lang="es">
+<html lang="es-CO">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}CLUB EL META{% endblock %}</title>
+  <title>{% block title %}Corporación Club El Meta — Club Social en Villavicencio{% endblock %}</title>
   {% load static %}
+
+  {# ===== SEO: meta description, keywords, robots ===== #}
+  <meta name="description" content="{% block meta_description %}Club social en Villavicencio (Meta, Colombia) con salones de eventos, piscina, restaurante, canchas de tenis, fútbol, gimnasio y zonas familiares. Reserva tu evento social, corporativo o gastronómico.{% endblock %}">
+  <meta name="keywords" content="Club El Meta, club social Villavicencio, salones de eventos Meta, eventos sociales Villavicencio, club familiar Llanos, piscina Villavicencio, restaurante club">
+  <meta name="author" content="Corporación Club El Meta">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="theme-color" content="#1e3a8a">
+  <meta name="application-name" content="Club El Meta">
+  <link rel="canonical" href="https://www.clubelmeta.co{{ request.path|default:'/' }}">
+
+  {# ===== Open Graph (Facebook, WhatsApp, LinkedIn) ===== #}
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Corporación Club El Meta">
+  <meta property="og:locale" content="es_CO">
+  <meta property="og:title" content="{% block og_title %}Corporación Club El Meta — Club Social en Villavicencio{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}Salones de eventos, piscina, restaurante, deportes y zonas familiares en el corazón del Meta. Reserva tu evento social o corporativo.{% endblock %}">
+  <meta property="og:url" content="https://www.clubelmeta.co{{ request.path|default:'/' }}">
+  <meta property="og:image" content="{% block og_image %}https://www.clubelmeta.co{% static 'img/fondin.webp' %}{% endblock %}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Corporación Club El Meta - Villavicencio">
+
+  {# ===== Twitter Card ===== #}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{% block tw_title %}Corporación Club El Meta — Club Social en Villavicencio{% endblock %}">
+  <meta name="twitter:description" content="{% block tw_description %}Salones de eventos, piscina, restaurante y deportes en Villavicencio.{% endblock %}">
+  <meta name="twitter:image" content="{% block tw_image %}https://www.clubelmeta.co{% static 'img/fondin.webp' %}{% endblock %}">
+
+  {# ===== Iconos ===== #}
   <link rel="icon" type="image/png" href="{% static 'img/faviconlogo.png' %}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/logo.png' %}">
+  <link rel="shortcut icon" href="{% static 'img/faviconlogo.png' %}">
+
+  {# ===== Structured data (JSON-LD) para Google rich results ===== #}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SportsClub",
+    "name": "Corporación Club El Meta",
+    "alternateName": "Club El Meta",
+    "url": "https://www.clubelmeta.co/",
+    "logo": "https://www.clubelmeta.co{% static 'img/logo.png' %}",
+    "image": "https://www.clubelmeta.co{% static 'img/fondin.webp' %}",
+    "description": "Club social sin ánimo de lucro en Villavicencio (Meta, Colombia). Salones de eventos, piscina, restaurante, deportes y zonas familiares para asociados y particulares.",
+    "telephone": ["+57 350 701 6630", "+57 313 466 0698"],
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Calle 48A Carrera 30, Barrio Caudal Oriental",
+      "addressLocality": "Villavicencio",
+      "addressRegion": "Meta",
+      "addressCountry": "CO"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 4.16321,
+      "longitude": -73.642
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        "opens": "08:00",
+        "closes": "19:00"
+      }
+    ],
+    "sameAs": [
+      "https://www.facebook.com/ClubelMeta/",
+      "https://www.instagram.com/clubelmeta/"
+    ],
+    "amenityFeature": [
+      {"@type": "LocationFeatureSpecification", "name": "Salones de eventos"},
+      {"@type": "LocationFeatureSpecification", "name": "Piscina"},
+      {"@type": "LocationFeatureSpecification", "name": "Restaurante"},
+      {"@type": "LocationFeatureSpecification", "name": "Canchas de tenis"},
+      {"@type": "LocationFeatureSpecification", "name": "Cancha de fútbol"},
+      {"@type": "LocationFeatureSpecification", "name": "Gimnasio"},
+      {"@type": "LocationFeatureSpecification", "name": "Parqueadero"}
+    ]
+  }
+  </script>
+
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
   <link rel="stylesheet" href="{% static 'css/secciones.css' %}">
